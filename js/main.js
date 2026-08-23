@@ -413,10 +413,8 @@
     }
   }
   const statViewsEl = $("#statViews");
-  const statVisitsEl = $("#statVisits");
   let heroSeen = false;
   let targetViews = null;
-  let targetVisits = null;
 
   const countUp = (el, to) => {
     if (!el) return;
@@ -435,9 +433,8 @@
   };
 
   const flushCounters = () => {
-    if (!heroSeen) return;
-    if (targetViews !== null) countUp(statViewsEl, targetViews);
-    if (targetVisits !== null) countUp(statVisitsEl, targetVisits);
+    if (!heroSeen || targetViews === null) return;
+    countUp(statViewsEl, targetViews);
   };
 
   const heroIO = new IntersectionObserver(
@@ -456,19 +453,10 @@
 
   async function loadStats() {
     try {
-      const firstVisit = !sessionStorage.getItem("sg_seen");
-      sessionStorage.setItem("sg_seen", "1");
-      const viewsUrl = `https://abacus.jasoncameron.dev/hit/${NS}/views`;
-      const visitsUrl = firstVisit
-        ? `https://abacus.jasoncameron.dev/hit/${NS}/visits`
-        : `https://abacus.jasoncameron.dev/get/${NS}/visits`;
-      const [views, visits] = await Promise.all([fetchCount(viewsUrl), fetchCount(visitsUrl)]);
-      targetViews = views;
-      targetVisits = visits;
+      targetViews = await fetchCount(`https://abacus.jasoncameron.dev/hit/${NS}/views`);
     } catch {
       targetViews = parseInt(localStorage.getItem("sg_views") || "0", 10) + 1;
       localStorage.setItem("sg_views", String(targetViews));
-      targetVisits = 1;
     }
     flushCounters();
   }
