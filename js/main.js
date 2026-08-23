@@ -373,7 +373,6 @@
     }
   }
   $("#enterBtn").addEventListener("click", () => enterSite(true));
-  $("#enterNoMusic").addEventListener("click", () => enterSite(false));
 
   audioBtn.addEventListener("click", () => {
     startMusic().then((ok) => {
