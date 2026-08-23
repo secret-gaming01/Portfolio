@@ -1268,3 +1268,53 @@ img { max-width: 100%; display: block; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ============ OPTIMISATION TOUS APPAREILS ============ */
+
+/* Écran d'accueil plus imposant */
+.welcome-inner { gap: 28px; max-width: 700px; }
+.welcome-logo {
+  font-size: clamp(54px, 14vw, 122px);
+  text-shadow: 0 0 46px rgba(0, 229, 255, 0.55);
+}
+.welcome-sub { font-size: clamp(16.5px, 2.4vw, 22px); }
+.welcome-btn {
+  font-size: clamp(17px, 2.1vw, 21px);
+  padding: 19px 54px;
+}
+
+/* Aucun débordement horizontal, peu importe l'appareil */
+html, body { overflow-x: clip; }
+
+/* Interactions tactiles réactives (supprime le délai double-tap) */
+button, a, .filter-btn { touch-action: manipulation; }
+
+/* iOS : évite le zoom automatique au focus des champs */
+@media (max-width: 820px) {
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select { font-size: 16px; }
+}
+
+/* Très petits téléphones */
+@media (max-width: 400px) {
+  .container { padding: 0 16px; }
+  .welcome-logo { font-size: clamp(46px, 15vw, 68px); }
+  .modal { padding: 24px 18px; }
+  .card-links a { display: inline-block; margin-bottom: 6px; }
+}
+
+/* Téléphones en paysage */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: auto; padding: 110px 0 70px; }
+}
+
+/* TV et très grands écrans */
+@media (min-width: 1900px) {
+  .container { max-width: 1560px; padding: 0 40px; }
+  .hero-title { font-size: clamp(3rem, 4.8vw, 6.2rem); }
+  .section { padding-top: 140px; }
+  .projects-grid { gap: 34px; }
+  .footer-grid { gap: 60px; }
+}
