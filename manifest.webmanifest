@@ -1,0 +1,17 @@
+{
+  "name": "Secret_gaming01 — Portfolio",
+  "short_name": "SG_01",
+  "description": "Portfolio de Secret_gaming01, développeur Web & C# au Québec.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#030610",
+  "theme_color": "#030610",
+  "icons": [
+    {
+      "src": "assets/avatar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
