@@ -55,7 +55,7 @@
       twitchUrl: "https://www.twitch.tv/secret_gaming01",
       location: "Québec, Canada — disponible à distance",
       footerTagline: "Développeur Web & C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.",
-      musicSrc: "assets/music.mp3"
+      musicSrc: "assets/music1.mp3"
     },
     projects: [
       {

@@ -60,7 +60,7 @@ HTML5 · CSS3 · JavaScript vanilla · Three.js · GitHub Pages
 
 ## Crédits
 
-- Musique de fond : « Wallpaper » — Kevin MacLeod ([incompetech.com](https://incompetech.com)), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- Musique de fond : fichier fourni par le propriétaire du site (`assets/music1.mp3`)
 
 ## Déploiement
 
