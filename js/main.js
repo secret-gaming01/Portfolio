@@ -313,6 +313,7 @@
   // immédiatement mais muette, puis devient audible au premier clic/touche/scroll,
   // sauf si la préférence "mute" est enregistrée.
   const music = $("#bgMusic");
+  music.muted = true;
   music.volume = 0;
   const audioBtn = $("#audioToggle");
   let started = false;
@@ -336,7 +337,10 @@
 
   function setAudible(on) {
     audible = on;
-    if (on && music.paused) music.play().catch(() => {});
+    if (on) {
+      music.muted = false;
+      if (music.paused) music.play().catch(() => {});
+    }
     fadeTo(on ? 0.45 : 0);
     audioBtn.classList.toggle("on", on);
     audioBtn.setAttribute("aria-pressed", String(on));
@@ -345,6 +349,7 @@
 
   async function startMusic() {
     if (started) return true;
+    music.muted = true;
     try {
       await music.play();
       started = true;
@@ -373,43 +378,31 @@
   ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
     document.addEventListener(ev, onFirstGesture, { passive: true })
   );
-  let busy = false;
 
-  audioBtn.addEventListener("click", async () => {
-    if (busy) return;
-    busy = true;
-    audioBtn.style.opacity = ".45";
-    try {
-      if (!musicOn) {
-        showToast("Chargement de la musique…");
-        await music.play();
-        musicOn = true;
-        fadeTo(0.45);
-      } else {
-        musicOn = false;
-        fadeTo(0);
+  audioBtn.addEventListener("click", () => {
+    everUnmuted = true;
+    startMusic().then((ok) => {
+      if (!ok) {
+        showToast("Lecture impossible — vérifie ta connexion");
+        return;
       }
-      audioBtn.classList.toggle("on", musicOn);
-      audioBtn.setAttribute("aria-pressed", String(musicOn));
-      audioBtn.setAttribute("aria-label", musicOn ? "Couper la musique" : "Activer la musique");
-      showToast(musicOn ? "Musique activée" : "Musique coupée");
-    } catch {
-      showToast("Lecture impossible — vérifie ta connexion et réessaie");
-    } finally {
-      busy = false;
-      audioBtn.style.opacity = "";
-    }
+      const next = !audible;
+      userMuted = !next;
+      localStorage.setItem("sg_music", next ? "on" : "off");
+      setAudible(next);
+      showToast(next ? "Musique activée" : "Musique coupée");
+    });
   });
 
   music.addEventListener("error", () => {
-    if (musicOn || music.volume > 0) showToast("Problème avec le fichier musical");
-    musicOn = false;
+    if (audible) showToast("Problème avec le fichier musical");
+    started = false;
     audioBtn.classList.remove("on");
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      if (musicOn) music.pause();
-    } else if (musicOn) {
+      if (started) music.pause();
+    } else if (started) {
       music.play().catch(() => {});
     }
   });
