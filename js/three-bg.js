@@ -78,6 +78,24 @@
     return m;
   });
 
+  const electronDefs = [
+    { d: 9.2, s: 0.42, c: 0xaef6ff, rx: 1.1, rz: 0.3, sp: 0.021 },
+    { d: 10.4, s: 0.34, c: 0x7dd3fc, rx: 2.05, rz: -0.5, sp: -0.016 },
+    { d: 11.6, s: 0.28, c: 0xd9c8ff, rx: 1.55, rz: 0.95, sp: 0.012 }
+  ];
+  const electrons = electronDefs.map((def) => {
+    const pivot = new THREE.Object3D();
+    pivot.rotation.set(def.rx, Math.random() * Math.PI * 2, def.rz);
+    const m = new THREE.Mesh(
+      new THREE.SphereGeometry(def.s, 16, 16),
+      new THREE.MeshBasicMaterial({ color: def.c })
+    );
+    m.position.x = def.d;
+    pivot.add(m);
+    group.add(pivot);
+    return { pivot, sp: def.sp };
+  });
+
   const isMobile = () => window.innerWidth < 768;
   const count = isMobile() ? 700 : 1500;
   const positions = new Float32Array(count * 3);
@@ -142,6 +160,12 @@
     rings[1].rotation.x += 0.0005;
     rings[2].rotation.z += 0.0011;
     rings[2].rotation.y -= 0.0004;
+    rings.forEach((r, i) => {
+      r.material.opacity = ringDefs[i].opacity * (0.82 + 0.18 * Math.sin(t * 1.3 + i * 2));
+    });
+    electrons.forEach((e) => {
+      e.pivot.rotation.y += e.sp;
+    });
 
     points.rotation.y += 0.0004;
 

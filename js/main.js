@@ -92,12 +92,38 @@
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
           revealObserver.unobserve(entry.target);
+          if (entry.target.classList.contains("section-title")) decode(entry.target);
         }
       });
     },
     { threshold: 0.15 }
   );
   $$(".reveal").forEach((el) => revealObserver.observe(el));
+
+  const DECODE_CHARS = "!<>-_\\/[]{}=+*^?#01";
+  function decode(el) {
+    const original = el.innerHTML;
+    const finalText = el.textContent;
+    let frame = 0;
+    const total = Math.max(14, finalText.length * 2);
+    const iv = setInterval(() => {
+      frame++;
+      let out = "";
+      for (let i = 0; i < finalText.length; i++) {
+        out +=
+          i < (frame / total) * finalText.length
+            ? finalText[i]
+            : finalText[i] === " "
+              ? " "
+              : DECODE_CHARS[Math.floor(Math.random() * DECODE_CHARS.length)];
+      }
+      el.textContent = out;
+      if (frame >= total) {
+        clearInterval(iv);
+        el.innerHTML = original;
+      }
+    }, 30);
+  }
 
   const canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
 
@@ -114,6 +140,14 @@
       el.addEventListener("pointerleave", () => {
         el.style.transition = "transform 0.45s cubic-bezier(0.22,1,0.36,1)";
         el.style.transform = "";
+      });
+    });
+
+    $$(".glass").forEach((el) => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        el.style.setProperty("--my", `${e.clientY - r.top}px`);
       });
     });
 
