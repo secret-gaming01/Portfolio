@@ -8,9 +8,12 @@
 
   const navbar = $("#navbar");
   const toTop = $(".to-top");
+  const progressBar = $("#scrollProgress");
   const onScroll = () => {
     navbar.classList.toggle("scrolled", window.scrollY > 40);
     toTop.classList.toggle("show", window.scrollY > 600);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progressBar) progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -269,6 +272,79 @@
     }
   }
   loadStats();
+
+  const qcTimeEl = $("#qcTime");
+  function tickQC() {
+    if (!qcTimeEl) return;
+    qcTimeEl.textContent = new Intl.DateTimeFormat("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "America/Toronto"
+    }).format(new Date());
+  }
+  tickQC();
+  setInterval(tickQC, 30000);
+
+  const copyBtn = $("#copyEmail");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("#emailText").textContent.trim());
+        showToast("Adresse email copiée !");
+      } catch {
+        showToast("Impossible de copier l'email");
+      }
+    });
+  }
+
+  const LANG_COLORS = {
+    JavaScript: "#f1e05a",
+    TypeScript: "#3178c6",
+    Python: "#3572A5",
+    "C#": "#178600",
+    Rust: "#dea584",
+    HTML: "#e34c26",
+    CSS: "#563d7c",
+    Shell: "#89e051"
+  };
+  const esc = (s) =>
+    String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+  async function loadRepos() {
+    const section = $("#github");
+    const grid = $("#repoGrid");
+    if (!section || !grid) return;
+    try {
+      const res = await fetch("https://api.github.com/users/Secret-gaming01/repos?sort=updated&per_page=8");
+      if (!res.ok) throw new Error("api");
+      const repos = (await res.json()).filter((r) => !r.fork).slice(0, 6);
+      if (!repos.length) {
+        section.style.display = "none";
+        return;
+      }
+      grid.innerHTML = repos
+        .map(
+          (r) => `
+        <article class="project-card glass">
+          <div class="card-body repo-body">
+            <div class="repo-head">
+              <h3><a href="${esc(r.html_url)}" target="_blank" rel="noopener">${esc(r.name)}</a></h3>
+              ${r.language ? `<span class="lang-dot" style="background:${LANG_COLORS[r.language] || "#8b949e"}" title="${esc(r.language)}"></span>` : ""}
+            </div>
+            <p>${r.description ? esc(r.description) : "Pas encore de description."}</p>
+            <ul class="tags">
+              <li>★ ${r.stargazers_count}</li>
+              <li>Maj ${new Date(r.updated_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</li>
+            </ul>
+          </div>
+        </article>`
+        )
+        .join("");
+    } catch {
+      section.style.display = "none";
+    }
+  }
+  loadRepos();
 
   const form = $("#contactForm");
   form.addEventListener("submit", async (e) => {

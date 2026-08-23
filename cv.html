@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV — Secret_gaming01 | Développeur Web &amp; C#</title>
+  <meta name="description" content="CV de Secret_gaming01, développeur Web & C# basé au Québec." />
+  <style>
+    :root { --cyan:#00e5ff; --blue:#3b82f6; --violet:#7c3aed; --text:#e8f1ff; --muted:#8fa3c8; --line:rgba(88,166,255,.18); --bg:#060b18; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:"Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(900px 500px at 90% -10%, rgba(59,130,246,.15), transparent 60%),
+        radial-gradient(700px 500px at -10% 100%, rgba(124,58,237,.12), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.55;
+      padding:48px 20px 80px;
+    }
+    .sheet { max-width:860px; margin:0 auto; }
+    a { color:var(--cyan); text-decoration:none; }
+    header.top { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; padding-bottom:24px; border-bottom:2px solid var(--line); }
+    h1 { font-size:clamp(1.7rem,4vw,2.4rem); letter-spacing:.5px; }
+    h1 span { color:var(--cyan); }
+    .role { font-size:1.05rem; color:var(--blue); font-weight:600; margin-top:4px; }
+    .contact-list { list-style:none; font-size:.92rem; color:var(--muted); text-align:right; }
+    .contact-list li { margin-bottom:4px; word-break:break-all; }
+    h2 { font-size:1rem; text-transform:uppercase; letter-spacing:2px; color:var(--cyan); margin:34px 0 14px; display:flex; align-items:center; gap:12px; }
+    h2::after { content:""; flex:1; height:1px; background:linear-gradient(90deg,var(--line),transparent); }
+    .cols { display:grid; grid-template-columns:1fr 1fr; gap:10px 34px; }
+    .skill-line { display:flex; justify-content:space-between; border-bottom:1px dashed var(--line); padding:7px 2px; font-size:.95rem; }
+    .skill-line em { font-style:normal; color:var(--cyan); font-size:.85rem; }
+    ul.clean { list-style:none; }
+    ul.clean li { padding:6px 0 6px 22px; position:relative; color:var(--muted); }
+    ul.clean li::before { content:"▸"; position:absolute; left:2px; color:var(--violet); }
+    ul.clean strong { color:var(--text); }
+    .badge-row { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:5px 14px; font-size:.83rem; color:var(--muted); }
+    .actions { position:fixed; bottom:22px; right:22px; display:flex; gap:10px; }
+    .btn { padding:11px 20px; border-radius:999px; border:1px solid var(--cyan); background:linear-gradient(135deg,var(--cyan),var(--blue)); color:#04121f; font-weight:700; cursor:pointer; font-size:.9rem; }
+    .btn.ghost { background:transparent; color:var(--cyan); }
+    @media print {
+      body { background:#fff; color:#16213a; padding:0; }
+      .actions { display:none; }
+      h1 span, .role, h2, em, a { color:#0b63c5; }
+      ul.clean li, .contact-list li, .chip { color:#33415c; }
+      h2::after { background:#c9d6ef; }
+      header.top { border-color:#c9d6ef; }
+      .skill-line { border-color:#dde6f5; }
+    }
+    @media (max-width:640px){ .cols{grid-template-columns:1fr} .contact-list{text-align:left} }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <header class="top">
+      <div>
+        <h1>Secret<span>_gaming01</span></h1>
+        <p class="role">Développeur Web &amp; C# — Québec, Canada</p>
+      </div>
+      <ul class="contact-list">
+        <li><a href="mailto:pro.secretgaming01@gmail.com">pro.secretgaming01@gmail.com</a></li>
+        <li><a href="https://github.com/Secret-gaming01" target="_blank" rel="noopener">github.com/Secret-gaming01</a></li>
+        <li><a href="https://www.twitch.tv/secret_gaming01" target="_blank" rel="noopener">twitch.tv/secret_gaming01</a></li>
+        <li>Discord : secret_gaming01</li>
+        <li>Portfolio : <a href="https://secret-gaming01.github.io/portfolio/" target="_blank" rel="noopener">secret-gaming01.github.io/portfolio</a></li>
+      </ul>
+    </header>
+
+    <h2>Profil</h2>
+    <p style="color:var(--muted)">
+      Développeur passionné par le code, la tech et le gaming. Je conçois des sites web modernes,
+      des applications C# et des interfaces rapides et immersives. Ouvert aux opportunités,
+      à distance ou sur place.
+    </p>
+
+    <h2>Compétences techniques</h2>
+    <div class="cols">
+      <div class="skill-line"><span>C# / .NET</span><em>Avancé</em></div>
+      <div class="skill-line"><span>HTML5 / CSS3</span><em>Avancé</em></div>
+      <div class="skill-line"><span>JavaScript</span><em>Confirmé</em></div>
+      <div class="skill-line"><span>Python</span><em>Bases solides</em></div>
+      <div class="skill-line"><span>Rust</span><em>En apprentissage</em></div>
+      <div class="skill-line"><span>Git / GitHub</span><em>Courant</em></div>
+    </div>
+
+    <h2>Ce que je fais</h2>
+    <ul class="clean">
+      <li><strong>Sites &amp; applications web</strong> — sites vitrines, landing pages et applis interactives responsive.</li>
+      <li><strong>Applications C# / .NET</strong> — outils et logiciels de bureau performants.</li>
+      <li><strong>Bots &amp; automatisation</strong> — bots Discord et scripts utiles.</li>
+      <li><strong>Interfaces animées</strong> — effets interactifs et expériences 3D (Three.js / WebGL).</li>
+    </ul>
+
+    <h2>Projets sélectionnés</h2>
+    <ul class="clean">
+      <li><strong>Portfolio interactif</strong> — site personnel avec scène 3D temps réel (Three.js), formulaire fonctionnel et stats de visite. <a href="https://secret-gaming01.github.io/portfolio/" target="_blank" rel="noopener">Voir en ligne</a></li>
+      <li><strong>Dépôts open source</strong> — code disponible publiquement sur <a href="https://github.com/Secret-gaming01" target="_blank" rel="noopener">mon GitHub</a>.</li>
+    </ul>
+
+    <h2>En bref</h2>
+    <div class="badge-row">
+      <span class="chip">C#</span><span class="chip">.NET</span><span class="chip">HTML5</span><span class="chip">CSS3</span>
+      <span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">Rust (en cours)</span><span class="chip">Git</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a class="btn ghost" href="index.html">← Retour au portfolio</a>
+    <button class="btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</body>
+</html>
