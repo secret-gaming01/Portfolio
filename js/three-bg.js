@@ -43,7 +43,7 @@
     new THREE.SpriteMaterial({
       map: makeGlowTexture(),
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.38,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     })
@@ -59,14 +59,14 @@
 
   const shell = new THREE.Mesh(
     new THREE.IcosahedronGeometry(7.4, 1),
-    new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.18 })
+    new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.1 })
   );
   group.add(shell);
 
   const ringDefs = [
-    { r: 11.2, tube: 0.09, color: 0x00e5ff, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.42 },
-    { r: 14, tube: 0.07, color: 0x3b82f6, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.34 },
-    { r: 16.8, tube: 0.055, color: 0x8b5cf6, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.28 }
+    { r: 11.2, tube: 0.09, color: 0x00e5ff, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.24 },
+    { r: 14, tube: 0.07, color: 0x3b82f6, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.19 },
+    { r: 16.8, tube: 0.055, color: 0x8b5cf6, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.15 }
   ];
   const rings = ringDefs.map((d) => {
     const m = new THREE.Mesh(
@@ -97,7 +97,7 @@
   });
 
   const isMobile = () => window.innerWidth < 768;
-  const count = isMobile() ? 500 : 1100;
+  const count = isMobile() ? 250 : 550;
   const positions = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
     positions[i * 3] = (Math.random() - 0.5) * 200;
@@ -113,7 +113,7 @@
       size: 1,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.22,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     })
@@ -147,31 +147,31 @@
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    const pulse = 1 + Math.sin(t * 1.2) * 0.04;
+    const pulse = 1 + Math.sin(t * 0.7) * 0.02;
     core.scale.setScalar(pulse);
-    halo.material.opacity = 0.52 + Math.sin(t * 1.2) * 0.09;
-    halo.scale.setScalar(34 + Math.sin(t * 1.2) * 2);
+    halo.material.opacity = 0.32 + Math.sin(t * 0.7) * 0.04;
+    halo.scale.setScalar(34 + Math.sin(t * 0.7) * 1.2);
 
-    shell.rotation.y += 0.0013;
-    shell.rotation.x += 0.0006;
+    shell.rotation.y += 0.0006;
+    shell.rotation.x += 0.0003;
 
-    rings[0].rotation.z += 0.0019;
-    rings[1].rotation.z -= 0.0014;
-    rings[1].rotation.x += 0.0004;
-    rings[2].rotation.z += 0.0009;
-    rings[2].rotation.y -= 0.0003;
+    rings[0].rotation.z += 0.0009;
+    rings[1].rotation.z -= 0.0007;
+    rings[1].rotation.x += 0.0002;
+    rings[2].rotation.z += 0.0004;
+    rings[2].rotation.y -= 0.00015;
     rings.forEach((r, i) => {
-      r.material.opacity = ringDefs[i].opacity * (0.78 + 0.14 * Math.sin(t * 1.1 + i * 2));
+      r.material.opacity = ringDefs[i].opacity * (0.85 + 0.08 * Math.sin(t * 0.7 + i * 2));
     });
 
     electrons.forEach((e) => {
-      e.pivot.rotation.y += e.sp;
+      e.pivot.rotation.y += e.sp * 0.55;
     });
 
-    points.rotation.y += 0.00032;
+    points.rotation.y += 0.00016;
 
-    camera.position.x += (mouse.x * 4 - camera.position.x) * 0.025;
-    camera.position.y += (mouse.y * 3 - camera.position.y) * 0.025;
+    camera.position.x += (mouse.x * 2.4 - camera.position.x) * 0.02;
+    camera.position.y += (mouse.y * 1.8 - camera.position.y) * 0.02;
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   }

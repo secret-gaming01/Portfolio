@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
 
 Sitemap: https://secret-gaming01.github.io/portfolio/sitemap.xml

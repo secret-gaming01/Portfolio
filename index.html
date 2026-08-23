@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
 </head>
 <body>
   <div class="preloader" id="preloader" aria-hidden="true">
@@ -101,10 +101,7 @@
     </section>
 
     <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>C#</span><i>•</i><span>.NET</span><i>•</i><span>HTML5</span><i>•</i><span>CSS3</span><i>•</i><span>JavaScript</span><i>•</i><span>Python</span><i>•</i><span>Rust</span><i>•</i><span>Git</span><i>•</i>
-        <span>C#</span><i>•</i><span>.NET</span><i>•</i><span>HTML5</span><i>•</i><span>CSS3</span><i>•</i><span>JavaScript</span><i>•</i><span>Python</span><i>•</i><span>Rust</span><i>•</i><span>Git</span><i>•</i>
-      </div>
+      <div class="marquee-track" id="marqueeTrack"></div>
     </div>
 
     <section id="presentation" class="section container">
@@ -135,26 +132,7 @@
 
         <div class="skills glass reveal">
           <h3>Mes compétences</h3>
-          <div class="skill">
-            <div class="skill-head"><span>C#</span><em>85%</em></div>
-            <div class="bar"><i data-level="85"></i></div>
-          </div>
-          <div class="skill">
-            <div class="skill-head"><span>HTML / CSS</span><em>85%</em></div>
-            <div class="bar"><i data-level="85"></i></div>
-          </div>
-          <div class="skill">
-            <div class="skill-head"><span>JavaScript</span><em>75%</em></div>
-            <div class="bar"><i data-level="75"></i></div>
-          </div>
-          <div class="skill">
-            <div class="skill-head"><span>Python (bases)</span><em>45%</em></div>
-            <div class="bar"><i data-level="45"></i></div>
-          </div>
-          <div class="skill">
-            <div class="skill-head"><span>Rust (en apprentissage)</span><em>20%</em></div>
-            <div class="bar"><i data-level="20"></i></div>
-          </div>
+          <div id="skillsList"></div>
         </div>
 
       </div>
@@ -223,87 +201,7 @@
         <button type="button" class="filter-btn" data-filter="game">Jeux</button>
       </div>
 
-      <div class="projects-grid">
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p1"></div>
-          <div class="card-body">
-            <h3>Néon Dashboard</h3>
-            <p>Tableau de bord temps réel avec graphiques animés et thèmes personnalisés.</p>
-            <ul class="tags"><li>React</li><li>WebSocket</li><li>CSS</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p2"></div>
-          <div class="card-body">
-            <h3>CyberShop</h3>
-            <p>Boutique e-commerce dark mode avec panier dynamique et paiement en ligne.</p>
-            <ul class="tags"><li>Next.js</li><li>Stripe</li><li>Tailwind</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p3"></div>
-          <div class="card-body">
-            <h3>Orbital 3D</h3>
-            <p>Expérience WebGL interactive : système planétaire explorable à la souris.</p>
-            <ul class="tags"><li>Three.js</li><li>GLSL</li><li>JS</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p4"></div>
-          <div class="card-body">
-            <h3>Bot Discord SG</h3>
-            <p>Bot de modération et de musique avec panel web de configuration.</p>
-            <ul class="tags"><li>Node.js</li><li>Discord.js</li><li>MongoDB</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p5"></div>
-          <div class="card-body">
-            <h3>Pixel Arena</h3>
-            <p>Mini-jeu multijoueur dans le navigateur, classements et salons privés.</p>
-            <ul class="tags"><li>TypeScript</li><li>Canvas</li><li>Socket.io</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card glass tilt reveal">
-          <div class="thumb p6"></div>
-          <div class="card-body">
-            <h3>Portfolio v1</h3>
-            <p>Première version de mon portfolio, à l'origine de celui que vous visitez.</p>
-            <ul class="tags"><li>HTML</li><li>CSS</li><li>JS</li></ul>
-            <div class="card-links">
-              <a href="#" data-soon>Voir le projet</a>
-              <a href="#" data-soon>Code source</a>
-            </div>
-          </div>
-        </article>
-
-      </div>
+      <div class="projects-grid" id="projGrid"></div>
     </section>
 
     <section id="github" class="section container">
@@ -425,6 +323,6 @@
   <div class="toast" id="toast" role="status"></div>
 
   <script type="module" src="js/three-bg.js?v=5"></script>
-  <script src="js/main.js?v=5" defer></script>
+  <script src="js/main.js?v=6" defer></script>
 </body>
 </html>

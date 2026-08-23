@@ -3,6 +3,8 @@
 
   const $ = (s, e = document) => e.querySelector(s);
   const $$ = (s, e = document) => Array.from(e.querySelectorAll(s));
+  const esc = (s) =>
+    String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
   $("#year").textContent = new Date().getFullYear();
 
@@ -17,6 +19,113 @@
   else {
     window.addEventListener("load", hidePreloader);
     setTimeout(hidePreloader, 2500);
+  }
+
+  const DEFAULT_CONTENT = {
+    typing: [
+      "Développeur Web & C#",
+      "Créateur d'expériences interactives",
+      "Passionné de tech & gaming",
+      "En train d'apprendre Rust"
+    ],
+    skills: [
+      { name: "C#", level: 85 },
+      { name: "HTML / CSS", level: 85 },
+      { name: "JavaScript", level: 75 },
+      { name: "Python (bases)", level: 45 },
+      { name: "Rust (en apprentissage)", level: 20 }
+    ],
+    marquee: ["C#", ".NET", "HTML5", "CSS3", "JavaScript", "Python", "Rust", "Git"],
+    projects: [
+      {
+        title: "Néon Dashboard",
+        cat: "web",
+        thumb: "p1",
+        kicker: "Application web",
+        tags: ["React", "WebSocket", "CSS"],
+        short: "Dashboard temps réel : graphiques animés, données en direct et thème néon.",
+        desc: "Un tableau de bord temps réel pensé pour la performance : connexion WebSocket persistante, graphiques animés à la demande et thème néon personnalisable.",
+        feats: ["Streaming de données en temps réel", "Graphiques animés sans librairie lourde", "Thèmes et widgets réorganisables", "100 % responsive"],
+        stack: ["React", "WebSocket", "CSS"],
+        demoUrl: "",
+        repoUrl: ""
+      },
+      {
+        title: "CyberShop",
+        cat: "web",
+        thumb: "p2",
+        kicker: "E-commerce",
+        tags: ["Next.js", "Stripe", "Tailwind"],
+        short: "Boutique dark mode avec panier persistant et paiement Stripe.",
+        desc: "Boutique en ligne dark mode avec parcours d'achat complet : catalogue filtrable, panier persistant et paiement sécurisé via Stripe.",
+        feats: ["Panier persistant (localStorage)", "Paiement Stripe Checkout", "Recherche instantanée", "Optimisation mobile"],
+        stack: ["Next.js", "Stripe", "Tailwind"],
+        demoUrl: "",
+        repoUrl: ""
+      },
+      {
+        title: "Orbital 3D",
+        cat: "3d",
+        thumb: "p3",
+        kicker: "Expérience 3D",
+        tags: ["Three.js", "GLSL", "JS"],
+        short: "Expérience WebGL interactive : système planétaire explorable à la souris.",
+        desc: "Un système planétaire interactif en WebGL : orbites calculées en temps réel, contrôles caméra fluides et rendu optimisé pour tourner à 60 fps même sur mobile.",
+        feats: ["Orbites physiques en temps réel", "Contrôles souris & tactile", "Textures génératives", "60 fps sur mobile"],
+        stack: ["Three.js", "GLSL", "Vanilla JS"],
+        demoUrl: "",
+        repoUrl: ""
+      },
+      {
+        title: "Bot Discord SG",
+        cat: "bot",
+        thumb: "p4",
+        kicker: "Bot & automatisation",
+        tags: ["Node.js", "Discord.js", "MongoDB"],
+        short: "Bot de modération et de musique avec panel web de configuration.",
+        desc: "Bot multifonction pour serveurs Discord : modération automatique, lecteur de musique et panel web de configuration connecté à une base de données.",
+        feats: ["Modération automatique configurable", "Lecteur musique multi-source", "Panel web admin", "Base MongoDB"],
+        stack: ["Node.js", "discord.js", "MongoDB"],
+        demoUrl: "",
+        repoUrl: ""
+      },
+      {
+        title: "Pixel Arena",
+        cat: "game",
+        thumb: "p5",
+        kicker: "Jeu navigateur",
+        tags: ["TypeScript", "Canvas", "Socket.io"],
+        short: "Mini-jeu multijoueur dans le navigateur, classements et salons privés.",
+        desc: "Mini-jeu multijoueur directement dans le navigateur : salons privés, parties rapides et classement global synchronisé en temps réel.",
+        feats: ["Multijoueur via Socket.io", "Salons privés par code", "Classement global", "Rendu Canvas optimisé"],
+        stack: ["TypeScript", "Canvas", "Socket.io"],
+        demoUrl: "",
+        repoUrl: ""
+      },
+      {
+        title: "Portfolio v1",
+        cat: "web",
+        thumb: "p6",
+        kicker: "Site vitrine",
+        tags: ["HTML", "CSS", "JS"],
+        short: "Première version de mon portfolio, à l'origine de celui que vous visitez.",
+        desc: "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et l'hébergement.",
+        feats: ["Première intégration responsive", "Animations au scroll", "Déploiement continu"],
+        stack: ["HTML", "CSS", "JavaScript"],
+        demoUrl: "",
+        repoUrl: ""
+      }
+    ]
+  };
+  let CONTENT = DEFAULT_CONTENT;
+
+  async function loadContent() {
+    try {
+      const res = await fetch("data/content.json?v=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) return;
+      const json = await res.json();
+      CONTENT = { ...DEFAULT_CONTENT, ...json };
+    } catch {}
   }
 
   const navbar = $("#navbar");
@@ -63,61 +172,22 @@
   );
   $$("main section[id]").forEach((s) => spy.observe(s));
 
-  const words = [
-    "Développeur Web & C#",
-    "Créateur d'expériences interactives",
-    "Passionné de tech & gaming",
-    "En train d'apprendre Rust"
-  ];
-  const typingEl = $("#typing");
-  let wI = 0, cI = 0, deleting = false;
-  function typeLoop() {
-    const word = words[wI];
-    typingEl.textContent = word.slice(0, cI);
-    let delay = deleting ? 45 : 85;
-    if (!deleting && cI === word.length) {
-      delay = 1800;
-      deleting = true;
-    } else if (deleting && cI === 0) {
-      deleting = false;
-      wI = (wI + 1) % words.length;
-      delay = 350;
-    } else {
-      cI += deleting ? -1 : 1;
-    }
-    setTimeout(typeLoop, delay);
+  const toast = $("#toast");
+  let toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
   }
-  typeLoop();
 
-  const skillsSection = $("#presentation");
-  const barObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        $$(".bar i").forEach((bar, i) => {
-          bar.style.transitionDelay = `${i * 90}ms`;
-          bar.style.width = `${bar.dataset.level}%`;
-        });
-        barObserver.disconnect();
-      });
-    },
-    { threshold: 0.25 }
-  );
-  if (skillsSection) barObserver.observe(skillsSection);
-
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          revealObserver.unobserve(entry.target);
-          if (entry.target.classList.contains("section-title")) decode(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15 }
-  );
-  $$(".reveal").forEach((el) => revealObserver.observe(el));
+  document.addEventListener("click", (e) => {
+    const soon = e.target.closest("[data-soon]");
+    if (soon) {
+      e.preventDefault();
+      showToast("Lien bientôt disponible — projet en cours !");
+    }
+  });
 
   const DECODE_CHARS = "!<>-_\\/[]{}=+*^?#01";
   function decode(el) {
@@ -144,33 +214,51 @@
     }, 30);
   }
 
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+          if (entry.target.classList.contains("section-title")) decode(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  $$(".reveal").forEach((el) => revealObserver.observe(el));
+
   const canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
 
-  if (canHover && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    $$(".tilt").forEach((el) => {
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        el.style.transition = "transform 0.08s linear";
-        el.style.transform =
-          `perspective(900px) rotateY(${(px - 0.5) * 10}deg) rotateX(${(0.5 - py) * 10}deg) translateY(-6px)`;
-      });
-      el.addEventListener("pointerleave", () => {
-        el.style.transition = "transform 0.45s cubic-bezier(0.22,1,0.36,1)";
-        el.style.transform = "";
-      });
+  function bindTilt(el) {
+    if (!canHover || REDUCED || el.dataset.tiltBound) return;
+    el.dataset.tiltBound = "1";
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      el.style.transition = "transform 0.08s linear";
+      el.style.transform =
+        `perspective(900px) rotateY(${(px - 0.5) * 10}deg) rotateX(${(0.5 - py) * 10}deg) translateY(-6px)`;
     });
-
-    $$(".glass").forEach((el) => {
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        el.style.setProperty("--my", `${e.clientY - r.top}px`);
-      });
+    el.addEventListener("pointerleave", () => {
+      el.style.transition = "transform 0.45s cubic-bezier(0.22,1,0.36,1)";
+      el.style.transform = "";
     });
+  }
 
-    const glow = $("#cursorGlow");
+  function bindGlass(el) {
+    if (!canHover || el.dataset.glassBound) return;
+    el.dataset.glassBound = "1";
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+  }
+
+  const glow = $("#cursorGlow");
+  if (canHover && !REDUCED && glow) {
     let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
     window.addEventListener("pointermove", (e) => {
       tx = e.clientX;
@@ -192,23 +280,6 @@
     else avatarImg.addEventListener("load", showPhoto);
     avatarImg.addEventListener("error", () => avatarImg.remove());
   }
-
-  const toast = $("#toast");
-  let toastTimer;
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
-  }
-
-  document.addEventListener("click", (e) => {
-    const soon = e.target.closest("[data-soon]");
-    if (soon) {
-      e.preventDefault();
-      showToast("Lien bientôt disponible — projet en cours !");
-    }
-  });
 
   class Ambient {
     constructor() { this.ctx = null; this.playing = false; }
@@ -264,7 +335,6 @@
   });
 
   const NS = "portfoliosecretgaming01";
-  const fmt = (n) => n.toLocaleString("fr-FR");
   async function fetchCount(url) {
     const res = await fetch(url);
     if (!res.ok) throw new Error("counter");
@@ -366,8 +436,6 @@
     CSS: "#563d7c",
     Shell: "#89e051"
   };
-  const esc = (s) =>
-    String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
   async function loadRepos() {
     const section = $("#github");
@@ -403,7 +471,6 @@
       section.style.display = "none";
     }
   }
-  loadRepos();
 
   const form = $("#contactForm");
   form.addEventListener("submit", async (e) => {
@@ -431,75 +498,109 @@
     }
   });
 
-  const FILTERS = $$(".filter-btn");
-  const projectCards = $$("#projets .project-card");
-  const CATS = {
-    "Néon Dashboard": "web",
-    CyberShop: "web",
-    "Orbital 3D": "3d",
-    "Bot Discord SG": "bot",
-    "Pixel Arena": "game",
-    "Portfolio v1": "web"
-  };
-  const cardCat = (card) => {
-    const h = card.querySelector("h3");
-    return h ? CATS[h.textContent.trim()] || "web" : "";
-  };
-  FILTERS.forEach((btn) =>
-    btn.addEventListener("click", () => {
-      FILTERS.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      const f = btn.dataset.filter;
-      projectCards.forEach((c) => {
-        c.style.display = f === "all" || cardCat(c) === f ? "" : "none";
-      });
-    })
-  );
+  function startTyping() {
+    const typingEl = $("#typing");
+    if (!typingEl) return;
+    const words = CONTENT.typing;
+    let wI = 0, cI = 0, deleting = false;
+    (function typeLoop() {
+      const word = words[wI];
+      typingEl.textContent = word.slice(0, cI);
+      let delay = deleting ? 45 : 85;
+      if (!deleting && cI === word.length) {
+        delay = 1800;
+        deleting = true;
+      } else if (deleting && cI === 0) {
+        deleting = false;
+        wI = (wI + 1) % words.length;
+        delay = 350;
+      } else {
+        cI += deleting ? -1 : 1;
+      }
+      setTimeout(typeLoop, delay);
+    })();
+  }
 
-  const PROJECT_DATA = [
-    {
-      kicker: "Application web",
-      title: "Néon Dashboard",
-      desc: "Un tableau de bord temps réel pensé pour la performance : connexion WebSocket persistante, graphiques animés à la demande et thème néon personnalisable.",
-      feats: ["Streaming de données en temps réel", "Graphiques animés sans librairie lourde", "Thèmes et widgets réorganisables", "100 % responsive"],
-      stack: ["React", "WebSocket", "CSS"]
-    },
-    {
-      kicker: "E-commerce",
-      title: "CyberShop",
-      desc: "Boutique en ligne dark mode avec parcours d'achat complet : catalogue filtrable, panier persistant et paiement sécurisé via Stripe.",
-      feats: ["Panier persistant (localStorage)", "Paiement Stripe Checkout", "Recherche instantanée", "Optimisation mobile"],
-      stack: ["Next.js", "Stripe", "Tailwind"]
-    },
-    {
-      kicker: "Expérience 3D",
-      title: "Orbital 3D",
-      desc: "Un système planétaire interactif en WebGL : orbites calculées en temps réel, contrôles caméra fluides et rendu optimisé pour tourner à 60 fps même sur mobile.",
-      feats: ["Orbites physiques en temps réel", "Contrôles souris & tactile", "Textures génératives", "60 fps sur mobile"],
-      stack: ["Three.js", "GLSL", "Vanilla JS"]
-    },
-    {
-      kicker: "Bot & automatisation",
-      title: "Bot Discord SG",
-      desc: "Bot multifonction pour serveurs Discord : modération automatique, lecteur de musique et panel web de configuration connecté à une base de données.",
-      feats: ["Modération automatique configurable", "Lecteur musique multi-source", "Panel web admin", "Base MongoDB"],
-      stack: ["Node.js", "discord.js", "MongoDB"]
-    },
-    {
-      kicker: "Jeu navigateur",
-      title: "Pixel Arena",
-      desc: "Mini-jeu multijoueur directement dans le navigateur : salons privés, parties rapides et classement global synchronisé en temps réel.",
-      feats: ["Multijoueur via Socket.io", "Salons privés par code", "Classement global", "Rendu Canvas optimisé"],
-      stack: ["TypeScript", "Canvas", "Socket.io"]
-    },
-    {
-      kicker: "Site vitrine",
-      title: "Portfolio v1",
-      desc: "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et l'hébergement.",
-      feats: ["Première intégration responsive", "Animations au scroll", "Déploiement continu"],
-      stack: ["HTML", "CSS", "JavaScript"]
-    }
-  ];
+  function renderSkills() {
+    const list = $("#skillsList");
+    if (!list) return;
+    list.innerHTML = CONTENT.skills
+      .map(
+        (s) => `
+      <div class="skill">
+        <div class="skill-head"><span>${esc(s.name)}</span><em>${Number(s.level)}%</em></div>
+        <div class="bar"><i data-level="${Number(s.level)}"></i></div>
+      </div>`
+      )
+      .join("");
+  }
+
+  function setupSkillBars() {
+    const skillsSection = $("#presentation");
+    const barObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          $$(".bar i").forEach((bar, i) => {
+            bar.style.transitionDelay = `${i * 90}ms`;
+            bar.style.width = `${bar.dataset.level}%`;
+          });
+          barObserver.disconnect();
+        });
+      },
+      { threshold: 0.25 }
+    );
+    if (skillsSection) barObserver.observe(skillsSection);
+  }
+
+  function renderMarquee() {
+    const track = $("#marqueeTrack");
+    if (!track) return;
+    const items = CONTENT.marquee.map((m) => `<span>${esc(m)}</span><i>•</i>`).join("");
+    track.innerHTML = items + items;
+  }
+
+  function projectCard(p) {
+    const demo = p.demoUrl
+      ? `<a href="${esc(p.demoUrl)}" target="_blank" rel="noopener">Voir le projet</a>`
+      : `<a href="#" data-soon>Voir le projet</a>`;
+    const code = p.repoUrl
+      ? `<a href="${esc(p.repoUrl)}" target="_blank" rel="noopener">Code source</a>`
+      : `<a href="#" data-soon>Code source</a>`;
+    return `
+    <article class="project-card glass tilt reveal" data-cat="${esc(p.cat)}">
+      <div class="thumb ${esc(p.thumb || "p1")}"></div>
+      <div class="card-body">
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.short || "")}</p>
+        <ul class="tags">${(p.tags || []).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+        <div class="card-links">${demo}${code}</div>
+      </div>
+    </article>`;
+  }
+
+  function renderProjects() {
+    const grid = $("#projGrid");
+    if (!grid) return;
+    grid.innerHTML = CONTENT.projects.map(projectCard).join("");
+    $$("#projGrid .reveal").forEach((el) => revealObserver.observe(el));
+    if (canHover) $$("#projGrid .tilt").forEach(bindTilt);
+    $$("#projGrid .glass").forEach(bindGlass);
+  }
+
+  function setupFilters() {
+    const FILTERS = $$(".filter-btn");
+    FILTERS.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        FILTERS.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const f = btn.dataset.filter;
+        $$("#projGrid .project-card").forEach((c) => {
+          c.style.display = f === "all" || c.dataset.cat === f ? "" : "none";
+        });
+      })
+    );
+  }
 
   const backdrop = $("#modalBackdrop");
   const mKicker = $("#modalKicker");
@@ -513,11 +614,11 @@
   function openModal(data) {
     if (!backdrop) return;
     lastFocus = document.activeElement;
-    mKicker.textContent = data.kicker;
-    mTitle.textContent = data.title;
-    mDesc.textContent = data.desc;
-    mStack.innerHTML = data.stack.map((s) => `<li>${esc(s)}</li>`).join("");
-    mFeats.innerHTML = data.feats.map((f) => `<li>${esc(f)}</li>`).join("");
+    mKicker.textContent = data.kicker || "";
+    mTitle.textContent = data.title || "";
+    mDesc.textContent = data.desc || "";
+    mStack.innerHTML = (data.stack || []).map((s) => `<li>${esc(s)}</li>`).join("");
+    mFeats.innerHTML = (data.feats || []).map((f) => `<li>${esc(f)}</li>`).join("");
     backdrop.hidden = false;
     document.body.style.overflow = "hidden";
     mClose.focus();
@@ -539,24 +640,25 @@
     if (e.key === "Escape" && backdrop && !backdrop.hidden) closeModal();
   });
 
-  projectCards.forEach((card) => {
-    const t = card.querySelector("h3").textContent.trim();
-    const idx = PROJECT_DATA.findIndex((p) => p.title === t);
-    if (idx < 0) return;
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-label", `Voir les détails du projet ${t}`);
-    card.addEventListener("click", (e) => {
-      if (e.target.closest("a")) return;
-      openModal(PROJECT_DATA[idx]);
+  function setupModals() {
+    $$("#projGrid .project-card").forEach((card, i) => {
+      const p = CONTENT.projects[i];
+      if (!p) return;
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", `Voir les détails du projet ${p.title}`);
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return;
+        openModal(p);
+      });
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal(p);
+        }
+      });
     });
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openModal(PROJECT_DATA[idx]);
-      }
-    });
-  });
+  }
 
   let logoClicks = 0;
   let logoTimer;
@@ -570,8 +672,21 @@
     }
   });
 
+  (async () => {
+    await loadContent();
+    renderSkills();
+    setupSkillBars();
+    renderMarquee();
+    renderProjects();
+    setupFilters();
+    setupModals();
+    startTyping();
+  })();
+
+  loadRepos();
+
   console.log(
-    "%c SG_01 %c Portfolio v5 — curieux ? Jette un œil au code source ",
+    "%c SG_01 %c Portfolio v6 — curieux ? Jette un œil au code source ",
     "background:#00e5ff;color:#04121f;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
     "color:#00e5ff;padding:4px 8px"
   );

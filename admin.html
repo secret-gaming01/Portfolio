@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>SG_01 — Panneau Admin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071026'/%3E%3Ctext x='32' y='42' font-size='26' font-family='monospace' font-weight='bold' fill='%2300e5ff' text-anchor='middle'%3ESG%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #030610; --panel: rgba(255,255,255,.04); --line: rgba(255,255,255,.1);
+      --text: #e8eefc; --muted: #8fa3c4; --cyan: #00e5ff; --blue: #3b82f6;
+      --green: #34d399; --red: #f87171; --amber: #fbbf24;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 80% -10%, rgba(59,130,246,.12), transparent),
+        radial-gradient(800px 400px at 10% 110%, rgba(236,72,153,.08), transparent),
+        var(--bg);
+      color: var(--text); min-height: 100vh; padding-bottom: 110px;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
+    header.bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      padding: 16px 22px; border: 1px solid var(--line); border-radius: 18px;
+      background: var(--panel); backdrop-filter: blur(10px);
+      position: sticky; top: 14px; z-index: 50;
+    }
+    .logo { font-family: Consolas, monospace; font-weight: 700; font-size: 19px; letter-spacing: 1px; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--cyan); }
+    .logo small { display: block; font-size: 10px; letter-spacing: 3px; color: var(--muted); font-weight: 400; }
+    .bar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      padding: 9px 16px; border-radius: 11px; border: 1px solid var(--line);
+      background: rgba(255,255,255,.05); color: var(--text); cursor: pointer;
+      font-size: 13.5px; transition: all .2s ease; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px; font-family: inherit;
+    }
+    .btn:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-1px); }
+    .btn.primary { background: linear-gradient(135deg, var(--cyan), var(--blue)); border-color: transparent; color: #04121f; font-weight: 700; }
+    .btn.primary:hover { color: #04121f; filter: brightness(1.1); }
+    .btn.danger:hover { border-color: var(--red); color: var(--red); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+    .dot.on { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .card { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); backdrop-filter: blur(10px); padding: 26px; margin-top: 22px; }
+    h1.title { font-size: 21px; margin-bottom: 6px; }
+    p.sub { color: var(--muted); font-size: 14px; line-height: 1.55; }
+    a.link { color: var(--cyan); text-decoration: none; }
+    a.link:hover { text-decoration: underline; }
+    label.fld { display: block; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin: 16px 0 6px; }
+    input[type=text], input[type=password], input[type=url], select, textarea {
+      width: 100%; padding: 11px 13px; border-radius: 11px; border: 1px solid var(--line);
+      background: rgba(3,6,16,.6); color: var(--text); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color .2s ease;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--cyan); }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
+    textarea.mono { font-family: Consolas, monospace; font-size: 12.5px; min-height: 340px; }
+    details.help { border: 1px dashed var(--line); border-radius: 12px; padding: 14px 16px; margin-top: 16px; color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+    details.help summary { cursor: pointer; color: var(--cyan); font-weight: 600; }
+    details.help ol { padding-left: 20px; margin-top: 8px; }
+    details.help code { background: rgba(255,255,255,.07); padding: 1px 6px; border-radius: 5px; font-size: 12px; color: var(--amber); }
+    .msg { margin-top: 12px; font-size: 13.5px; border-radius: 10px; padding: 10px 14px; display: none; }
+    .msg.err { display: block; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.4); color: var(--red); }
+    .msg.ok { display: block; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.4); color: var(--green); }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
+    .tab-btn {
+      padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line);
+      background: rgba(255,255,255,.03); color: var(--muted); cursor: pointer;
+      font-size: 13.5px; transition: all .2s ease; font-family: inherit;
+    }
+    .tab-btn.active { color: #04121f; background: linear-gradient(135deg, var(--cyan), var(--blue)); border-color: transparent; font-weight: 700; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .row { display: grid; grid-template-columns: 1fr 150px 64px auto auto; gap: 10px; align-items: center; margin-bottom: 10px; }
+    .row .pct { text-align: right; color: var(--cyan); font-weight: 700; font-size: 15px; min-width: 48px; }
+    input[type=range] { accent-color: var(--cyan); width: 100%; }
+    .icon-btn {
+      min-width: 36px; height: 36px; display: inline-grid; place-items: center;
+      border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.04);
+      color: var(--muted); cursor: pointer; font-size: 15px; transition: all .2s ease;
+    }
+    .icon-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+    .icon-btn.del:hover { color: var(--red); border-color: var(--red); }
+    details.proj { border: 1px solid var(--line); border-radius: 14px; background: rgba(3,6,16,.45); margin-bottom: 12px; overflow: hidden; }
+    details.proj > summary { padding: 14px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-weight: 600; list-style: none; }
+    details.proj > summary::-webkit-details-marker { display: none; }
+    details.proj > summary .cat-tag { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0,229,255,.35); padding: 3px 10px; border-radius: 999px; flex: none; }
+    details.proj .inner { padding: 4px 18px 20px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+    @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr 90px 50px auto auto; } }
+    .proj-tools { display: flex; gap: 8px; }
+    .save-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      backdrop-filter: blur(14px); background: rgba(3,6,16,.82);
+      border-top: 1px solid var(--line); padding: 14px 20px;
+    }
+    .save-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; }
+    .save-status { font-size: 13px; color: var(--muted); }
+    .save-status b { color: var(--amber); }
+    .save-status.ok b { color: var(--green); }
+    .hidden { display: none !important; }
+    .spin { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.25); border-top-color: var(--cyan); border-radius: 50%; animation: sp .7s linear infinite; vertical-align: -3px; margin-right: 6px; }
+    @keyframes sp { to { transform: rotate(360deg); } }
+    .meta-line { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="bar">
+      <a href="./" class="logo">SG<span>_01</span> <small>PANNEAU ADMIN</small></a>
+      <div class="bar-actions">
+        <span class="pill"><span class="dot" id="statusDot"></span><span id="statusTxt">Non connecté</span></span>
+        <button type="button" class="btn hidden" id="reloadBtn">↻ Recharger</button>
+        <a href="./" target="_blank" rel="noopener" class="btn hidden" id="siteLink">Voir le site ↗</a>
+        <button type="button" class="btn danger hidden" id="logoutBtn">Déconnexion</button>
+      </div>
+    </header>
+
+    <section class="card" id="loginView">
+      <h1 class="title">🔐 Connexion</h1>
+      <p class="sub">Ce panneau modifie directement le fichier <code style="color:var(--amber)">data/content.json</code> de ton repo GitHub. Il te faut un <b>token GitHub</b> (une seule fois).</p>
+
+      <details class="help" open>
+        <summary>📋 Comment créer mon token (2 minutes)</summary>
+        <ol>
+          <li>Va sur <a class="link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Settings → Developer settings → Fine-grained tokens → Generate new token</a></li>
+          <li>Nom : <code>portfolio-admin</code> — Expiration : 90 jours</li>
+          <li><b>Repository access</b> : « Only select repositories » → choisis <code>secret-gaming01/portfolio</code></li>
+          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <code>Read and write</code></li>
+          <li>« Generate token », copie le code (<code>github_pat_...</code>) et colle-le ci-dessous.</li>
+        </ol>
+        <p style="margin-top:8px">⚠️ Le token reste uniquement dans TON navigateur. Ne le partage jamais.</p>
+      </details>
+
+      <label class="fld" for="tokInput">Token GitHub</label>
+      <input type="password" id="tokInput" placeholder="github_pat_..." autocomplete="off" />
+      <div style="margin-top:16px"><button type="button" class="btn primary" id="loginBtn">Se connecter</button></div>
+      <div class="msg" id="loginMsg"></div>
+    </section>
+
+    <section id="panelView" class="hidden">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab-btn active" data-tab="skills">📊 Compétences</button>
+        <button type="button" class="tab-btn" data-tab="hero">✨ Hero &amp; Marquee</button>
+        <button type="button" class="tab-btn" data-tab="projects">🗂️ Projets</button>
+        <button type="button" class="tab-btn" data-tab="json">{ } JSON brut</button>
+      </div>
+
+      <section class="card tab-pane active" id="tab-skills">
+        <h1 class="title">Compétences</h1>
+        <p class="sub">Nom + niveau en %. Les barres du site s'animent jusqu'à cette valeur.</p>
+        <div id="skillsList"></div>
+        <button type="button" class="btn" id="addSkill">+ Ajouter une compétence</button>
+      </section>
+
+      <section class="card tab-pane" id="tab-hero">
+        <h1 class="title">Hero &amp; Marquee</h1>
+        <label class="fld">Phrases du typing (une par ligne)</label>
+        <textarea id="typingArea" rows="5"></textarea>
+        <label class="fld">Bandeau défilant (un élément par ligne)</label>
+        <textarea id="marqueeArea" rows="5"></textarea>
+      </section>
+
+      <section class="card tab-pane" id="tab-projects">
+        <h1 class="title">Projets</h1>
+        <p class="sub">Chaque projet = une carte + sa fiche modale sur le site. « thumb » = visuel p1 à p6. URLs vides = liens « bientôt disponible ».</p>
+        <div id="projList"></div>
+        <button type="button" class="btn" id="addProj">+ Ajouter un projet</button>
+      </section>
+
+      <section class="card tab-pane" id="tab-json">
+        <h1 class="title">JSON brut</h1>
+        <p class="sub">Édition avancée directe. « Valider » vérifie la syntaxe avant sauvegarde.</p>
+        <textarea id="jsonArea" class="mono" spellcheck="false"></textarea>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <button type="button" class="btn" id="validateJson">✔ Valider le JSON</button>
+          <button type="button" class="btn" id="applyFromForm">⟳ Régénérer depuis les formulaires</button>
+        </div>
+        <div class="msg" id="jsonMsg"></div>
+      </section>
+
+      <p class="meta-line" id="commitInfo"></p>
+    </section>
+  </div>
+
+  <div class="save-bar hidden" id="saveBar">
+    <div class="save-inner">
+      <span class="save-status" id="saveStatus">● Modifications non enregistrées</span>
+      <button type="button" class="btn primary" id="saveBtn">💾 Enregistrer sur GitHub</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+
+  const REPO_API = "https://api.github.com/repos/secret-gaming01/portfolio";
+  const FILE_PATH = "data/content.json";
+  const TOK_KEY = "sg_admin_tok";
+  let TOKEN = localStorage.getItem(TOK_KEY) || "";
+  let SHA = null;
+  let S = null;
+  let dirty = false;
+
+  const b64enc = (str) => {
+    const bytes = new TextEncoder().encode(str);
+    let bin = "";
+    bytes.forEach((b) => (bin += String.fromCharCode(b)));
+    return btoa(bin);
+  };
+  const b64dec = (b64) => {
+    const bin = atob(b64.replace(/\s/g, ""));
+    return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
+  };
+  const escHtml = (s) =>
+    String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+  async function gh(path, opts = {}) {
+    return fetch(REPO_API + path, {
+      ...opts,
+      headers: {
+        Authorization: "Bearer " + TOKEN,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        ...(opts.body ? { "Content-Type": "application/json" } : {}),
+        ...(opts.headers || {})
+      }
+    });
+  }
+
+  function setMsg(el, cls, txt) { el.className = "msg " + cls; el.textContent = txt; }
+
+  function setStatus(loggedIn, who) {
+    $("#statusDot").classList.toggle("on", loggedIn);
+    $("#statusTxt").textContent = loggedIn ? who || "Connecté" : "Non connecté";
+    ["#reloadBtn", "#siteLink", "#logoutBtn"].forEach((id) => $(id).classList.toggle("hidden", !loggedIn));
+  }
+
+  function markDirty() {
+    if (dirty) return;
+    dirty = true;
+    $("#saveStatus").classList.remove("ok");
+    $("#saveStatus").innerHTML = "<b>●</b> Modifications non enregistrées";
+  }
+  function markSaved() {
+    dirty = false;
+    $("#saveStatus").classList.add("ok");
+    $("#saveStatus").innerHTML = "<b>✓</b> Publié ! Le site se met à jour dans 1–2 min.";
+  }
+  window.addEventListener("beforeunload", (e) => { if (dirty) e.preventDefault(); });
+
+  /* ---------- LOGIN ---------- */
+  async function tryLogin(tok) {
+    const saved = TOKEN;
+    TOKEN = tok;
+    try {
+      const res = await gh("");
+      if (res.status === 401) throw new Error("Token invalide ou expiré.");
+      if (!res.ok) throw new Error("Erreur GitHub (" + res.status + ").");
+      const repo = await res.json();
+      if (!repo.permissions || !repo.permissions.push)
+        throw new Error("Le token n'a pas le droit d'écrire (permission Contents manquante).");
+      localStorage.setItem(TOK_KEY, tok);
+      setStatus(true, "Admin ✓");
+      $("#loginView").classList.add("hidden");
+      $("#panelView").classList.remove("hidden");
+      $("#saveBar").classList.remove("hidden");
+      await loadFile();
+      loadLastCommit();
+      return true;
+    } catch (e) {
+      TOKEN = saved;
+      setMsg($("#loginMsg"), "err", "❌ " + e.message);
+      return false;
+    }
+  }
+
+  $("#loginBtn").addEventListener("click", () => {
+    const tok = $("#tokInput").value.trim();
+    if (!tok) return setMsg($("#loginMsg"), "err", "Colle ton token d'abord.");
+    const b = $("#loginBtn");
+    b.disabled = true; b.textContent = "Vérification...";
+    tryLogin(tok).finally(() => { b.disabled = false; b.textContent = "Se connecter"; });
+  });
+  $("#tokInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#loginBtn").click(); });
+
+  $("#logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem(TOK_KEY);
+    location.reload();
+  });
+
+  /* ---------- LOAD / SAVE ---------- */
+  async function loadFile() {
+    const res = await gh("/contents/" + FILE_PATH);
+    if (!res.ok) throw new Error("Impossible de charger content.json (" + res.status + ")");
+    const json = await res.json();
+    SHA = json.sha;
+    S = JSON.parse(b64dec(json.content));
+    hydrateForms();
+    syncJsonArea();
+  }
+
+  $("#reloadBtn").addEventListener("click", async () => {
+    if (dirty && !confirm("Modifications non enregistrées — recharger et perdre les changements ?")) return;
+    try { await loadFile(); alert("Rechargé depuis GitHub ✓"); }
+    catch (e) { alert("Erreur : " + e.message); }
+  });
+
+  async function loadLastCommit() {
+    try {
+      const res = await gh("/commits?path=" + FILE_PATH + "&per_page=1");
+      if (!res.ok) return;
+      const [c] = await res.json();
+      if (c) $("#commitInfo").textContent =
+        "Dernière publication : " + new Date(c.commit.author.date).toLocaleString("fr-FR") + " — « " + c.commit.message + " »";
+    } catch {}
+  }
+
+  $("#saveBtn").addEventListener("click", async () => {
+    collectTextareas();
+    const body = JSON.stringify(S, null, 2);
+    const btn = $("#saveBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span>Publication...';
+    const putBody = () => JSON.stringify({
+      message: "Mise à jour du contenu via panneau admin",
+      content: b64enc(body),
+      sha: SHA
+    });
+    try {
+      let res = await gh("/contents/" + FILE_PATH, { method: "PUT", body: putBody() });
+      if (res.status === 409) {
+        const fresh = await gh("/contents/" + FILE_PATH);
+        SHA = (await fresh.json()).sha;
+        res = await gh("/contents/" + FILE_PATH, { method: "PUT", body: putBody() });
+      }
+      if (!res.ok) throw new Error("GitHub a refusé (" + res.status + ")");
+      const data = await res.json();
+      SHA = data.content.sha;
+      markSaved();
+      loadLastCommit();
+    } catch (e) {
+      alert("❌ Échec de l'enregistrement : " + e.message);
+      markDirty();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "💾 Enregistrer sur GitHub";
+    }
+  });
+
+  /* ---------- TABS ---------- */
+  $$(".tab-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      $$(".tab-btn").forEach((b) => b.classList.remove("active"));
+      $$(".tab-pane").forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      $("#tab-" + btn.dataset.tab).classList.add("active");
+    })
+  );
+
+  /* ---------- SKILLS ---------- */
+  function skillRow(sk) {
+    const div = document.createElement("div");
+    div.className = "row";
+    div.innerHTML =
+      '<input type="text" class="sk-name" />' +
+      '<input type="range" min="0" max="100" class="sk-lvl" />' +
+      '<span class="pct"></span>' +
+      '<button type="button" class="icon-btn up" title="Monter">↑</button>' +
+      '<button type="button" class="icon-btn del" title="Supprimer">✕</button>';
+    const nameI = div.querySelector(".sk-name");
+    const lvlI = div.querySelector(".sk-lvl");
+    const pct = div.querySelector(".pct");
+    nameI.value = sk.name;
+    lvlI.value = sk.level;
+    pct.textContent = sk.level + "%";
+    nameI.addEventListener("input", () => { sk.name = nameI.value; markDirty(); });
+    lvlI.addEventListener("input", () => { sk.level = Number(lvlI.value); pct.textContent = sk.level + "%"; markDirty(); });
+    div.querySelector(".del").addEventListener("click", () => {
+      S.skills.splice(S.skills.indexOf(sk), 1);
+      div.remove(); markDirty();
+    });
+    div.querySelector(".up").addEventListener("click", () => {
+      const i = S.skills.indexOf(sk);
+      if (i > 0) {
+        [S.skills[i - 1], S.skills[i]] = [S.skills[i], S.skills[i - 1]];
+        renderSkills(); markDirty();
+      }
+    });
+    return div;
+  }
+  function renderSkills() {
+    const list = $("#skillsList");
+    list.innerHTML = "";
+    S.skills.forEach((sk) => list.appendChild(skillRow(sk)));
+  }
+  $("#addSkill").addEventListener("click", () => {
+    const sk = { name: "Nouvelle compétence", level: 50 };
+    S.skills.push(sk);
+    $("#skillsList").appendChild(skillRow(sk));
+    markDirty();
+  });
+
+  /* ---------- HERO / MARQUEE ---------- */
+  $("#typingArea").addEventListener("input", (e) => {
+    S.typing = e.target.value.split("\n").map((l) => l.trim()).filter(Boolean);
+    markDirty();
+  });
+  $("#marqueeArea").addEventListener("input", (e) => {
+    S.marquee = e.target.value.split("\n").map((l) => l.trim()).filter(Boolean);
+    markDirty();
+  });
+  function collectTextareas() {}
+
+  /* ---------- PROJECTS ---------- */
+  const CATS = [
+    ["web", "Web"], ["3d", "3D"], ["bot", "Bot"], ["game", "Jeu"]
+  ];
+  function projField(labelTxt, value, attr, onInput, isArea) {
+    const wrap = document.createElement("div");
+    const lab = document.createElement("label");
+    lab.className = "fld"; lab.textContent = labelTxt;
+    let inp;
+    if (isArea) {
+      inp = document.createElement("textarea"); inp.rows = attr.rows || 3;
+    } else {
+      inp = document.createElement("input"); inp.type = "text";
+    }
+    if (attr.placeholder) inp.placeholder = attr.placeholder;
+    inp.value = value ?? "";
+    inp.addEventListener("input", () => { onInput(inp.value); markDirty(); });
+    wrap.appendChild(lab); wrap.appendChild(inp);
+    return wrap;
+  }
+  function projCard(p, idx) {
+    const det = document.createElement("details");
+    det.className = "proj";
+    const sum = document.createElement("summary");
+    sum.innerHTML = "<span class='p-title'>" + escHtml(p.title || "(sans titre)") + "</span><span class='cat-tag'>" + escHtml(p.cat) + "</span>";
+    det.appendChild(sum);
+
+    const inner = document.createElement("div");
+    inner.className = "inner";
+
+    const g1 = document.createElement("div"); g1.className = "grid2";
+    g1.appendChild(projField("Titre", p.title, {}, (v) => {
+      p.title = v;
+      sum.querySelector(".p-title").textContent = v || "(sans titre)";
+    }));
+    const catWrap = document.createElement("div");
+    catWrap.innerHTML = "<label class='fld'>Catégorie</label>";
+    const sel = document.createElement("select");
+    CATS.forEach(([v, l]) => {
+      const o = document.createElement("option");
+      o.value = v; o.textContent = l;
+      if (p.cat === v) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", () => { p.cat = sel.value; sum.querySelector(".cat-tag").textContent = sel.value; markDirty(); });
+    catWrap.appendChild(sel);
+    g1.appendChild(catWrap);
+    inner.appendChild(g1);
+
+    const g2 = document.createElement("div"); g2.className = "grid2";
+    g2.appendChild(projField("Visuel (p1…p6)", p.thumb, { placeholder: "p1" }, (v) => (p.thumb = v)));
+    g2.appendChild(projField("Kicker (petit titre)", p.kicker, { placeholder: "Application web" }, (v) => (p.kicker = v)));
+    inner.appendChild(g2);
+
+    inner.appendChild(projField("Description courte (carte)", p.short, { rows: 2 }, (v) => (p.short = v), true));
+    inner.appendChild(projField("Description longue (modale)", p.desc, { rows: 3 }, (v) => (p.desc = v), true));
+    inner.appendChild(projField("Tags de la carte (séparés par des virgules)", (p.tags || []).join(", "), {}, (v) => (p.tags = v.split(",").map((x) => x.trim()).filter(Boolean))));
+    inner.appendChild(projField("Stack de la modale (virgules)", (p.stack || []).join(", "), {}, (v) => (p.stack = v.split(",").map((x) => x.trim()).filter(Boolean))));
+    inner.appendChild(projField("Fonctionnalités (une par ligne)", (p.feats || []).join("\n"), { rows: 4 }, (v) => (p.feats = v.split("\n").map((x) => x.trim()).filter(Boolean)), true));
+
+    const g3 = document.createElement("div"); g3.className = "grid2";
+    g3.appendChild(projField("URL démo (vide = bientôt)", p.demoUrl, { placeholder: "https://..." }, (v) => (p.demoUrl = v)));
+    g3.appendChild(projField("URL code source (vide = bientôt)", p.repoUrl, { placeholder: "https://github.com/..." }, (v) => (p.repoUrl = v)));
+    inner.appendChild(g3);
+
+    const tools = document.createElement("div");
+    tools.className = "proj-tools";
+    tools.style.marginTop = "14px";
+    ["↑ Monter", "↓ Descendre", "✕ Supprimer"].forEach((lbl, k) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn" + (k === 2 ? " danger" : ""); b.textContent = lbl;
+      b.addEventListener("click", () => {
+        if (k === 0 && idx > 0) { [S.projects[idx - 1], S.projects[idx]] = [S.projects[idx], S.projects[idx - 1]]; }
+        else if (k === 1 && idx < S.projects.length - 1) { [S.projects[idx + 1], S.projects[idx]] = [S.projects[idx], S.projects[idx + 1]]; }
+        else if (k === 2) {
+          if (!confirm("Supprimer le projet « " + p.title + " » ?")) return;
+          S.projects.splice(idx, 1);
+        }
+        renderProjects(); markDirty();
+      });
+      tools.appendChild(b);
+    });
+    inner.appendChild(tools);
+
+    det.appendChild(inner);
+    return det;
+  }
+  function renderProjects() {
+    const list = $("#projList");
+    list.innerHTML = "";
+    S.projects.forEach((p, i) => list.appendChild(projCard(p, i)));
+  }
+  $("#addProj").addEventListener("click", () => {
+    S.projects.push({
+      title: "Nouveau projet", cat: "web", thumb: "p1", kicker: "Projet",
+      tags: [], short: "", desc: "", feats: [], stack: [], demoUrl: "", repoUrl: ""
+    });
+    renderProjects(); markDirty();
+    const last = $("#projList").lastElementChild;
+    if (last) last.open = true;
+  });
+
+  /* ---------- JSON BRUT ---------- */
+  function syncJsonArea() {
+    $("#jsonArea").value = JSON.stringify(S, null, 2);
+    return true;
+  }
+  $("#validateJson").addEventListener("click", () => {
+    try {
+      S = JSON.parse($("#jsonArea").value);
+      hydrateForms();
+      setMsg($("#jsonMsg"), "ok", "✓ JSON valide — formulaires synchronisés.");
+    } catch (e) {
+      setMsg($("#jsonMsg"), "err", "❌ JSON invalide : " + e.message);
+    }
+  });
+  $("#applyFromForm").addEventListener("click", () => {
+    collectTextareas();
+    syncJsonArea();
+    setMsg($("#jsonMsg"), "ok", "✓ JSON régénéré depuis les formulaires.");
+  });
+
+  /* ---------- HYDRATE ---------- */
+  function hydrateForms() {
+    renderSkills();
+    $("#typingArea").value = (S.typing || []).join("\n");
+    $("#marqueeArea").value = (S.marquee || []).join("\n");
+    renderProjects();
+    syncJsonArea();
+  }
+
+  /* ---------- BOOT : auto-login si token mémorisé ---------- */
+  (async () => {
+    if (!TOKEN) return;
+    const ok = await tryLogin(TOKEN);
+    if (!ok) {
+      localStorage.removeItem(TOK_KEY);
+      setStatus(false);
+    }
+  })();
+})();
+</script>
+</body>
+</html>
