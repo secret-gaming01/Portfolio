@@ -200,6 +200,7 @@
 (() => {
   "use strict";
   const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   const REPO_API = "https://api.github.com/repos/secret-gaming01/portfolio";
   const FILE_PATH = "data/content.json";
@@ -347,7 +348,10 @@
       markSaved();
       loadLastCommit();
     } catch (e) {
-      alert("❌ Échec de l'enregistrement : " + e.message);
+      let hint = e.message;
+      if (/401/.test(hint)) hint += " → Token expiré ou révoqué, recrée-en un.";
+      else if (/403|422/.test(hint)) hint += " → Vérifie que le token a bien Contents: Read and write sur secret-gaming01/portfolio.";
+      alert("❌ Échec de l'enregistrement : " + hint);
       markDirty();
     } finally {
       btn.disabled = false;
