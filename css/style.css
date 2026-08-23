@@ -1,5 +1,5 @@
 :root {
-  --bg: #04070f;
+  --bg: #030610;
   --bg2: #081226;
   --card: rgba(13, 27, 54, 0.55);
   --line: rgba(88, 166, 255, 0.16);
@@ -8,6 +8,7 @@
   --cyan: #00e5ff;
   --blue: #3b82f6;
   --violet: #7c3aed;
+  --pink: #ec4899;
   --radius: 18px;
 }
 
@@ -21,13 +22,27 @@ html {
 body {
   font-family: "Space Grotesk", system-ui, sans-serif;
   background:
-    radial-gradient(1100px 700px at 80% -10%, rgba(59, 130, 246, 0.14), transparent 60%),
-    radial-gradient(900px 600px at -10% 40%, rgba(0, 229, 255, 0.08), transparent 60%),
-    radial-gradient(800px 800px at 110% 90%, rgba(124, 58, 237, 0.10), transparent 60%),
+    radial-gradient(1100px 700px at 80% -10%, rgba(59, 130, 246, 0.18), transparent 60%),
+    radial-gradient(900px 600px at -10% 40%, rgba(0, 229, 255, 0.11), transparent 60%),
+    radial-gradient(800px 800px at 110% 90%, rgba(124, 58, 237, 0.15), transparent 62%),
     var(--bg);
   color: var(--text);
   overflow-x: hidden;
   line-height: 1.6;
+}
+
+html::before {
+  content: "";
+  position: fixed;
+  z-index: -2;
+  left: 32%;
+  top: 32%;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.07), rgba(59, 130, 246, 0.10) 45%, transparent 68%);
+  animation: driftCenter 40s ease-in-out infinite alternate;
 }
 
 body::before,
@@ -43,17 +58,18 @@ body::after {
 body::before {
   top: -22vmax;
   right: -12vmax;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.14), rgba(59, 130, 246, 0.08) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.18), rgba(59, 130, 246, 0.11) 45%, transparent 66%);
   animation: drift1 26s ease-in-out infinite alternate;
 }
 body::after {
   bottom: -26vmax;
   left: -16vmax;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.09), rgba(124, 58, 237, 0.13) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.13), rgba(124, 58, 237, 0.17) 50%, transparent 68%);
   animation: drift2 34s ease-in-out infinite alternate;
 }
 @keyframes drift1 { to { transform: translate(-9vmax, 7vmax) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(10vmax, -8vmax) scale(1.1); } }
+@keyframes driftCenter { to { transform: translate(-6vmax, -8vmax) scale(1.12); } }
 
 #bg3d {
   position: fixed;
@@ -90,11 +106,12 @@ img { max-width: 100%; display: block; }
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet), var(--cyan));
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet), var(--pink), var(--cyan));
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 0 16px rgba(0, 200, 255, 0.28));
   animation: gradientShift 6s linear infinite;
 }
 
@@ -114,14 +131,28 @@ img { max-width: 100%; display: block; }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--cyan), var(--blue) 55%, var(--violet));
   color: #04121f;
-  box-shadow: 0 8px 28px rgba(0, 200, 255, 0.28);
+  box-shadow: 0 8px 28px rgba(0, 180, 255, 0.30);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
 }
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 38px rgba(0, 210, 255, 0.42);
+  box-shadow: 0 14px 38px rgba(90, 90, 255, 0.45);
 }
+.btn-primary:hover::after { left: 135%; }
 
 .btn-ghost {
   border-color: var(--line);
@@ -197,7 +228,7 @@ img { max-width: 100%; display: block; }
   color: var(--text);
   letter-spacing: 1px;
 }
-.logo span { color: var(--cyan); }
+.logo span { color: var(--cyan); text-shadow: 0 0 14px rgba(0, 229, 255, 0.55); }
 .nav-links {
   display: flex;
   gap: 6px;
@@ -329,8 +360,11 @@ img { max-width: 100%; display: block; }
   display: block;
   font-family: "Orbitron", sans-serif;
   font-size: 26px;
-  color: var(--cyan);
-  text-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+  background: linear-gradient(90deg, var(--cyan), #7dd3fc 45%, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px rgba(0, 200, 255, 0.3));
 }
 .hero-stats span {
   font-size: 12px;
@@ -367,6 +401,16 @@ img { max-width: 100%; display: block; }
   color: var(--cyan);
   margin-right: 12px;
   text-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.45);
 }
 .section-sub {
   color: var(--muted);
@@ -406,9 +450,24 @@ img { max-width: 100%; display: block; }
 .about-facts li:last-child { border-bottom: none; }
 .about-facts strong { color: var(--text); }
 
-.avatar-wrap { position: relative; display: inline-block; margin-bottom: 20px; }
+.avatar-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.avatar-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--cyan), var(--blue), var(--violet), var(--pink), var(--cyan));
+  opacity: 0.55;
+  filter: blur(5px);
+  animation: spin 7s linear infinite;
+}
 .avatar {
   position: relative;
+  z-index: 1;
   width: 128px; height: 128px;
   border-radius: 50%;
   display: grid;
@@ -483,12 +542,25 @@ img { max-width: 100%; display: block; }
 }
 .bar i {
   display: block;
+  position: relative;
   height: 100%;
   width: 0;
   border-radius: 99px;
   background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
   box-shadow: 0 0 12px rgba(0, 200, 255, 0.5);
   transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bar i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px var(--cyan), 0 0 4px #fff;
 }
 
 .tech-row {
@@ -511,6 +583,7 @@ img { max-width: 100%; display: block; }
   color: var(--cyan);
   border-color: var(--cyan);
   transform: translateY(-3px);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
   box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15);
 }
 
@@ -520,21 +593,41 @@ img { max-width: 100%; display: block; }
   gap: 26px;
 }
 .project-card {
+  position: relative;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.project-card:hover::before { opacity: 1; }
 .project-card:hover {
   border-color: rgba(0, 229, 255, 0.45);
-  box-shadow: 0 18px 44px rgba(0, 140, 255, 0.18);
+  box-shadow: 0 18px 44px rgba(80, 120, 255, 0.22);
 }
 .thumb {
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, filter 0.5s ease;
 }
-.project-card:hover .thumb { transform: scale(1.06); }
+.thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.09), transparent 42%);
+}
+.project-card:hover .thumb { transform: scale(1.06); filter: saturate(1.25) brightness(1.08); }
 .thumb::after {
   content: "";
   position: absolute;
@@ -644,10 +737,15 @@ img { max-width: 100%; display: block; }
   display: grid;
   gap: 16px;
 }
-.info-card { padding: 20px 24px; transition: all 0.25s ease; }
+.info-card {
+  padding: 20px 24px;
+  border-left: 2px solid rgba(0, 229, 255, 0.35);
+  transition: all 0.25s ease;
+}
 .info-card:hover {
   border-color: rgba(0, 229, 255, 0.4);
   transform: translateX(6px);
+  box-shadow: -4px 0 20px -8px rgba(0, 229, 255, 0.45);
 }
 .info-card h4 {
   font-size: 12.5px;
@@ -746,6 +844,7 @@ img { max-width: 100%; display: block; }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes scrollDot {
   0% { opacity: 0; top: 7px; }
   30% { opacity: 1; }
