@@ -282,167 +282,53 @@
     avatarImg.addEventListener("error", () => avatarImg.remove());
   }
 
-  class Ambient {
-    constructor() {
-      this.ctx = null;
-      this.playing = false;
-      this.timer = null;
-      this.step = 0;
-      this.nextT = 0;
-    }
-    init() {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) throw new Error("Web Audio non supporté");
-      const c = (this.ctx = new AC());
+  // Musique de fond : "Wallpaper" par Kevin MacLeod (incompetech.com), CC BY 4.0
+  const music = new Audio("assets/music.mp3");
+  music.loop = true;
+  music.preload = "none";
+  music.volume = 0;
+  let musicOn = false;
+  let fadeTimer = null;
 
-      this.master = c.createGain();
-      this.master.gain.value = 0;
-      const comp = c.createDynamicsCompressor();
-      comp.threshold.value = -20;
-      comp.knee.value = 18;
-      comp.ratio.value = 5;
-      comp.attack.value = 0.01;
-      comp.release.value = 0.3;
-      this.master.connect(comp);
-      comp.connect(c.destination);
-
-      const lp = c.createBiquadFilter();
-      lp.type = "lowpass";
-      lp.frequency.value = 1600;
-      lp.Q.value = 0.4;
-      lp.connect(this.master);
-
-      const conv = c.createConvolver();
-      conv.buffer = this.makeImpulse(c, 4, 2.6);
-      const wet = c.createGain();
-      wet.gain.value = 0.75;
-      const dry = c.createGain();
-      dry.gain.value = 0.6;
-      lp.connect(dry);
-      dry.connect(this.master);
-      lp.connect(conv);
-      conv.connect(wet);
-      wet.connect(this.master);
-
-      const lfo = c.createOscillator();
-      lfo.frequency.value = 0.05;
-      const lg = c.createGain();
-      lg.gain.value = 480;
-      lfo.connect(lg);
-      lg.connect(lp.frequency);
-      lfo.start();
-
-      const ns = c.createBufferSource();
-      ns.buffer = this.noiseBuffer(c, 2);
-      ns.loop = true;
-      const nf = c.createBiquadFilter();
-      nf.type = "bandpass";
-      nf.frequency.value = 320;
-      nf.Q.value = 0.5;
-      const ng = c.createGain();
-      ng.gain.value = 0.035;
-      ns.connect(nf);
-      nf.connect(ng);
-      ng.connect(this.master);
-      ns.start();
-
-      this.chords = [
-        [110, 164.81, 220, 246.94, 329.63],
-        [87.31, 130.81, 174.61, 220, 261.63],
-        [130.81, 196, 261.63, 293.66, 329.63],
-        [98, 146.83, 196, 220, 293.66]
-      ];
-    }
-    makeImpulse(c, sec, decay) {
-      const rate = c.sampleRate;
-      const len = Math.floor(rate * sec);
-      const imp = c.createBuffer(2, len, rate);
-      for (let ch = 0; ch < 2; ch++) {
-        const d = imp.getChannelData(ch);
-        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+  function fadeTo(target) {
+    clearInterval(fadeTimer);
+    fadeTimer = setInterval(() => {
+      const v = music.volume;
+      const nv = target > v ? Math.min(target, v + 0.04) : Math.max(target, v - 0.05);
+      music.volume = nv;
+      if (nv === target) {
+        clearInterval(fadeTimer);
+        if (target === 0) music.pause();
       }
-      return imp;
-    }
-    noiseBuffer(c, sec) {
-      const rate = c.sampleRate;
-      const len = rate * sec;
-      const buf = c.createBuffer(1, len, rate);
-      const d = buf.getChannelData(0);
-      let last = 0;
-      for (let i = 0; i < len; i++) {
-        const w = Math.random() * 2 - 1;
-        last = (last + 0.02 * w) / 1.02;
-        d[i] = last * 3.5;
-      }
-      return buf;
-    }
-    voice(freq, t0, dur) {
-      const c = this.ctx;
-      const g = c.createGain();
-      g.gain.setValueAtTime(0, t0);
-      g.gain.linearRampToValueAtTime(0.07, t0 + 3);
-      g.gain.setValueAtTime(0.07, t0 + dur - 4);
-      g.gain.linearRampToValueAtTime(0, t0 + dur);
-      g.connect(this.lp);
-      [-6, 5].forEach((det) => {
-        const o = c.createOscillator();
-        o.type = "triangle";
-        o.frequency.value = freq;
-        o.detune.value = det;
-        o.connect(g);
-        o.start(t0);
-        o.stop(t0 + dur + 0.1);
-      });
-    }
-    scheduleNext() {
-      const dur = 12;
-      const t = Math.max(this.ctx.currentTime + 0.1, this.nextT || this.ctx.currentTime + 0.15);
-      const chord = this.chords[this.step % this.chords.length];
-      this.step++;
-      chord.forEach((f) => this.voice(f, t, dur));
-      this.nextT = t + dur - 4;
-      const waitMs = Math.max(80, (this.nextT - this.ctx.currentTime) * 1000 - 250);
-      this.timer = setTimeout(() => {
-        if (this.playing) this.scheduleNext();
-      }, waitMs);
-    }
-    async toggle() {
-      try {
-        if (!this.ctx) this.init();
-        await this.ctx.resume();
-        const t = this.ctx.currentTime;
-        if (!this.playing) {
-          this.playing = true;
-          this.nextT = 0;
-          this.scheduleNext();
-          this.master.gain.cancelScheduledValues(t);
-          this.master.gain.setTargetAtTime(0.42, t, 0.8);
-        } else {
-          this.playing = false;
-          clearTimeout(this.timer);
-          this.master.gain.cancelScheduledValues(t);
-          this.master.gain.setTargetAtTime(0, t, 0.4);
-        }
-        return this.playing;
-      } catch {
-        showToast("Audio non disponible sur ce navigateur");
-        return false;
-      }
-    }
+    }, 40);
   }
-  const ambient = new Ambient();
+
   const audioBtn = $("#audioToggle");
   audioBtn.addEventListener("click", async () => {
-    const on = await ambient.toggle();
-    audioBtn.classList.toggle("on", on);
-    audioBtn.setAttribute("aria-pressed", String(on));
-    audioBtn.setAttribute("aria-label", on ? "Couper le son ambiant" : "Activer le son ambiant");
-    showToast(on ? "Son ambiant activé" : "Son ambiant coupé");
+    if (!musicOn) {
+      try {
+        await music.play();
+      } catch {
+        showToast("Lecture impossible — réessaie ou change de navigateur");
+        return;
+      }
+      musicOn = true;
+      fadeTo(0.45);
+    } else {
+      musicOn = false;
+      fadeTo(0);
+    }
+    audioBtn.classList.toggle("on", musicOn);
+    audioBtn.setAttribute("aria-pressed", String(musicOn));
+    audioBtn.setAttribute("aria-label", musicOn ? "Couper la musique" : "Activer la musique");
+    showToast(musicOn ? "Musique activée" : "Musique coupée");
   });
   document.addEventListener("visibilitychange", () => {
-    if (!ambient.ctx) return;
-    if (document.hidden && ambient.playing) ambient.ctx.suspend();
-    else if (!document.hidden && ambient.playing) ambient.ctx.resume();
+    if (document.hidden) {
+      if (musicOn) music.pause();
+    } else if (musicOn) {
+      music.play().catch(() => {});
+    }
   });
 
   const NS = "portfoliosecretgaming01";

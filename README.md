@@ -58,6 +58,10 @@ Le site applique les changements dès la publication (délai GitHub Pages : 1 à
 
 HTML5 · CSS3 · JavaScript vanilla · Three.js · GitHub Pages
 
+## Crédits
+
+- Musique de fond : « Wallpaper » — Kevin MacLeod ([incompetech.com](https://incompetech.com)), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ## Déploiement
 
 Automatique : chaque push sur `main` est publié par GitHub Pages.
