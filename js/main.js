@@ -285,10 +285,16 @@
   // Musique de fond : "Wallpaper" par Kevin MacLeod (incompetech.com), CC BY 4.0
   const music = new Audio("assets/music.mp3");
   music.loop = true;
-  music.preload = "none";
+  music.preload = "auto";
   music.volume = 0;
   let musicOn = false;
   let fadeTimer = null;
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      try { music.load(); } catch {}
+    }, 2500);
+  });
 
   function fadeTo(target) {
     clearInterval(fadeTimer);
