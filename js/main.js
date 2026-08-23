@@ -285,23 +285,28 @@
     constructor() { this.ctx = null; this.playing = false; }
     init() {
       const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) throw new Error("Web Audio non supporté");
       this.ctx = new AC();
       const c = this.ctx;
       this.master = c.createGain();
       this.master.gain.value = 0;
-      this.master.connect(c.destination);
+      const comp = c.createDynamicsCompressor();
+      comp.threshold.value = -24;
+      comp.ratio.value = 6;
+      this.master.connect(comp);
+      comp.connect(c.destination);
       const filter = c.createBiquadFilter();
       filter.type = "lowpass";
-      filter.frequency.value = 850;
-      filter.Q.value = 0.7;
+      filter.frequency.value = 1400;
+      filter.Q.value = 0.8;
       filter.connect(this.master);
       [110, 164.81, 220, 329.63].forEach((f) => {
         const o = c.createOscillator();
         o.type = f > 200 ? "sine" : "triangle";
-        o.frequency.value = f;
-        o.detune.value = (Math.random() - 0.5) * 8;
+        o.frequency.value = f * 2;
+        o.detune.value = (Math.random() - 0.5) * 10;
         const g = c.createGain();
-        g.gain.value = 0.16;
+        g.gain.value = 0.18;
         o.connect(g);
         g.connect(filter);
         o.start();
@@ -309,29 +314,43 @@
       const lfo = c.createOscillator();
       lfo.frequency.value = 0.07;
       const lfoGain = c.createGain();
-      lfoGain.gain.value = 320;
+      lfoGain.gain.value = 420;
       lfo.connect(lfoGain);
       lfoGain.connect(filter.frequency);
       lfo.start();
+      const swell = c.createOscillator();
+      swell.frequency.value = 0.11;
+      const swellGain = c.createGain();
+      swellGain.gain.value = 0.06;
+      swell.connect(swellGain);
+      swellGain.connect(this.master.gain);
+      swell.start();
     }
-    toggle() {
-      if (!this.ctx) this.init();
-      this.ctx.resume();
-      const t = this.ctx.currentTime;
-      this.playing = !this.playing;
-      this.master.gain.cancelScheduledValues(t);
-      this.master.gain.setTargetAtTime(this.playing ? 0.055 : 0, t, 0.6);
-      return this.playing;
+    async toggle() {
+      try {
+        if (!this.ctx) this.init();
+        await this.ctx.resume();
+        const t = this.ctx.currentTime;
+        this.playing = !this.playing;
+        this.master.gain.cancelScheduledValues(t);
+        this.master.gain.setTargetAtTime(this.playing ? 0.22 : 0, t, 0.35);
+        return this.playing;
+      } catch {
+        showToast("Audio non disponible sur ce navigateur");
+        return false;
+      }
     }
   }
   const ambient = new Ambient();
   const audioBtn = $("#audioToggle");
-  audioBtn.addEventListener("click", () => {
-    const on = ambient.toggle();
+  audioBtn.addEventListener("click", async () => {
+    const on = await ambient.toggle();
     audioBtn.classList.toggle("on", on);
     audioBtn.setAttribute("aria-pressed", String(on));
     audioBtn.setAttribute("aria-label", on ? "Couper le son ambiant" : "Activer le son ambiant");
-    showToast(on ? "Son ambiant activé" : "Son ambiant coupé");
+    if (ambient.ctx && ambient.ctx.state === "running")
+      showToast(on ? "Son ambiant activé" : "Son ambiant coupé");
+    else if (!on) showToast("Son ambiant coupé");
   });
 
   const NS = "portfoliosecretgaming01";
