@@ -7,24 +7,24 @@
   ],
   "skills": [
     {
-      "name": "C#",
-      "level": 85
-    },
-    {
       "name": "HTML / CSS",
-      "level": 85
+      "level": 100
     },
     {
-      "name": "JavaScript",
-      "level": 75
+      "name": "Javascript",
+      "level": 82
+    },
+    {
+      "name": "C#",
+      "level": 60
     },
     {
       "name": "Python (bases)",
-      "level": 45
+      "level": 35
     },
     {
       "name": "Rust (en apprentissage)",
-      "level": 100
+      "level": 10
     }
   ],
   "marquee": [
