@@ -1,30 +1,30 @@
 {
   "typing": [
-    "Développeur Web & C#",
-    "Créateur d'expériences interactives",
-    "Passionné de tech & gaming",
-    "En train d'apprendre Rust"
+    "Développeur polyvalent multi‑langages — C#, HTML/CSS/JS, Python, Rust.",
+    "Créateur d’expériences web modernes — interfaces fluides et interactives.",
+    "Passionné par la technologie et la création de contenu autour du développement.",
+    "Créateur de systèmes performants — Rust & Python pour la vitesse et la stabilité."
   ],
   "skills": [
     {
-      "name": "C#",
-      "level": 85
-    },
-    {
       "name": "HTML / CSS",
-      "level": 85
+      "level": 100
     },
     {
-      "name": "JavaScript",
-      "level": 75
+      "name": "Javascript",
+      "level": 82
+    },
+    {
+      "name": "C#",
+      "level": 60
     },
     {
       "name": "Python (bases)",
-      "level": 45
+      "level": 35
     },
     {
       "name": "Rust (en apprentissage)",
-      "level": 100
+      "level": 10
     }
   ],
   "marquee": [
@@ -39,136 +39,6 @@
   ],
   "projects": [
     {
-      "title": "Néon Dashboard",
-      "cat": "web",
-      "thumb": "p1",
-      "kicker": "Application web",
-      "tags": [
-        "React",
-        "WebSocket",
-        "CSS"
-      ],
-      "short": "Dashboard temps réel : graphiques animés, données en direct et thème néon.",
-      "desc": "Un tableau de bord temps réel pensé pour la performance : connexion WebSocket persistante, graphiques animés à la demande et thème néon personnalisable.",
-      "feats": [
-        "Streaming de données en temps réel",
-        "Graphiques animés sans librairie lourde",
-        "Thèmes et widgets réorganisables",
-        "100 % responsive"
-      ],
-      "stack": [
-        "React",
-        "WebSocket",
-        "CSS"
-      ],
-      "demoUrl": "",
-      "repoUrl": ""
-    },
-    {
-      "title": "CyberShop",
-      "cat": "web",
-      "thumb": "p2",
-      "kicker": "E-commerce",
-      "tags": [
-        "Next.js",
-        "Stripe",
-        "Tailwind"
-      ],
-      "short": "Boutique dark mode avec panier persistant et paiement Stripe.",
-      "desc": "Boutique en ligne dark mode avec parcours d'achat complet : catalogue filtrable, panier persistant et paiement sécurisé via Stripe.",
-      "feats": [
-        "Panier persistant (localStorage)",
-        "Paiement Stripe Checkout",
-        "Recherche instantanée",
-        "Optimisation mobile"
-      ],
-      "stack": [
-        "Next.js",
-        "Stripe",
-        "Tailwind"
-      ],
-      "demoUrl": "",
-      "repoUrl": ""
-    },
-    {
-      "title": "Orbital 3D",
-      "cat": "3d",
-      "thumb": "p3",
-      "kicker": "Expérience 3D",
-      "tags": [
-        "Three.js",
-        "GLSL",
-        "JS"
-      ],
-      "short": "Expérience WebGL interactive : système planétaire explorable à la souris.",
-      "desc": "Un système planétaire interactif en WebGL : orbites calculées en temps réel, contrôles caméra fluides et rendu optimisé pour tourner à 60 fps même sur mobile.",
-      "feats": [
-        "Orbites physiques en temps réel",
-        "Contrôles souris & tactile",
-        "Textures génératives",
-        "60 fps sur mobile"
-      ],
-      "stack": [
-        "Three.js",
-        "GLSL",
-        "Vanilla JS"
-      ],
-      "demoUrl": "",
-      "repoUrl": ""
-    },
-    {
-      "title": "Bot Discord SG",
-      "cat": "bot",
-      "thumb": "p4",
-      "kicker": "Bot & automatisation",
-      "tags": [
-        "Node.js",
-        "Discord.js",
-        "MongoDB"
-      ],
-      "short": "Bot de modération et de musique avec panel web de configuration.",
-      "desc": "Bot multifonction pour serveurs Discord : modération automatique, lecteur de musique et panel web de configuration connecté à une base de données.",
-      "feats": [
-        "Modération automatique configurable",
-        "Lecteur musique multi-source",
-        "Panel web admin",
-        "Base MongoDB"
-      ],
-      "stack": [
-        "Node.js",
-        "discord.js",
-        "MongoDB"
-      ],
-      "demoUrl": "",
-      "repoUrl": ""
-    },
-    {
-      "title": "Pixel Arena",
-      "cat": "game",
-      "thumb": "p5",
-      "kicker": "Jeu navigateur",
-      "tags": [
-        "TypeScript",
-        "Canvas",
-        "Socket.io"
-      ],
-      "short": "Mini-jeu multijoueur dans le navigateur, classements et salons privés.",
-      "desc": "Mini-jeu multijoueur directement dans le navigateur : salons privés, parties rapides et classement global synchronisé en temps réel.",
-      "feats": [
-        "Multijoueur via Socket.io",
-        "Salons privés par code",
-        "Classement global",
-        "Rendu Canvas optimisé"
-      ],
-      "stack": [
-        "TypeScript",
-        "Canvas",
-        "Socket.io"
-      ],
-      "demoUrl": "",
-      "repoUrl": ""
-    },
-    {
       "title": "Portfolio v1",
       "cat": "web",
       "thumb": "p6",
@@ -178,8 +48,8 @@
         "CSS",
         "JS"
       ],
-      "short": "Première version de mon portfolio, à l'origine de celui que vous visitez.",
-      "desc": "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et l'hébergement.",
+      "short": "Première version de mon portfolio, celui que vous visitez actuellement",
+      "desc": "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et le developpement d'un portfolio professionel.",
       "feats": [
         "Première intégration responsive",
         "Animations au scroll",
@@ -190,8 +60,8 @@
         "CSS",
         "JavaScript"
       ],
-      "demoUrl": "",
-      "repoUrl": ""
+      "demoUrl": "https://secret-gaming01.github.io/portfolio/",
+      "repoUrl": "https://github.com/secret-gaming01/portfolio"
     }
   ]
 }
