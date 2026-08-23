@@ -294,34 +294,48 @@
     clearInterval(fadeTimer);
     fadeTimer = setInterval(() => {
       const v = music.volume;
-      const nv = target > v ? Math.min(target, v + 0.04) : Math.max(target, v - 0.05);
+      const nv = target > v ? Math.min(target, v + 0.09) : Math.max(target, v - 0.11);
       music.volume = nv;
       if (nv === target) {
         clearInterval(fadeTimer);
         if (target === 0) music.pause();
       }
-    }, 40);
+    }, 30);
   }
 
   const audioBtn = $("#audioToggle");
+  let busy = false;
+
   audioBtn.addEventListener("click", async () => {
-    if (!musicOn) {
-      try {
+    if (busy) return;
+    busy = true;
+    audioBtn.style.opacity = ".45";
+    try {
+      if (!musicOn) {
+        showToast("Chargement de la musique…");
         await music.play();
-      } catch {
-        showToast("Lecture impossible — réessaie ou change de navigateur");
-        return;
+        musicOn = true;
+        fadeTo(0.45);
+      } else {
+        musicOn = false;
+        fadeTo(0);
       }
-      musicOn = true;
-      fadeTo(0.45);
-    } else {
-      musicOn = false;
-      fadeTo(0);
+      audioBtn.classList.toggle("on", musicOn);
+      audioBtn.setAttribute("aria-pressed", String(musicOn));
+      audioBtn.setAttribute("aria-label", musicOn ? "Couper la musique" : "Activer la musique");
+      showToast(musicOn ? "Musique activée" : "Musique coupée");
+    } catch {
+      showToast("Lecture impossible — vérifie ta connexion et réessaie");
+    } finally {
+      busy = false;
+      audioBtn.style.opacity = "";
     }
-    audioBtn.classList.toggle("on", musicOn);
-    audioBtn.setAttribute("aria-pressed", String(musicOn));
-    audioBtn.setAttribute("aria-label", musicOn ? "Couper la musique" : "Activer la musique");
-    showToast(musicOn ? "Musique activée" : "Musique coupée");
+  });
+
+  music.addEventListener("error", () => {
+    if (musicOn || music.volume > 0) showToast("Problème avec le fichier musical");
+    musicOn = false;
+    audioBtn.classList.remove("on");
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
