@@ -318,7 +318,6 @@
   const audioBtn = $("#audioToggle");
   let started = false;
   let audible = false;
-  let everUnmuted = false;
   let userMuted = localStorage.getItem("sg_music") === "off";
   let fadeTimer = null;
 
@@ -360,27 +359,23 @@
   }
   startMusic();
 
-  function tryAutoUnmute() {
-    if (!userMuted && !everUnmuted) {
-      everUnmuted = true;
-      setAudible(true);
-      showToast("Musique activée");
+  const welcome = $("#welcomeOverlay");
+  function enterSite(withMusic) {
+    if (!welcome || welcome.classList.contains("leave")) return;
+    welcome.classList.add("leave");
+    setTimeout(() => welcome.remove(), 800);
+    localStorage.setItem("sg_music", withMusic ? "on" : "off");
+    userMuted = !withMusic;
+    if (withMusic) {
+      startMusic().then((ok) => {
+        if (ok) setAudible(true);
+      });
     }
   }
-
-  function onFirstGesture(e) {
-    if (e.target.closest("#audioToggle")) return;
-    ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
-      document.removeEventListener(ev, onFirstGesture)
-    );
-    startMusic().then(tryAutoUnmute);
-  }
-  ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
-    document.addEventListener(ev, onFirstGesture, { passive: true })
-  );
+  $("#enterBtn").addEventListener("click", () => enterSite(true));
+  $("#enterNoMusic").addEventListener("click", () => enterSite(false));
 
   audioBtn.addEventListener("click", () => {
-    everUnmuted = true;
     startMusic().then((ok) => {
       if (!ok) {
         showToast("Lecture impossible — vérifie ta connexion");

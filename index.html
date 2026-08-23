@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=16" />
+  <link rel="stylesheet" href="css/style.css?v=20" />
 </head>
 <body>
   <noscript>
@@ -322,9 +322,17 @@
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+  <div class="welcome-overlay" id="welcomeOverlay">
+    <div class="welcome-inner">
+      <div class="welcome-logo">SG<span>_01</span></div>
+      <p class="welcome-sub">Bienvenue dans mon univers.<br />Ce site joue de la musique — clique pour entrer.</p>
+      <button type="button" class="btn btn-primary welcome-btn" id="enterBtn">Bienvenue — Entrer</button>
+      <button type="button" class="welcome-skip" id="enterNoMusic">Entrer sans la musique</button>
+    </div>
+  </div>
   <audio id="bgMusic" src="assets/music.mp3" loop preload="auto"></audio>
 
   <script type="module" src="js/three-bg.js?v=7"></script>
-  <script src="js/main.js?v=18" defer></script>
+  <script src="js/main.js?v=20" defer></script>
 </body>
 </html>
