@@ -443,93 +443,6 @@
     });
   }
 
-  const LANG_COLORS = {
-    JavaScript: "#f1e05a",
-    TypeScript: "#3178c6",
-    Python: "#3572A5",
-    "C#": "#178600",
-    Rust: "#dea584",
-    HTML: "#e34c26",
-    CSS: "#563d7c",
-    Shell: "#89e051"
-  };
-
-  async function loadRepos() {
-    const section = $("#github");
-    const grid = $("#repoGrid");
-    if (!section || !grid) return;
-    try {
-      const res = await fetch("https://api.github.com/users/Secret-gaming01/repos?sort=updated&per_page=8");
-      if (!res.ok) throw new Error("api");
-      const repos = (await res.json()).filter((r) => !r.fork).slice(0, 6);
-      if (!repos.length) {
-        section.style.display = "none";
-        return;
-      }
-      const FALLBACK_DESC = "Code, détails et documentation sur GitHub.";
-      const mdExcerpt = (md) => {
-        for (const raw of md.split("\n")) {
-          const t = raw
-            .trim()
-            .replace(/^#+\s*/, "")
-            .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-            .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-            .replace(/[*_`~>|]/g, "")
-            .replace(/<[^>]*>/g, "")
-            .trim();
-          if (!t || /^(http|=|-{3,}|\*{3,})/.test(t)) continue;
-          return t.length > 130 ? t.slice(0, 127) + "…" : t;
-        }
-        return "";
-      };
-      const fillFromReadme = async (el, name, branch) => {
-        for (const file of ["README.md", "readme.md"]) {
-          try {
-            const res = await fetch(
-              `https://raw.githubusercontent.com/Secret-gaming01/${name}/${branch}/${file}`
-            );
-            if (!res.ok) continue;
-            const txt = mdExcerpt(await res.text()) || FALLBACK_DESC;
-            el.textContent = txt;
-            return;
-          } catch {}
-        }
-        el.textContent = FALLBACK_DESC;
-      };
-      const ov = CONTENT.repoDesc || {};
-      grid.innerHTML = repos
-        .map((r) => {
-          const custom = ov[r.name] ?? ov[String(r.name || "").toLowerCase()];
-          return `
-        <article class="project-card glass">
-          <div class="card-body repo-body">
-            <div class="repo-head">
-              <h3><a href="${esc(r.html_url)}" target="_blank" rel="noopener">${esc(r.name)}</a></h3>
-              ${r.language ? `<span class="lang-dot" style="background:${LANG_COLORS[r.language] || "#8b949e"}" title="${esc(r.language)}"></span>` : ""}
-            </div>
-            ${
-              custom
-                ? `<p>${esc(custom)}</p>`
-                : r.description
-                  ? `<p>${esc(r.description)}</p>`
-                  : `<p data-rd-name="${esc(r.name)}" data-rd-branch="${esc(r.default_branch || "main")}"><span class="rd-pending">Lecture du README…</span></p>`
-            }
-            <ul class="tags">
-              <li>★ ${r.stargazers_count}</li>
-              <li>Maj ${new Date(r.updated_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</li>
-            </ul>
-          </div>
-        </article>`;
-        })
-        .join("");
-      $$("#repoGrid [data-rd-name]").forEach((el) => {
-        fillFromReadme(el, el.dataset.rdName, el.dataset.rdBranch);
-      });
-    } catch {
-      section.style.display = "none";
-    }
-  }
-
   const form = $("#contactForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -740,8 +653,6 @@
     setupModals();
     startTyping();
   })();
-
-  loadRepos();
 
   console.log(
     "%c SG_01 %c Portfolio — version finale. Curieux ? Jette un œil au code source ",
