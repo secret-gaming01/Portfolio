@@ -37,6 +37,7 @@
     "Rust",
     "Git"
   ],
+  "repoDesc": {},
   "projects": [
     {
       "title": "Portfolio v1",
@@ -60,8 +61,8 @@
         "CSS",
         "JavaScript"
       ],
-      "demoUrl": "https://secret-gaming01.github.io/portfolio/",
-      "repoUrl": "https://github.com/secret-gaming01/portfolio"
+      "demoUrl": "https://secret-gaming01.github.io/Portfolio/",
+      "repoUrl": "https://github.com/secret-gaming01/Portfolio"
     }
   ]
 }

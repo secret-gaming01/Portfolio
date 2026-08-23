@@ -36,6 +36,7 @@
       { name: "Rust (en apprentissage)", level: 20 }
     ],
     marquee: ["C#", ".NET", "HTML5", "CSS3", "JavaScript", "Python", "Rust", "Git"],
+    repoDesc: {},
     projects: [
       {
         title: "Néon Dashboard",
@@ -498,9 +499,11 @@
         }
         el.textContent = FALLBACK_DESC;
       };
+      const ov = CONTENT.repoDesc || {};
       grid.innerHTML = repos
-        .map(
-          (r) => `
+        .map((r) => {
+          const custom = ov[r.name] ?? ov[String(r.name || "").toLowerCase()];
+          return `
         <article class="project-card glass">
           <div class="card-body repo-body">
             <div class="repo-head">
@@ -508,17 +511,19 @@
               ${r.language ? `<span class="lang-dot" style="background:${LANG_COLORS[r.language] || "#8b949e"}" title="${esc(r.language)}"></span>` : ""}
             </div>
             ${
-              r.description
-                ? `<p>${esc(r.description)}</p>`
-                : `<p data-rd-name="${esc(r.name)}" data-rd-branch="${esc(r.default_branch || "main")}"><span class="rd-pending">Lecture du README…</span></p>`
+              custom
+                ? `<p>${esc(custom)}</p>`
+                : r.description
+                  ? `<p>${esc(r.description)}</p>`
+                  : `<p data-rd-name="${esc(r.name)}" data-rd-branch="${esc(r.default_branch || "main")}"><span class="rd-pending">Lecture du README…</span></p>`
             }
             <ul class="tags">
               <li>★ ${r.stargazers_count}</li>
               <li>Maj ${new Date(r.updated_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</li>
             </ul>
           </div>
-        </article>`
-        )
+        </article>`;
+        })
         .join("");
       $$("#repoGrid [data-rd-name]").forEach((el) => {
         fillFromReadme(el, el.dataset.rdName, el.dataset.rdBranch);

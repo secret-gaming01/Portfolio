@@ -149,6 +149,7 @@
         <button type="button" class="tab-btn active" data-tab="skills">📊 Compétences</button>
         <button type="button" class="tab-btn" data-tab="hero">✨ Hero &amp; Marquee</button>
         <button type="button" class="tab-btn" data-tab="projects">🗂️ Projets</button>
+        <button type="button" class="tab-btn" data-tab="repos">Repos GitHub</button>
         <button type="button" class="tab-btn" data-tab="json">{ } JSON brut</button>
       </div>
 
@@ -172,6 +173,13 @@
         <p class="sub">Chaque projet = une carte + sa fiche modale sur le site. « thumb » = visuel p1 à p6. URLs vides = liens « bientôt disponible ».</p>
         <div id="projList"></div>
         <button type="button" class="btn" id="addProj">+ Ajouter un projet</button>
+      </section>
+
+      <section class="card tab-pane" id="tab-repos">
+        <h1 class="title">Descriptions des repos</h1>
+        <p class="sub">Personnalise ce qui s'affiche sur le portfolio pour chaque repo — sans toucher aux repos eux-mêmes. Vide le champ pour revenir au comportement normal (description GitHub, sinon extrait du README).</p>
+        <div id="reposList"><p class="sub">Chargement de tes repos publics…</p></div>
+        <button type="button" class="btn" id="reloadRepos">↻ Rafraîchir la liste des repos</button>
       </section>
 
       <section class="card tab-pane" id="tab-json">
@@ -275,6 +283,7 @@
       $("#saveBar").classList.remove("hidden");
       await loadFile();
       loadLastCommit();
+      loadReposTab();
       return true;
     } catch (e) {
       TOKEN = saved;
@@ -525,6 +534,47 @@
     if (last) last.open = true;
   });
 
+  /* ---------- REPOS GITHUB (descriptions affichées) ---------- */
+  async function loadReposTab() {
+    const list = $("#reposList");
+    if (!S.repoDesc) S.repoDesc = {};
+    try {
+      const res = await fetch("https://api.github.com/users/Secret-gaming01/repos?sort=updated&per_page=100");
+      if (!res.ok) throw new Error("API GitHub (" + res.status + ")");
+      const repos = (await res.json()).filter((r) => !r.fork);
+      if (!repos.length) {
+        list.innerHTML = '<p class="sub">Aucun repo public trouvé.</p>';
+        return;
+      }
+      list.innerHTML = "";
+      repos.forEach((r) => {
+        const wrap = document.createElement("div");
+        wrap.style.cssText = "margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.07)";
+        const ghDesc = r.description ? escHtml(r.description) : "<i>aucune description sur GitHub</i>";
+        wrap.innerHTML =
+          '<label class="fld" style="margin-top:0">' + escHtml(r.name) +
+          (r.language ? " · " + escHtml(r.language) : "") + "</label>" +
+          '<p class="sub" style="font-size:12px;margin:0 0 6px">Sur GitHub : ' + ghDesc + "</p>";
+        const inp = document.createElement("input");
+        inp.type = "text";
+        inp.placeholder = r.description || "Écris la description à afficher sur le portfolio…";
+        inp.value = S.repoDesc[r.name] || "";
+        inp.addEventListener("input", () => {
+          const v = inp.value.trim();
+          if (v) S.repoDesc[r.name] = v;
+          else delete S.repoDesc[r.name];
+          markDirty();
+        });
+        wrap.appendChild(inp);
+        list.appendChild(wrap);
+      });
+    } catch (e) {
+      list.innerHTML = "";
+      setMsg(list, "err", "Impossible de charger tes repos : " + e.message);
+    }
+  }
+  $("#reloadRepos").addEventListener("click", loadReposTab);
+
   /* ---------- JSON BRUT ---------- */
   function syncJsonArea() {
     $("#jsonArea").value = JSON.stringify(S, null, 2);
@@ -547,6 +597,7 @@
 
   /* ---------- HYDRATE ---------- */
   function hydrateForms() {
+    if (!S.repoDesc) S.repoDesc = {};
     renderSkills();
     $("#typingArea").value = (S.typing || []).join("\n");
     $("#marqueeArea").value = (S.marquee || []).join("\n");
