@@ -6,6 +6,19 @@
 
   $("#year").textContent = new Date().getFullYear();
 
+  const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const preloader = $("#preloader");
+  function hidePreloader() {
+    if (!preloader) return;
+    preloader.classList.add("hide");
+    setTimeout(() => preloader.remove(), 700);
+  }
+  if (REDUCED || document.readyState === "complete") hidePreloader();
+  else {
+    window.addEventListener("load", hidePreloader);
+    setTimeout(hidePreloader, 2500);
+  }
+
   const navbar = $("#navbar");
   const toTop = $(".to-top");
   const progressBar = $("#scrollProgress");
@@ -253,6 +266,48 @@
     if (!res.ok) throw new Error("counter");
     return parseInt(await res.text(), 10) || 0;
   }
+  const statViewsEl = $("#statViews");
+  const statVisitsEl = $("#statVisits");
+  let heroSeen = false;
+  let targetViews = null;
+  let targetVisits = null;
+
+  const countUp = (el, to) => {
+    if (!el) return;
+    if (REDUCED) {
+      el.textContent = to.toLocaleString("fr-FR");
+      return;
+    }
+    const t0 = performance.now();
+    const dur = 1100;
+    const step = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString("fr-FR");
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const flushCounters = () => {
+    if (!heroSeen) return;
+    if (targetViews !== null) countUp(statViewsEl, targetViews);
+    if (targetVisits !== null) countUp(statVisitsEl, targetVisits);
+  };
+
+  const heroIO = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          heroSeen = true;
+          heroIO.disconnect();
+          flushCounters();
+        }
+      }),
+    { threshold: 0.35 }
+  );
+  const heroStatsEl = $(".hero-stats");
+  if (heroStatsEl) heroIO.observe(heroStatsEl);
+
   async function loadStats() {
     try {
       const firstVisit = !sessionStorage.getItem("sg_seen");
@@ -262,14 +317,14 @@
         ? `https://abacus.jasoncameron.dev/hit/${NS}/visits`
         : `https://abacus.jasoncameron.dev/get/${NS}/visits`;
       const [views, visits] = await Promise.all([fetchCount(viewsUrl), fetchCount(visitsUrl)]);
-      $("#statViews").textContent = fmt(views);
-      $("#statVisits").textContent = fmt(visits);
+      targetViews = views;
+      targetVisits = visits;
     } catch {
-      let v = parseInt(localStorage.getItem("sg_views") || "0", 10) + 1;
-      localStorage.setItem("sg_views", String(v));
-      $("#statViews").textContent = fmt(v);
-      $("#statVisits").textContent = "1";
+      targetViews = parseInt(localStorage.getItem("sg_views") || "0", 10) + 1;
+      localStorage.setItem("sg_views", String(targetViews));
+      targetVisits = 1;
     }
+    flushCounters();
   }
   loadStats();
 

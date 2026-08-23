@@ -22,9 +22,9 @@ html {
 body {
   font-family: "Space Grotesk", system-ui, sans-serif;
   background:
-    radial-gradient(1100px 700px at 80% -10%, rgba(59, 130, 246, 0.18), transparent 60%),
-    radial-gradient(900px 600px at -10% 40%, rgba(0, 229, 255, 0.11), transparent 60%),
-    radial-gradient(800px 800px at 110% 90%, rgba(124, 58, 237, 0.15), transparent 62%),
+    radial-gradient(1100px 700px at 80% -10%, rgba(59, 130, 246, 0.12), transparent 60%),
+    radial-gradient(900px 600px at -10% 40%, rgba(0, 229, 255, 0.07), transparent 60%),
+    radial-gradient(800px 800px at 110% 90%, rgba(124, 58, 237, 0.10), transparent 62%),
     var(--bg);
   color: var(--text);
   overflow-x: hidden;
@@ -41,8 +41,18 @@ html::before {
   height: 55vmax;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.07), rgba(59, 130, 246, 0.10) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.04), rgba(59, 130, 246, 0.06) 45%, transparent 68%);
   animation: driftCenter 40s ease-in-out infinite alternate;
+}
+
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 body::before,
@@ -58,18 +68,53 @@ body::after {
 body::before {
   top: -22vmax;
   right: -12vmax;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.18), rgba(59, 130, 246, 0.11) 45%, transparent 66%);
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.10), rgba(59, 130, 246, 0.06) 45%, transparent 66%);
   animation: drift1 26s ease-in-out infinite alternate;
 }
 body::after {
   bottom: -26vmax;
   left: -16vmax;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.13), rgba(124, 58, 237, 0.17) 50%, transparent 68%);
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.08), rgba(124, 58, 237, 0.10) 50%, transparent 68%);
   animation: drift2 34s ease-in-out infinite alternate;
 }
 @keyframes drift1 { to { transform: translate(-9vmax, 7vmax) scale(1.15); } }
 @keyframes drift2 { to { transform: translate(10vmax, -8vmax) scale(1.1); } }
 @keyframes driftCenter { to { transform: translate(-6vmax, -8vmax) scale(1.12); } }
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.pre-inner {
+  display: grid;
+  place-items: center;
+  gap: 20px;
+}
+.pre-logo {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.pre-logo span { color: var(--cyan); text-shadow: 0 0 16px rgba(0, 229, 255, 0.5); }
+.pre-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(88, 166, 255, 0.18);
+  border-top-color: var(--cyan);
+  animation: spin 0.9s linear infinite;
+}
 
 #bg3d {
   position: fixed;
