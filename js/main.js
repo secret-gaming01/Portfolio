@@ -718,17 +718,13 @@
     });
   }
 
-  let logoClicks = 0;
-  let logoTimer;
-  $(".logo").addEventListener("click", () => {
-    clearTimeout(logoTimer);
-    logoClicks++;
-    logoTimer = setTimeout(() => (logoClicks = 0), 1600);
-    if (logoClicks === 5) {
-      logoClicks = 0;
-      showToast("Easter egg trouvé ! Le code est ouvert ;)");
-    }
-  });
+  const headerLogo = $("#navbar .logo");
+  if (headerLogo) {
+    headerLogo.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.reload();
+    });
+  }
 
   (async () => {
     await loadContent();
