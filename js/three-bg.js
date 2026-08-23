@@ -142,8 +142,20 @@
   });
 
   const clock = new THREE.Clock();
+  let running = true;
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      running = false;
+    } else if (!running) {
+      running = true;
+      clock.getDelta();
+      animate();
+    }
+  });
 
   function animate() {
+    if (!running) return;
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 

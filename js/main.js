@@ -686,7 +686,7 @@
   loadRepos();
 
   console.log(
-    "%c SG_01 %c Portfolio v6 — curieux ? Jette un œil au code source ",
+    "%c SG_01 %c Portfolio — version finale. Curieux ? Jette un œil au code source ",
     "background:#00e5ff;color:#04121f;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
     "color:#00e5ff;padding:4px 8px"
   );
