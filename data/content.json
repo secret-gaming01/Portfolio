@@ -72,10 +72,22 @@
     "factBase": "Québec, Canada",
     "factStatus": "Ouvert aux opportunités",
     "services": [
-      { "title": "Sites & applications web", "desc": "Sites vitrines, landing pages et applis web modernes, responsives et rapides." },
-      { "title": "Applications C# / .NET", "desc": "Outils, logiciels de bureau et utilitaires robustes et performants." },
-      { "title": "Bots & automatisation", "desc": "Bots Discord et scripts qui éliminent les tâches répétitives." },
-      { "title": "Interfaces & expériences 3D", "desc": "Animations, effets interactifs et scènes WebGL qui marquent les esprits." }
+      {
+        "title": "Sites & applications web",
+        "desc": "Sites vitrines, landing pages et applis web modernes, responsives et rapides."
+      },
+      {
+        "title": "Applications C# / .NET",
+        "desc": "Outils, logiciels de bureau et utilitaires robustes et performants."
+      },
+      {
+        "title": "Bots & automatisation",
+        "desc": "Bots Discord et scripts qui éliminent les tâches répétitives."
+      },
+      {
+        "title": "Interfaces & expériences 3D",
+        "desc": "Animations, effets interactifs et scènes WebGL qui marquent les esprits."
+      }
     ],
     "email": "pro.secretgaming01@gmail.com",
     "discord": "secret_gaming01",
