@@ -125,16 +125,16 @@
             <span class="status-pill"><i class="status-dot offline"></i>Hors ligne</span>
           </div>
           <h3>Qui suis-je ?</h3>
-          <p>
+          <p id="aboutText">
             Développeur du Québec, passionné par le code, la tech et le gaming.
             Je crée des sites web modernes et des applications C#,
             avec un faible pour les interfaces rapides et immersives.
           </p>
-          <p class="about-quote">« Le silence parle pour ceux qui savent... »</p>
+          <p class="about-quote" id="aboutQuote">« Le silence parle pour ceux qui savent... »</p>
           <ul class="about-facts">
-            <li><strong>Rôle :</strong> Développeur Web &amp; C#</li>
-            <li><strong>Base :</strong> Québec, Canada</li>
-            <li><strong>Statut :</strong> Ouvert aux opportunités</li>
+            <li><strong>Rôle :</strong> <span id="factRole">Développeur Web &amp; C#</span></li>
+            <li><strong>Base :</strong> <span id="factBase">Québec, Canada</span></li>
+            <li><strong>Statut :</strong> <span id="factStatus">Ouvert aux opportunités</span></li>
           </ul>
         </article>
 
@@ -166,32 +166,32 @@
           <div class="service-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           </div>
-          <h3>Sites &amp; applications web</h3>
-          <p>Sites vitrines, landing pages et applis web modernes, responsives et rapides.</p>
+          <h3 id="svcTitle1">Sites &amp; applications web</h3>
+          <p id="svcDesc1">Sites vitrines, landing pages et applis web modernes, responsives et rapides.</p>
         </article>
 
         <article class="service-card glass tilt reveal">
           <div class="service-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="6" y1="6.5" x2="6.01" y2="6.5"/><line x1="9" y1="6.5" x2="9.01" y2="6.5"/></svg>
           </div>
-          <h3>Applications C# / .NET</h3>
-          <p>Outils, logiciels de bureau et utilitaires robustes et performants.</p>
+          <h3 id="svcTitle2">Applications C# / .NET</h3>
+          <p id="svcDesc2">Outils, logiciels de bureau et utilitaires robustes et performants.</p>
         </article>
 
         <article class="service-card glass tilt reveal">
           <div class="service-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="7" width="12" height="12" rx="2"/><path d="M12 7V3"/><circle cx="9.5" cy="12" r=".75"/><circle cx="14.5" cy="12" r=".75"/><path d="M9 16h6"/></svg>
           </div>
-          <h3>Bots &amp; automatisation</h3>
-          <p>Bots Discord et scripts qui éliminent les tâches répétitives.</p>
+          <h3 id="svcTitle3">Bots &amp; automatisation</h3>
+          <p id="svcDesc3">Bots Discord et scripts qui éliminent les tâches répétitives.</p>
         </article>
 
         <article class="service-card glass tilt reveal">
           <div class="service-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
-          <h3>Interfaces &amp; expériences 3D</h3>
-          <p>Animations, effets interactifs et scènes WebGL qui marquent les esprits.</p>
+          <h3 id="svcTitle4">Interfaces &amp; expériences 3D</h3>
+          <p id="svcDesc4">Animations, effets interactifs et scènes WebGL qui marquent les esprits.</p>
         </article>
 
       </div>
@@ -250,19 +250,19 @@
           </div>
           <div class="info-card glass">
             <h4>Discord</h4>
-            <p>secret_gaming01</p>
+            <p id="discordText">secret_gaming01</p>
           </div>
           <div class="info-card glass">
             <h4>GitHub</h4>
-            <p><a href="https://github.com/Secret-gaming01" target="_blank" rel="noopener">github.com/Secret-gaming01</a></p>
+            <p><a id="githubLink" href="https://github.com/Secret-gaming01" target="_blank" rel="noopener">github.com/Secret-gaming01</a></p>
           </div>
           <div class="info-card glass">
             <h4>Twitch</h4>
-            <p><a href="https://www.twitch.tv/secret_gaming01" target="_blank" rel="noopener">twitch.tv/secret_gaming01</a></p>
+            <p><a id="twitchLink" href="https://www.twitch.tv/secret_gaming01" target="_blank" rel="noopener">twitch.tv/secret_gaming01</a></p>
           </div>
           <div class="info-card glass">
             <h4>Localisation</h4>
-            <p>Québec, Canada — disponible à distance</p>
+            <p id="locationText">Québec, Canada — disponible à distance</p>
           </div>
         </aside>
 
@@ -275,7 +275,7 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="#accueil" class="logo">SG<span>_01</span></a>
-        <p>Développeur Web &amp; C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.</p>
+        <p id="footerTagline">Développeur Web &amp; C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.</p>
         <p class="footer-meta">Heure locale : <span id="qcTime">--:--</span> (Québec)</p>
       </div>
       <div class="footer-col">
@@ -322,8 +322,9 @@
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+  <audio id="bgMusic" src="assets/music.mp3" loop preload="auto"></audio>
 
   <script type="module" src="js/three-bg.js?v=7"></script>
-  <script src="js/main.js?v=16" defer></script>
+  <script src="js/main.js?v=17" defer></script>
 </body>
 </html>

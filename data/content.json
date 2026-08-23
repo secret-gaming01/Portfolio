@@ -64,5 +64,25 @@
       "demoUrl": "https://secret-gaming01.github.io/Portfolio/",
       "repoUrl": "https://github.com/secret-gaming01/Portfolio"
     }
-  ]
+  ],
+  "site": {
+    "aboutText": "Développeur du Québec, passionné par le code, la tech et le gaming. Je crée des sites web modernes et des applications C#, avec un faible pour les interfaces rapides et immersives.",
+    "aboutQuote": "« Le silence parle pour ceux qui savent... »",
+    "factRole": "Développeur Web & C#",
+    "factBase": "Québec, Canada",
+    "factStatus": "Ouvert aux opportunités",
+    "services": [
+      { "title": "Sites & applications web", "desc": "Sites vitrines, landing pages et applis web modernes, responsives et rapides." },
+      { "title": "Applications C# / .NET", "desc": "Outils, logiciels de bureau et utilitaires robustes et performants." },
+      { "title": "Bots & automatisation", "desc": "Bots Discord et scripts qui éliminent les tâches répétitives." },
+      { "title": "Interfaces & expériences 3D", "desc": "Animations, effets interactifs et scènes WebGL qui marquent les esprits." }
+    ],
+    "email": "pro.secretgaming01@gmail.com",
+    "discord": "secret_gaming01",
+    "githubUrl": "https://github.com/Secret-gaming01",
+    "twitchUrl": "https://www.twitch.tv/secret_gaming01",
+    "location": "Québec, Canada — disponible à distance",
+    "footerTagline": "Développeur Web & C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.",
+    "musicSrc": "assets/music.mp3"
+  }
 }

@@ -37,6 +37,26 @@
     ],
     marquee: ["C#", ".NET", "HTML5", "CSS3", "JavaScript", "Python", "Rust", "Git"],
     repoDesc: {},
+    site: {
+      aboutText: "Développeur du Québec, passionné par le code, la tech et le gaming. Je crée des sites web modernes et des applications C#, avec un faible pour les interfaces rapides et immersives.",
+      aboutQuote: "« Le silence parle pour ceux qui savent... »",
+      factRole: "Développeur Web & C#",
+      factBase: "Québec, Canada",
+      factStatus: "Ouvert aux opportunités",
+      services: [
+        { title: "Sites & applications web", desc: "Sites vitrines, landing pages et applis web modernes, responsives et rapides." },
+        { title: "Applications C# / .NET", desc: "Outils, logiciels de bureau et utilitaires robustes et performants." },
+        { title: "Bots & automatisation", desc: "Bots Discord et scripts qui éliminent les tâches répétitives." },
+        { title: "Interfaces & expériences 3D", desc: "Animations, effets interactifs et scènes WebGL qui marquent les esprits." }
+      ],
+      email: "pro.secretgaming01@gmail.com",
+      discord: "secret_gaming01",
+      githubUrl: "https://github.com/Secret-gaming01",
+      twitchUrl: "https://www.twitch.tv/secret_gaming01",
+      location: "Québec, Canada — disponible à distance",
+      footerTagline: "Développeur Web & C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.",
+      musicSrc: "assets/music.mp3"
+    },
     projects: [
       {
         title: "Néon Dashboard",
@@ -289,18 +309,17 @@
   }
 
   // Musique de fond : "Wallpaper" par Kevin MacLeod (incompetech.com), CC BY 4.0
-  const music = new Audio("assets/music.mp3");
-  music.loop = true;
-  music.preload = "auto";
+  // Les navigateurs interdisent le son avant toute interaction : la piste démarre
+  // immédiatement mais muette, puis devient audible au premier clic/touche/scroll,
+  // sauf si la préférence "mute" est enregistrée.
+  const music = $("#bgMusic");
   music.volume = 0;
-  let musicOn = false;
+  const audioBtn = $("#audioToggle");
+  let started = false;
+  let audible = false;
+  let everUnmuted = false;
+  let userMuted = localStorage.getItem("sg_music") === "off";
   let fadeTimer = null;
-
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      try { music.load(); } catch {}
-    }, 2500);
-  });
 
   function fadeTo(target) {
     clearInterval(fadeTimer);
@@ -315,7 +334,45 @@
     }, 30);
   }
 
-  const audioBtn = $("#audioToggle");
+  function setAudible(on) {
+    audible = on;
+    if (on && music.paused) music.play().catch(() => {});
+    fadeTo(on ? 0.45 : 0);
+    audioBtn.classList.toggle("on", on);
+    audioBtn.setAttribute("aria-pressed", String(on));
+    audioBtn.setAttribute("aria-label", on ? "Couper la musique" : "Activer la musique");
+  }
+
+  async function startMusic() {
+    if (started) return true;
+    try {
+      await music.play();
+      started = true;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  startMusic();
+
+  function tryAutoUnmute() {
+    if (!userMuted && !everUnmuted) {
+      everUnmuted = true;
+      setAudible(true);
+      showToast("Musique activée");
+    }
+  }
+
+  function onFirstGesture(e) {
+    if (e.target.closest("#audioToggle")) return;
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
+      document.removeEventListener(ev, onFirstGesture)
+    );
+    startMusic().then(tryAutoUnmute);
+  }
+  ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
+    document.addEventListener(ev, onFirstGesture, { passive: true })
+  );
   let busy = false;
 
   audioBtn.addEventListener("click", async () => {
@@ -464,7 +521,8 @@
     btn.disabled = true;
     btn.textContent = "Envoi en cours...";
     try {
-      const res = await fetch("https://formsubmit.co/ajax/pro.secretgaming01@gmail.com", {
+      const targetEmail = (CONTENT.site && CONTENT.site.email) || "pro.secretgaming01@gmail.com";
+      const res = await fetch("https://formsubmit.co/ajax/" + targetEmail, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data)
@@ -479,6 +537,49 @@
       btn.textContent = originalText;
     }
   });
+
+  function applySite() {
+    const s = CONTENT.site || {};
+    const t = (id, v) => {
+      const el = $("#" + id);
+      if (el && v != null && v !== "") el.textContent = v;
+    };
+    t("aboutText", s.aboutText);
+    t("aboutQuote", s.aboutQuote);
+    t("factRole", s.factRole);
+    t("factBase", s.factBase);
+    t("factStatus", s.factStatus);
+    (s.services || []).forEach((svc, i) => {
+      t("svcTitle" + (i + 1), svc.title);
+      t("svcDesc" + (i + 1), svc.desc);
+    });
+    if (s.email) {
+      t("emailText", s.email);
+      const copy = $("#copyEmail");
+      if (copy) {
+        copy.replaceWith(copy.cloneNode(true));
+        $("#copyEmail").addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(s.email);
+            showToast("Adresse email copiée !");
+          } catch {
+            showToast("Impossible de copier l'email");
+          }
+        });
+      }
+    }
+    t("discordText", s.discord);
+    t("locationText", s.location);
+    t("footerTagline", s.footerTagline);
+    if (s.githubUrl) {
+      const a = $("#githubLink");
+      if (a) { a.href = s.githubUrl; a.textContent = s.githubUrl.replace(/^https?:\/\/(www\.)?/, ""); }
+    }
+    if (s.twitchUrl) {
+      const a = $("#twitchLink");
+      if (a) { a.href = s.twitchUrl; a.textContent = s.twitchUrl.replace(/^https?:\/\/(www\.)?/, ""); }
+    }
+  }
 
   function startTyping() {
     const typingEl = $("#typing");
@@ -656,6 +757,10 @@
 
   (async () => {
     await loadContent();
+    applySite();
+    if (CONTENT.site && CONTENT.site.musicSrc && music.getAttribute("src") !== CONTENT.site.musicSrc && !started) {
+      music.src = CONTENT.site.musicSrc;
+    }
     renderSkills();
     setupSkillBars();
     renderMarquee();
