@@ -965,8 +965,6 @@ img { max-width: 100%; display: block; }
 .footer-meta { margin-top: 8px; font-size: 13px; opacity: 0.8; }
 #qcTime { color: var(--cyan); }
 
-.section { content-visibility: auto; contain-intrinsic-size: auto 900px; }
-
 .filter-row {
   display: flex;
   flex-wrap: wrap;

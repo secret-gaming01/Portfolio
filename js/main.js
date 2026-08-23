@@ -132,11 +132,17 @@
   const navbar = $("#navbar");
   const toTop = $(".to-top");
   const progressBar = $("#scrollProgress");
+  let scrollTicking = false;
   const onScroll = () => {
-    navbar.classList.toggle("scrolled", window.scrollY > 40);
-    toTop.classList.toggle("show", window.scrollY > 600);
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    if (progressBar) progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      navbar.classList.toggle("scrolled", window.scrollY > 40);
+      toTop.classList.toggle("show", window.scrollY > 600);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progressBar) progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+      scrollTicking = false;
+    });
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -355,7 +361,12 @@
   async function fetchCount(url) {
     const res = await fetch(url);
     if (!res.ok) throw new Error("counter");
-    return parseInt(await res.text(), 10) || 0;
+    const raw = await res.text();
+    try {
+      return parseInt(JSON.parse(raw).value, 10) || 0;
+    } catch {
+      return parseInt(raw, 10) || 0;
+    }
   }
   const statViewsEl = $("#statViews");
   const statVisitsEl = $("#statVisits");
