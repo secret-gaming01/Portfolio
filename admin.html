@@ -126,6 +126,11 @@
     .hidden { display: none !important; }
     .spin { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.25); border-top-color: var(--cyan); border-radius: 50%; animation: sp .7s linear infinite; vertical-align: -3px; margin-right: 6px; }
     @keyframes sp { to { transform: rotate(360deg); } }
+    .qa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 16px; }
+    .banner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; border: 1px solid rgba(251,191,36,.4); background: rgba(251,191,36,.08); border-radius: 14px; padding: 12px 16px; margin-bottom: 16px; font-size: 13.5px; }
+    .hist-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: rgba(6,11,24,.55); }
+    .hist-msg { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13.5px; }
+    .hist-date { color: var(--muted); font-size: 12px; flex: none; }
     .meta-line { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
     /* ---------- THÈME SOMBRE PRO ---------- */
     body {
@@ -195,6 +200,7 @@
         <button type="button" data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Projets</button>
         <button type="button" data-view="site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>Site &amp; Contact</button>
         <button type="button" data-view="media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 5-5 4 4 2-2 3 3"/></svg>Médias</button>
+        <button type="button" data-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Historique</button>
         <button type="button" data-view="preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/></svg>Aperçu</button>
         <button type="button" data-view="json"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4c-2 0-3 1-3 3v3c0 1-1 2-2 2 1 0 2 1 2 2v3c0 2 1 3 3 3"/><path d="M16 4c2 0 3 1 3 3v3c0 1 1 2 2 2-1 0-2 1-2 2v3c0 2-1 3-3 3"/></svg>JSON brut</button>
       </nav>
@@ -215,14 +221,29 @@
 
       <!-- DASHBOARD -->
       <section class="view" id="view-dashboard">
-        <div class="stat-cards">
-          <div class="stat"><b id="stSkills">–</b><span>Compétences</span></div>
-          <div class="stat"><b id="stProjects">–</b><span>Projets</span></div>
-          <div class="stat"><b id="stServices">–</b><span>Services</span></div>
-          <div class="stat"><b id="stTyping">–</b><span>Phrases hero</span></div>
+        <div class="banner hidden" id="draftBanner">
+          <span>Un brouillon non publié a été retrouvé sur cet appareil.</span>
+          <button type="button" class="btn primary" id="draftRestore">Restaurer le brouillon</button>
+          <button type="button" class="btn" id="draftDiscard">Ignorer</button>
         </div>
+        <div class="stat-cards">
+          <div class="stat"><b id="stViews">–</b><span>Vues du site</span></div>
+          <div class="stat"><b id="stProjects">–</b><span>Projets</span></div>
+          <div class="stat"><b id="stSkills">–</b><span>Compétences</span></div>
+          <div class="stat"><b id="stMedia">–</b><span>Médias</span></div>
+          <div class="stat"><b id="stStars">–</b><span>Étoiles repo</span></div>
+          <div class="stat"><b id="stServices">–</b><span>Services</span></div>
+        </div>
+        <div class="qa-grid" id="qaGrid">
+          <button type="button" class="btn" data-goto="projects">+ Gérer les projets</button>
+          <button type="button" class="btn" data-goto="media">+ Ajouter un média</button>
+          <button type="button" class="btn" data-goto="site">+ Modifier le SEO</button>
+          <button type="button" class="btn" data-goto="history">+ Restaurer une version</button>
+        </div>
+        <h2 class="title" style="margin-top:26px;font-size:16px">Dernières publications</h2>
+        <div id="histMini"></div>
         <p class="meta-line" id="commitInfo"></p>
-        <p class="sub" style="margin-top:14px">Astuce : chaque modification est locale jusqu'au clic sur « Enregistrer sur GitHub ». Le site se met à jour 1 à 2 minutes après publication.</p>
+        <p class="sub" style="margin-top:14px">Astuce : <b>Ctrl+S</b> enregistre directement. Un brouillon local est conservé automatiquement pendant tes modifications.</p>
       </section>
 
       <!-- SKILLS -->
@@ -284,6 +305,11 @@
           <textarea id="siteTagline" rows="2"></textarea>
           <label class="fld">Fichier musique (ex. assets/music1.mp3)</label>
           <input type="text" id="siteMusic" />
+          <h2 class="title" style="margin-top:26px;font-size:17px">SEO</h2>
+          <label class="fld">Titre de l'onglet navigateur</label>
+          <input type="text" id="siteTitle" placeholder="Secret_gaming01 — Portfolio Développeur" />
+          <label class="fld">Description (Google &amp; réseaux sociaux)</label>
+          <textarea id="siteMeta" rows="2" placeholder="Portfolio de Secret_gaming01, développeur web..."></textarea>
         </div>
       </section>
 
@@ -305,6 +331,15 @@
           <p class="sub">Rendu en direct du portfolio. Après une sauvegarde, attends 1–2 min puis recharge l'aperçu.</p>
           <div style="margin:12px 0"><button type="button" class="btn" id="previewReload">Recharger l'aperçu</button></div>
           <iframe class="preview-frame" id="previewFrame" src="./" title="Aperçu du site"></iframe>
+        </div>
+      </section>
+
+      <!-- HISTORIQUE -->
+      <section class="view hidden" id="view-history">
+        <div class="card">
+          <h2 class="title">Historique des versions</h2>
+          <p class="sub">Les 10 dernières publications de <code style="color:var(--amber)">content.json</code>. « Charger » remet cette version dans l'éditeur — clique ensuite sur Enregistrer pour la republier.</p>
+          <div id="histList"><p class="sub">Chargement…</p></div>
         </div>
       </section>
 
@@ -349,6 +384,8 @@
   let SHA = null;
   let S = null;
   let dirty = false;
+  let REPO = null;
+  let draftTimer = null;
 
   const b64enc = (str) => {
     const bytes = new TextEncoder().encode(str);
@@ -396,15 +433,129 @@
   function markDirty() {
     if (dirty) return;
     dirty = true;
+    document.title = "● SG_01 Admin";
     $("#saveStatus").classList.remove("ok");
     $("#saveStatus").innerHTML = "<b>●</b> Modifications non enregistrées";
   }
+  function scheduleDraft() {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(() => {
+      try { localStorage.setItem("sg_draft", JSON.stringify(S)); } catch {}
+    }, 800);
+  }
+  const origMarkDirty = markDirty;
+  markDirty = function () { origMarkDirty(); scheduleDraft(); };
   function markSaved() {
     dirty = false;
+    document.title = "SG_01 — Admin Panel v3";
+    try { localStorage.removeItem("sg_draft"); } catch {}
     $("#saveStatus").classList.add("ok");
     $("#saveStatus").innerHTML = "<b>Publié !</b> Le site se met à jour dans 1–2 min.";
   }
   window.addEventListener("beforeunload", (e) => { if (dirty) e.preventDefault(); });
+
+  /* ---------- RACCOURCI CTRL+S + BROUILLON ---------- */
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      const bar = $("#saveBar");
+      if (bar && !bar.classList.contains("hidden") && !$("#saveBtn").disabled) $("#saveBtn").click();
+    }
+  });
+
+  function checkDraft() {
+    let draft = null;
+    try { draft = localStorage.getItem("sg_draft"); } catch {}
+    if (!draft || !S) return;
+    if (draft === JSON.stringify(S)) { localStorage.removeItem("sg_draft"); return; }
+    try {
+      JSON.parse(draft);
+      $("#draftBanner").classList.remove("hidden");
+    } catch {}
+  }
+  $("#draftRestore").addEventListener("click", () => {
+    try {
+      S = JSON.parse(localStorage.getItem("sg_draft"));
+      hydrateForms();
+      markDirty();
+      $("#draftBanner").classList.add("hidden");
+    } catch (e) { alert("Brouillon illisible : " + e.message); }
+  });
+  $("#draftDiscard").addEventListener("click", () => {
+    localStorage.removeItem("sg_draft");
+    $("#draftBanner").classList.add("hidden");
+  });
+
+  /* ---------- DASHBOARD EXTRAS ---------- */
+  async function loadDashboardExtras() {
+    try {
+      const r = await fetch("https://abacus.jasoncameron.dev/get/portfoliosecretgaming01/views");
+      if (r.ok) {
+        const raw = await r.text();
+        let v = 0;
+        try { v = parseInt(JSON.parse(raw).value, 10) || 0; } catch { v = parseInt(raw, 10) || 0; }
+        $("#stViews").textContent = v.toLocaleString("fr-FR");
+      }
+    } catch { $("#stViews").textContent = "–"; }
+    if (REPO && typeof REPO.stargazers_count === "number") $("#stStars").textContent = REPO.stargazers_count;
+    try {
+      const res = await gh("/contents/assets");
+      if (res.ok) $("#stMedia").textContent = (await res.json()).filter((f) => f.type === "file").length;
+    } catch { $("#stMedia").textContent = "–"; }
+    try {
+      const res = await gh("/commits?path=" + FILE_PATH + "&per_page=5");
+      if (res.ok) {
+        const rows = await res.json();
+        $("#histMini").innerHTML = rows.map((c) =>
+          '<div class="hist-row"><span class="hist-date">' +
+          new Date(c.commit.author.date).toLocaleDateString("fr-FR") + " " +
+          new Date(c.commit.author.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) +
+          '</span><span class="hist-msg">' + escHtml(c.commit.message) + "</span></div>"
+        ).join("");
+      }
+    } catch {}
+  }
+
+  /* ---------- HISTORIQUE ---------- */
+  async function loadHistory() {
+    const list = $("#histList");
+    list.innerHTML = '<p class="sub">Chargement…</p>';
+    try {
+      const res = await gh("/commits?path=" + FILE_PATH + "&per_page=10");
+      if (!res.ok) throw new Error("API (" + res.status + ")");
+      const rows = await res.json();
+      list.innerHTML = "";
+      rows.forEach((c) => {
+        const row = document.createElement("div");
+        row.className = "hist-row";
+        const d = new Date(c.commit.author.date);
+        row.innerHTML =
+          '<span class="hist-date">' + d.toLocaleDateString("fr-FR") + " " +
+          d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) + "</span>" +
+          '<span class="hist-msg">' + escHtml(c.commit.message) + "</span>";
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "btn"; b.textContent = "Charger cette version";
+        b.addEventListener("click", async () => {
+          if (dirty && !confirm("Modifications non enregistrées — charger la version de " + d.toLocaleString("fr-FR") + " et les perdre ?")) return;
+          b.disabled = true;
+          try {
+            const r = await gh("/contents/" + FILE_PATH + "?ref=" + c.sha);
+            if (!r.ok) throw new Error(r.status);
+            S = JSON.parse(b64dec((await r.json()).content));
+            hydrateForms();
+            markDirty();
+            alert("Version chargée dans l'éditeur — clique sur Enregistrer pour la republier.");
+          } catch (e) { alert("Erreur : " + e.message); b.disabled = false; }
+        });
+        row.appendChild(b);
+        list.appendChild(row);
+      });
+      if (!rows.length) list.innerHTML = '<p class="sub">Aucun historique.</p>';
+    } catch (e) {
+      list.innerHTML = "";
+      setMsg(list, "err", "Impossible de charger l'historique : " + e.message);
+    }
+  }
 
   /* ---------- NAVIGATION ---------- */
   const TITLES = {
@@ -420,7 +571,15 @@
       $("#view-" + btn.dataset.view).classList.remove("hidden");
       $("#viewTitle").textContent = TITLES[btn.dataset.view] || "";
       if (btn.dataset.view === "media") loadMedia();
+      if (btn.dataset.view === "history") loadHistory();
+      if (btn.dataset.view === "dashboard") loadDashboardExtras();
       if (btn.dataset.view === "preview") $("#previewFrame").src = "./?" + Date.now();
+    })
+  );
+  $$("#qaGrid [data-goto]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const target = $('#sideNav button[data-view="' + b.dataset.goto + '"]');
+      if (target) target.click();
     })
   );
 
@@ -435,6 +594,7 @@
       const repo = await res.json();
       if (!repo.permissions || !repo.permissions.push)
         throw new Error("Le token n'a pas le droit d'écrire (permission Contents manquante).");
+      REPO = repo;
       localStorage.setItem(TOK_KEY, tok);
       setStatus(true, "Admin ✓");
       await loadFile();

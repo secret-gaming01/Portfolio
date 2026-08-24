@@ -371,10 +371,13 @@
   startMusic();
 
   const welcome = $("#welcomeOverlay");
-  function enterSite(withMusic) {
+  function dismissWelcome() {
     if (!welcome || welcome.classList.contains("leave")) return;
     welcome.classList.add("leave");
     setTimeout(() => welcome.remove(), 800);
+  }
+  function enterSite(withMusic) {
+    dismissWelcome();
     localStorage.setItem("sg_music", withMusic ? "on" : "off");
     userMuted = !withMusic;
     if (withMusic) {
@@ -383,7 +386,19 @@
       });
     }
   }
-  $("#enterBtn").addEventListener("click", () => enterSite(true));
+  if (localStorage.getItem("sg_music")) {
+    dismissWelcome();
+    if (!userMuted) {
+      startMusic().then(() => {
+        const resume = () => setAudible(true);
+        ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
+          document.addEventListener(ev, resume, { once: true, passive: true })
+        );
+      });
+    }
+  } else {
+    $("#enterBtn").addEventListener("click", () => enterSite(true));
+  }
 
   audioBtn.addEventListener("click", () => {
     startMusic().then((ok) => {
