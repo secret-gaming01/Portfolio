@@ -806,9 +806,6 @@
       });
     });
   }
-      });
-    });
-  }
 
   const headerLogo = $("#navbar .logo");
   if (headerLogo) {
