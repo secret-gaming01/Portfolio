@@ -687,10 +687,11 @@
   /* ---------- DASHBOARD ---------- */
   function updateDashboard() {
     if (!S) return;
-    $("#stSkills").textContent = (S.skills || []).length;
-    $("#stProjects").textContent = (S.projects || []).length;
-    $("#stServices").textContent = ((S.site || {}).services || []).length;
-    $("#stTyping").textContent = (S.typing || []).length;
+    const set = (id, v) => { const el = $("#" + id); if (el) el.textContent = v; };
+    set("stSkills", (S.skills || []).length);
+    set("stProjects", (S.projects || []).length);
+    set("stServices", ((S.site || {}).services || []).length);
+    set("stTyping", (S.typing || []).length);
   }
 
   /* ---------- SKILLS ---------- */
