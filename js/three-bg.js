@@ -30,10 +30,10 @@
     c.width = c.height = 256;
     const g = c.getContext("2d");
     const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-    grd.addColorStop(0, "rgba(150,245,255,0.75)");
-    grd.addColorStop(0.25, "rgba(59,130,246,0.26)");
-    grd.addColorStop(0.6, "rgba(124,58,237,0.08)");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
+    grd.addColorStop(0, "rgba(147,197,253,0.55)");
+    grd.addColorStop(0.25, "rgba(147,197,253,0.22)");
+    grd.addColorStop(0.6, "rgba(191,219,254,0.10)");
+    grd.addColorStop(1, "rgba(255,255,255,0)");
     g.fillStyle = grd;
     g.fillRect(0, 0, 256, 256);
     return new THREE.CanvasTexture(c);
@@ -53,20 +53,20 @@
 
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(4.4, 48, 48),
-    new THREE.MeshBasicMaterial({ color: 0xc4f5ff })
+    new THREE.MeshBasicMaterial({ color: 0xbfdbfe })
   );
   group.add(core);
 
   const shell = new THREE.Mesh(
     new THREE.IcosahedronGeometry(7.4, 1),
-    new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.1 })
+    new THREE.MeshBasicMaterial({ color: 0x93c5fd, wireframe: true, transparent: true, opacity: 0.16 })
   );
   group.add(shell);
 
   const ringDefs = [
-    { r: 11.2, tube: 0.09, color: 0x00e5ff, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.24 },
-    { r: 14, tube: 0.07, color: 0x3b82f6, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.19 },
-    { r: 16.8, tube: 0.055, color: 0x8b5cf6, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.15 }
+    { r: 11.2, tube: 0.09, color: 0x93c5fd, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.24 },
+    { r: 14, tube: 0.07, color: 0x60a5fa, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.19 },
+    { r: 16.8, tube: 0.055, color: 0xbfdbfe, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.15 }
   ];
   const rings = ringDefs.map((d) => {
     const m = new THREE.Mesh(
@@ -79,9 +79,9 @@
   });
 
   const electronDefs = [
-    { d: 9.2, s: 0.42, c: 0xaef6ff, rx: 1.1, rz: 0.3, sp: 0.018 },
-    { d: 10.4, s: 0.34, c: 0x7dd3fc, rx: 2.05, rz: -0.5, sp: -0.014 },
-    { d: 11.6, s: 0.28, c: 0xd9c8ff, rx: 1.55, rz: 0.95, sp: 0.01 }
+    { d: 9.2, s: 0.42, c: 0x60a5fa, rx: 1.1, rz: 0.3, sp: 0.018 },
+    { d: 10.4, s: 0.34, c: 0x93c5fd, rx: 2.05, rz: -0.5, sp: -0.014 },
+    { d: 11.6, s: 0.28, c: 0xbfdbfe, rx: 1.55, rz: 0.95, sp: 0.01 }
   ];
   const electrons = electronDefs.map((def) => {
     const pivot = new THREE.Object3D();
@@ -109,7 +109,7 @@
   const points = new THREE.Points(
     pGeo,
     new THREE.PointsMaterial({
-      color: 0x86d8ff,
+      color: 0x9ca3af,
       size: 1,
       sizeAttenuation: true,
       transparent: true,
