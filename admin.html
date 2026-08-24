@@ -654,9 +654,13 @@
     const tools = document.createElement("div");
     tools.className = "proj-tools";
     tools.style.marginTop = "14px";
-    ["↑ Monter", "↓ Descendre", "Dupliquer", "Supprimer"].forEach((lbl, k) => {
+    [["↑", "Monter"], ["↓", "Descendre"], ["⧉", "Dupliquer le projet"], ["✕", "Supprimer le projet"]].forEach(([lbl, title], k) => {
       const b = document.createElement("button");
-      b.type = "button"; b.className = "btn" + (k === 3 ? " danger" : ""); b.textContent = lbl;
+      b.type = "button";
+      b.className = "icon-btn" + (k === 3 ? " del" : "");
+      b.textContent = lbl;
+      b.title = title;
+      b.setAttribute("aria-label", title);
       b.addEventListener("click", () => {
         if (k === 0 && idx > 0) { [S.projects[idx - 1], S.projects[idx]] = [S.projects[idx], S.projects[idx - 1]]; }
         else if (k === 1 && idx < S.projects.length - 1) { [S.projects[idx + 1], S.projects[idx]] = [S.projects[idx], S.projects[idx + 1]]; }
@@ -664,6 +668,9 @@
           const copy = JSON.parse(JSON.stringify(p));
           copy.title = (copy.title || "Projet") + " (copie)";
           S.projects.splice(idx + 1, 0, copy);
+          const last = $("#projList").children[idx + 1];
+          if (last) last.open = true;
+          return;
         }
         else if (k === 3) {
           if (!confirm("Supprimer le projet « " + p.title + " » ?")) return;

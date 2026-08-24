@@ -640,12 +640,6 @@
   }
 
   function projectCard(p) {
-    const demo = p.demoUrl
-      ? `<a href="${esc(p.demoUrl)}" target="_blank" rel="noopener">Voir le projet</a>`
-      : `<a href="#" data-soon>Voir le projet</a>`;
-    const code = p.repoUrl
-      ? `<a href="${esc(p.repoUrl)}" target="_blank" rel="noopener">Code source</a>`
-      : `<a href="#" data-soon>Code source</a>`;
     return `
     <article class="project-card glass tilt reveal${p.featured ? " featured" : ""}" data-cat="${esc(p.cat)}">
       <div class="${thumbClass(p)}">${thumbInner(p)}</div>
@@ -654,7 +648,7 @@
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.short || "")}</p>
         <ul class="tags">${(p.tags || []).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-        <div class="card-links">${demo}${code}</div>
+        <span class="card-more">Voir les détails<span class="arrow">→</span></span>
       </div>
     </article>`;
   }
@@ -714,6 +708,12 @@
     mDesc.textContent = data.desc || "";
     mStack.innerHTML = (data.stack || []).map((s) => `<li>${esc(s)}</li>`).join("");
     mFeats.innerHTML = (data.feats || []).map((f) => `<li>${esc(f)}</li>`).join("");
+    const actions = [];
+    if (data.demoUrl)
+      actions.push(`<a class="btn btn-primary" href="${esc(data.demoUrl)}" target="_blank" rel="noopener">Ouvrir le projet</a>`);
+    if (data.repoUrl)
+      actions.push(`<a class="btn btn-ghost" href="${esc(data.repoUrl)}" target="_blank" rel="noopener">Code source</a>`);
+    $("#modalActions").innerHTML = actions.join("");
     backdrop.hidden = false;
     document.body.style.overflow = "hidden";
     mClose.focus();
