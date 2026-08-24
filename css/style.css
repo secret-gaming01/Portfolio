@@ -386,7 +386,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-title:hover .gradient-text {
   animation: gradientShift 1.2s linear infinite, glitchJitter 0.35s steps(2, end) infinite;
-  filter: drop-shadow(0 0 22px rgba(236, 72, 153, 0.45));
+  filter: drop-shadow(0 2px 14px rgba(96, 165, 250, 0.5));
 }
 .typing-line {
   font-size: clamp(1.05rem, 2.4vw, 1.45rem);
@@ -1659,3 +1659,28 @@ html::after { opacity: 0.03; }
 .hero-quote { color: var(--muted); }
 .caret { background: #60a5fa; }
 .scroll-hint { border-color: #cbd5e1; }
+
+/* Balayage final néon → pastel */
+.btn-ghost:hover { box-shadow: 0 10px 26px rgba(147, 197, 253, 0.28); }
+.field input:focus,
+.field textarea:focus { box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.35); }
+.info-card:hover {
+  border-color: #93c5fd;
+  box-shadow: -4px 0 18px -6px rgba(147, 197, 253, 0.55);
+}
+.section-title::after {
+  background: linear-gradient(90deg, #60a5fa, rgba(147, 197, 253, 0));
+}
+.badge-status {
+  color: #2563eb;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+.tags li {
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+.modal-feats li::before { color: #2563eb; }
+.pre-logo span { text-shadow: none; }
+.marquee-track i { color: #60a5fa; }
