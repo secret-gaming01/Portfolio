@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>SG_01 — Panneau Admin</title>
+  <title>SG_01 — Admin Panel v3</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071026'/%3E%3Ctext x='32' y='42' font-size='26' font-family='monospace' font-weight='bold' fill='%2300e5ff' text-anchor='middle'%3ESG%3C/text%3E%3C/svg%3E" />
   <style>
     :root {
@@ -19,19 +19,38 @@
         radial-gradient(1000px 500px at 80% -10%, rgba(59,130,246,.12), transparent),
         radial-gradient(800px 400px at 10% 110%, rgba(236,72,153,.08), transparent),
         var(--bg);
-      color: var(--text); min-height: 100vh; padding-bottom: 110px;
+      color: var(--text); min-height: 100vh;
     }
-    .wrap { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
-    header.bar {
-      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
-      padding: 16px 22px; border: 1px solid var(--line); border-radius: 18px;
-      background: var(--panel); backdrop-filter: blur(10px);
-      position: sticky; top: 14px; z-index: 50;
+    /* ---------- LAYOUT ---------- */
+    .app { display: flex; min-height: 100vh; }
+    .app.locked { display: none; }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; width: 252px; z-index: 40;
+      display: flex; flex-direction: column; gap: 6px;
+      padding: 20px 14px; background: rgba(4,8,18,.96); border-right: 1px solid var(--line);
     }
-    .logo { font-family: Consolas, monospace; font-weight: 700; font-size: 19px; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-    .logo span { color: var(--cyan); }
-    .logo small { display: block; font-size: 10px; letter-spacing: 3px; color: var(--muted); font-weight: 400; }
-    .bar-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .brand { font-family: Consolas, monospace; font-weight: 700; font-size: 19px; color: var(--text); text-decoration: none; padding: 4px 10px 14px; display: block; }
+    .brand span { color: var(--cyan); }
+    .brand small { display: block; font-size: 10px; letter-spacing: 3px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+    .nav { display: grid; gap: 4px; }
+    .nav button {
+      display: flex; align-items: center; gap: 11px; width: 100%;
+      padding: 11px 13px; border: none; border-radius: 12px; background: none;
+      color: var(--muted); font-size: 14px; font-family: inherit; text-align: left; cursor: pointer;
+      transition: all .2s ease;
+    }
+    .nav button svg { width: 17px; height: 17px; flex: none; }
+    .nav button:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .nav button.active {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #04121f; font-weight: 700;
+    }
+    .side-foot { margin-top: auto; display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .main { flex: 1; margin-left: 252px; padding: 24px 28px 120px; max-width: 1280px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+    .topbar h1 { font-size: 23px; }
+    .top-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    /* ---------- COMPOSANTS ---------- */
     .btn {
       padding: 9px 16px; border-radius: 11px; border: 1px solid var(--line);
       background: rgba(255,255,255,.05); color: var(--text); cursor: pointer;
@@ -46,8 +65,8 @@
     .pill { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
     .dot.on { background: var(--green); box-shadow: 0 0 8px var(--green); }
-    .card { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); backdrop-filter: blur(10px); padding: 26px; margin-top: 22px; }
-    h1.title { font-size: 21px; margin-bottom: 6px; }
+    .card { border: 1px solid var(--line); border-radius: 18px; background: var(--panel); backdrop-filter: blur(10px); padding: 26px; margin-bottom: 22px; }
+    h2.title { font-size: 19px; margin-bottom: 6px; }
     p.sub { color: var(--muted); font-size: 14px; line-height: 1.55; }
     a.link { color: var(--cyan); text-decoration: none; }
     a.link:hover { text-decoration: underline; }
@@ -67,15 +86,6 @@
     .msg { margin-top: 12px; font-size: 13.5px; border-radius: 10px; padding: 10px 14px; display: none; }
     .msg.err { display: block; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.4); color: var(--red); }
     .msg.ok { display: block; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.4); color: var(--green); }
-    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-    .tab-btn {
-      padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line);
-      background: rgba(255,255,255,.03); color: var(--muted); cursor: pointer;
-      font-size: 13.5px; transition: all .2s ease; font-family: inherit;
-    }
-    .tab-btn.active { color: #04121f; background: linear-gradient(135deg, var(--cyan), var(--blue)); border-color: transparent; font-weight: 700; }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
     .row { display: grid; grid-template-columns: 1fr 150px 64px auto auto; gap: 10px; align-items: center; margin-bottom: 10px; }
     .row .pct { text-align: right; color: var(--cyan); font-weight: 700; font-size: 15px; min-width: 48px; }
     input[type=range] { accent-color: var(--cyan); width: 100%; }
@@ -92,14 +102,24 @@
     details.proj > summary .cat-tag { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0,229,255,.35); padding: 3px 10px; border-radius: 999px; flex: none; }
     details.proj .inner { padding: 4px 18px 20px; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
-    @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr 90px 50px auto auto; } }
-    .proj-tools { display: flex; gap: 8px; }
-    .save-bar {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-      backdrop-filter: blur(14px); background: rgba(3,6,16,.82);
-      border-top: 1px solid var(--line); padding: 14px 20px;
-    }
-    .save-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; }
+    .proj-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+    /* ---------- DASHBOARD ---------- */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 8px; }
+    .stat { border: 1px solid var(--line); border-radius: 16px; background: rgba(3,6,16,.45); padding: 18px; }
+    .stat b { display: block; font-size: 30px; font-family: Consolas, monospace; color: var(--cyan); }
+    .stat span { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+    /* ---------- MEDIAS ---------- */
+    .m-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: rgba(3,6,16,.4); }
+    .m-name { font-family: Consolas, monospace; font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .m-size { color: var(--muted); font-size: 12px; flex: none; }
+    .badge-t { font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--amber); border: 1px solid rgba(251,191,36,.35); padding: 2px 8px; border-radius: 999px; flex: none; }
+    .dropzone { border: 2px dashed var(--line); border-radius: 14px; padding: 26px; text-align: center; color: var(--muted); margin-bottom: 14px; transition: all .2s ease; cursor: pointer; }
+    .dropzone:hover, .dropzone.over { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,.04); }
+    /* ---------- PREVIEW ---------- */
+    .preview-frame { width: 100%; height: 72vh; border: 1px solid var(--line); border-radius: 14px; background: #0b1120; }
+    /* ---------- SAVE BAR / DIVERS ---------- */
+    .save-bar { position: fixed; left: 252px; right: 0; bottom: 0; z-index: 60; backdrop-filter: blur(14px); background: rgba(3,6,16,.85); border-top: 1px solid var(--line); padding: 13px 24px; }
+    .save-inner { display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; }
     .save-status { font-size: 13px; color: var(--muted); }
     .save-status b { color: var(--amber); }
     .save-status.ok b { color: var(--green); }
@@ -107,129 +127,192 @@
     .spin { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.25); border-top-color: var(--cyan); border-radius: 50%; animation: sp .7s linear infinite; vertical-align: -3px; margin-right: 6px; }
     @keyframes sp { to { transform: rotate(360deg); } }
     .meta-line { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+    @media (max-width: 900px) {
+      .sidebar { position: static; width: auto; flex-direction: row; align-items: center; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 10px 12px; gap: 10px; }
+      .brand { padding: 0 6px; } .brand small { display: none; }
+      .nav { display: flex; margin-left: auto; }
+      .nav button { padding: 8px 11px; font-size: 12.5px; white-space: nowrap; }
+      .nav button svg { display: none; }
+      .side-foot { margin: 0; padding: 0; border: none; flex: none; }
+      .main { margin-left: 0; padding: 18px 16px 130px; }
+      .save-bar { left: 0; }
+      .row { grid-template-columns: 1fr 90px 50px auto auto; }
+      .grid2 { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
 
-    <header class="bar">
-      <a href="./" class="logo">SG<span>_01</span> <small>PANNEAU ADMIN</small></a>
-      <div class="bar-actions">
+  <!-- CONNEXION -->
+  <section class="card" id="loginCard" style="max-width:680px;margin:60px auto">
+    <h2 class="title">Connexion</h2>
+    <p class="sub">Ce panneau modifie directement <code style="color:var(--amber)">data/content.json</code> et les médias du repo GitHub. Il te faut un <b>token GitHub</b> (une seule fois).</p>
+    <details class="help" open>
+      <summary>Comment créer mon token (2 minutes)</summary>
+      <ol>
+        <li>Va sur <a class="link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Settings → Developer settings → Fine-grained tokens</a></li>
+        <li>Nom : <code>portfolio-admin</code> — Expiration : 90 jours</li>
+        <li><b>Repository access</b> : « Only select repositories » → <code>secret-gaming01/portfolio</code></li>
+        <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <code>Read and write</code></li>
+        <li>Génère, copie le code (<code>github_pat_...</code>) et colle-le ci-dessous.</li>
+      </ol>
+      <p style="margin-top:8px">Le token reste uniquement dans TON navigateur. Ne le partage jamais.</p>
+    </details>
+    <label class="fld" for="tokInput">Token GitHub</label>
+    <input type="password" id="tokInput" placeholder="github_pat_..." autocomplete="off" />
+    <div style="margin-top:16px"><button type="button" class="btn primary" id="loginBtn">Se connecter</button></div>
+    <div class="msg" id="loginMsg"></div>
+  </section>
+
+  <!-- APPLICATION -->
+  <div class="app locked" id="app">
+    <aside class="sidebar">
+      <a href="./" class="brand">SG<span>_01</span><small>PANNEAU ADMIN V3</small></a>
+      <nav class="nav" id="sideNav">
+        <button type="button" data-view="dashboard" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
+        <button type="button" data-view="skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg>Compétences</button>
+        <button type="button" data-view="hero"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>Hero &amp; Marquee</button>
+        <button type="button" data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>Projets</button>
+        <button type="button" data-view="site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>Site &amp; Contact</button>
+        <button type="button" data-view="media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 5-5 4 4 2-2 3 3"/></svg>Médias</button>
+        <button type="button" data-view="preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/></svg>Aperçu</button>
+        <button type="button" data-view="json"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4c-2 0-3 1-3 3v3c0 1-1 2-2 2 1 0 2 1 2 2v3c0 2 1 3 3 3"/><path d="M16 4c2 0 3 1 3 3v3c0 1 1 2 2 2-1 0-2 1-2 2v3c0 2-1 3-3 3"/></svg>JSON brut</button>
+      </nav>
+      <div class="side-foot">
         <span class="pill"><span class="dot" id="statusDot"></span><span id="statusTxt">Non connecté</span></span>
-        <button type="button" class="btn hidden" id="reloadBtn">↻ Recharger</button>
-        <a href="./" target="_blank" rel="noopener" class="btn hidden" id="siteLink">Voir le site ↗</a>
-        <button type="button" class="btn danger hidden" id="logoutBtn">Déconnexion</button>
+        <button type="button" class="btn danger" id="logoutBtn">Déconnexion</button>
       </div>
-    </header>
+    </aside>
 
-    <section class="card" id="loginView">
-      <h1 class="title">🔐 Connexion</h1>
-      <p class="sub">Ce panneau modifie directement le fichier <code style="color:var(--amber)">data/content.json</code> de ton repo GitHub. Il te faut un <b>token GitHub</b> (une seule fois).</p>
-
-      <details class="help" open>
-        <summary>📋 Comment créer mon token (2 minutes)</summary>
-        <ol>
-          <li>Va sur <a class="link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Settings → Developer settings → Fine-grained tokens → Generate new token</a></li>
-          <li>Nom : <code>portfolio-admin</code> — Expiration : 90 jours</li>
-          <li><b>Repository access</b> : « Only select repositories » → choisis <code>secret-gaming01/portfolio</code></li>
-          <li><b>Permissions</b> → Repository permissions → <b>Contents</b> → <code>Read and write</code></li>
-          <li>« Generate token », copie le code (<code>github_pat_...</code>) et colle-le ci-dessous.</li>
-        </ol>
-        <p style="margin-top:8px">⚠️ Le token reste uniquement dans TON navigateur. Ne le partage jamais.</p>
-      </details>
-
-      <label class="fld" for="tokInput">Token GitHub</label>
-      <input type="password" id="tokInput" placeholder="github_pat_..." autocomplete="off" />
-      <div style="margin-top:16px"><button type="button" class="btn primary" id="loginBtn">Se connecter</button></div>
-      <div class="msg" id="loginMsg"></div>
-    </section>
-
-    <section id="panelView" class="hidden">
-      <div class="tabs" role="tablist">
-        <button type="button" class="tab-btn active" data-tab="skills">📊 Compétences</button>
-        <button type="button" class="tab-btn" data-tab="hero">✨ Hero &amp; Marquee</button>
-        <button type="button" class="tab-btn" data-tab="projects">🗂️ Projets</button>
-        <button type="button" class="tab-btn" data-tab="site">🏠 Site &amp; contact</button>
-        <button type="button" class="tab-btn" data-tab="json">{ } JSON brut</button>
+    <main class="main">
+      <div class="topbar">
+        <h1 id="viewTitle">Dashboard</h1>
+        <div class="top-actions">
+          <button type="button" class="btn" id="reloadBtn">Recharger depuis GitHub</button>
+          <a href="./" target="_blank" rel="noopener" class="btn" id="siteLink">Voir le site ↗</a>
+        </div>
       </div>
 
-      <section class="card tab-pane active" id="tab-skills">
-        <h1 class="title">Compétences</h1>
-        <p class="sub">Nom + niveau en %. Les barres du site s'animent jusqu'à cette valeur.</p>
-        <div id="skillsList"></div>
-        <button type="button" class="btn" id="addSkill">+ Ajouter une compétence</button>
-      </section>
-
-      <section class="card tab-pane" id="tab-hero">
-        <h1 class="title">Hero &amp; Marquee</h1>
-        <label class="fld">Phrases du typing (une par ligne)</label>
-        <textarea id="typingArea" rows="5"></textarea>
-        <label class="fld">Bandeau défilant (un élément par ligne)</label>
-        <textarea id="marqueeArea" rows="5"></textarea>
-      </section>
-
-      <section class="card tab-pane" id="tab-projects">
-        <h1 class="title">Projets</h1>
-        <p class="sub">Chaque projet = une carte + sa fiche modale sur le site. « thumb » = visuel p1 à p6. URLs vides = liens « bientôt disponible ».</p>
-        <div id="projList"></div>
-        <button type="button" class="btn" id="addProj">+ Ajouter un projet</button>
-      </section>
-
-      <section class="card tab-pane" id="tab-site">
-        <h1 class="title">Site &amp; contact</h1>
-        <p class="sub">Les textes et coordonnées affichés sur le portfolio.</p>
-
-        <label class="fld">Texte « Qui suis-je ? »</label>
-        <textarea id="siteAbout" rows="3"></textarea>
-        <label class="fld">Citation</label>
-        <input type="text" id="siteQuote" />
-
-        <div class="grid2">
-          <div><label class="fld">Rôle</label><input type="text" id="siteRole" /></div>
-          <div><label class="fld">Base</label><input type="text" id="siteBase" /></div>
-          <div><label class="fld">Statut</label><input type="text" id="siteStatus" /></div>
-          <div><label class="fld">Localisation (carte contact)</label><input type="text" id="siteLocation" /></div>
+      <!-- DASHBOARD -->
+      <section class="view" id="view-dashboard">
+        <div class="stat-cards">
+          <div class="stat"><b id="stSkills">–</b><span>Compétences</span></div>
+          <div class="stat"><b id="stProjects">–</b><span>Projets</span></div>
+          <div class="stat"><b id="stServices">–</b><span>Services</span></div>
+          <div class="stat"><b id="stTyping">–</b><span>Phrases hero</span></div>
         </div>
-
-        <h1 class="title" style="margin-top:26px;font-size:17px">Services</h1>
-        <div id="siteServices"></div>
-
-        <h1 class="title" style="margin-top:26px;font-size:17px">Coordonnées</h1>
-        <div class="grid2">
-          <div><label class="fld">Email (formulaire inclus)</label><input type="text" id="siteEmail" /></div>
-          <div><label class="fld">Pseudo Discord</label><input type="text" id="siteDiscord" /></div>
-          <div><label class="fld">URL GitHub</label><input type="text" id="siteGithub" placeholder="https://github.com/..." /></div>
-          <div><label class="fld">URL Twitch</label><input type="text" id="siteTwitch" placeholder="https://www.twitch.tv/..." /></div>
-        </div>
-
-        <label class="fld">Tagline du footer</label>
-        <textarea id="siteTagline" rows="2"></textarea>
-        <label class="fld">Fichier musique (ex. assets/music.mp3)</label>
-        <input type="text" id="siteMusic" />
+        <p class="meta-line" id="commitInfo"></p>
+        <p class="sub" style="margin-top:14px">Astuce : chaque modification est locale jusqu'au clic sur « Enregistrer sur GitHub ». Le site se met à jour 1 à 2 minutes après publication.</p>
       </section>
 
-      <section class="card tab-pane" id="tab-json">
-        <h1 class="title">JSON brut</h1>
-        <p class="sub">Édition avancée directe. « Valider » vérifie la syntaxe avant sauvegarde.</p>
-        <textarea id="jsonArea" class="mono" spellcheck="false"></textarea>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <button type="button" class="btn" id="validateJson">✔ Valider le JSON</button>
-          <button type="button" class="btn" id="applyFromForm">⟳ Régénérer depuis les formulaires</button>
-          <button type="button" class="btn" id="exportJson">⬇ Exporter (.json)</button>
-          <button type="button" class="btn" id="importJsonBtn">⬆ Importer un fichier</button>
-          <input type="file" id="importJsonFile" accept=".json,application/json" style="display:none" />
+      <!-- SKILLS -->
+      <section class="view hidden" id="view-skills">
+        <div class="card">
+          <h2 class="title">Compétences</h2>
+          <p class="sub">Nom + niveau en %. Les barres du site s'animent jusqu'à cette valeur.</p>
+          <div id="skillsList"></div>
+          <button type="button" class="btn" id="addSkill">+ Ajouter une compétence</button>
         </div>
-        <div class="msg" id="jsonMsg"></div>
       </section>
 
-      <p class="meta-line" id="commitInfo"></p>
-    </section>
+      <!-- HERO -->
+      <section class="view hidden" id="view-hero">
+        <div class="card">
+          <h2 class="title">Hero &amp; Marquee</h2>
+          <label class="fld">Phrases du typing (une par ligne)</label>
+          <textarea id="typingArea" rows="5"></textarea>
+          <label class="fld">Bandeau défilant (un élément par ligne)</label>
+          <textarea id="marqueeArea" rows="5"></textarea>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="view hidden" id="view-projects">
+        <div class="card">
+          <h2 class="title">Projets</h2>
+          <p class="sub">Chaque projet = une carte + sa fiche modale sur le site. « thumb » = visuel p1 à p6. URLs vides = liens « bientôt disponible ».</p>
+          <div id="projList"></div>
+          <button type="button" class="btn" id="addProj">+ Ajouter un projet</button>
+        </div>
+      </section>
+
+      <!-- SITE -->
+      <section class="view hidden" id="view-site">
+        <div class="card">
+          <h2 class="title">Site &amp; contact</h2>
+          <p class="sub">Les textes et coordonnées affichés sur le portfolio.</p>
+          <label class="fld">Texte « Qui suis-je ? »</label>
+          <textarea id="siteAbout" rows="3"></textarea>
+          <label class="fld">Citation</label>
+          <input type="text" id="siteQuote" />
+          <div class="grid2">
+            <div><label class="fld">Rôle</label><input type="text" id="siteRole" /></div>
+            <div><label class="fld">Base</label><input type="text" id="siteBase" /></div>
+            <div><label class="fld">Statut</label><input type="text" id="siteStatus" /></div>
+            <div><label class="fld">Localisation (carte contact)</label><input type="text" id="siteLocation" /></div>
+          </div>
+          <h2 class="title" style="margin-top:26px;font-size:17px">Services</h2>
+          <div id="siteServices"></div>
+          <h2 class="title" style="margin-top:26px;font-size:17px">Coordonnées</h2>
+          <div class="grid2">
+            <div><label class="fld">Email (formulaire inclus)</label><input type="text" id="siteEmail" /></div>
+            <div><label class="fld">Pseudo Discord</label><input type="text" id="siteDiscord" /></div>
+            <div><label class="fld">URL GitHub</label><input type="text" id="siteGithub" placeholder="https://github.com/..." /></div>
+            <div><label class="fld">URL Twitch</label><input type="text" id="siteTwitch" placeholder="https://www.twitch.tv/..." /></div>
+          </div>
+          <label class="fld">Tagline du footer</label>
+          <textarea id="siteTagline" rows="2"></textarea>
+          <label class="fld">Fichier musique (ex. assets/music1.mp3)</label>
+          <input type="text" id="siteMusic" />
+        </div>
+      </section>
+
+      <!-- MEDIAS -->
+      <section class="view hidden" id="view-media">
+        <div class="card">
+          <h2 class="title">Bibliothèque de médias</h2>
+          <p class="sub">Fichiers du dossier <code style="color:var(--amber)">assets/</code>. Clique-glisse ou sélectionne des images / sons pour les téléverser, puis utilise leur chemin dans les projets ou le champ musique.</p>
+          <div class="dropzone" id="dropzone">Clique ici ou dépose des fichiers (png, jpg, webp, svg, gif, mp3…)</div>
+          <input type="file" id="mediaFile" multiple style="display:none" />
+          <div id="mediaList"><p class="sub">Chargement…</p></div>
+        </div>
+      </section>
+
+      <!-- PREVIEW -->
+      <section class="view hidden" id="view-preview">
+        <div class="card">
+          <h2 class="title">Aperçu du site</h2>
+          <p class="sub">Rendu en direct du portfolio. Après une sauvegarde, attends 1–2 min puis recharge l'aperçu.</p>
+          <div style="margin:12px 0"><button type="button" class="btn" id="previewReload">Recharger l'aperçu</button></div>
+          <iframe class="preview-frame" id="previewFrame" src="./" title="Aperçu du site"></iframe>
+        </div>
+      </section>
+
+      <!-- JSON -->
+      <section class="view hidden" id="view-json">
+        <div class="card">
+          <h2 class="title">JSON brut</h2>
+          <p class="sub">Édition avancée directe. « Valider » vérifie la syntaxe avant sauvegarde.</p>
+          <textarea id="jsonArea" class="mono" spellcheck="false"></textarea>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <button type="button" class="btn" id="validateJson">Valider le JSON</button>
+            <button type="button" class="btn" id="applyFromForm">Régénérer depuis les formulaires</button>
+            <button type="button" class="btn" id="exportJson">Exporter (.json)</button>
+            <button type="button" class="btn" id="importJsonBtn">Importer un fichier</button>
+            <input type="file" id="importJsonFile" accept=".json,application/json" style="display:none" />
+          </div>
+          <div class="msg" id="jsonMsg"></div>
+        </div>
+      </section>
+
+      <p class="meta-line" id="commitInfo2"></p>
+    </main>
   </div>
 
   <div class="save-bar hidden" id="saveBar">
     <div class="save-inner">
-      <span class="save-status" id="saveStatus">● Modifications non enregistrées</span>
-      <button type="button" class="btn primary" id="saveBtn">💾 Enregistrer sur GitHub</button>
+      <span class="save-status" id="saveStatus">Modifications non enregistrées</span>
+      <button type="button" class="btn primary" id="saveBtn">Enregistrer sur GitHub</button>
     </div>
   </div>
 
@@ -257,6 +340,13 @@
     const bin = atob(b64.replace(/\s/g, ""));
     return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
   };
+  const fileToB64 = (file) =>
+    new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).split(",")[1] || "");
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
   const escHtml = (s) =>
     String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
@@ -278,7 +368,9 @@
   function setStatus(loggedIn, who) {
     $("#statusDot").classList.toggle("on", loggedIn);
     $("#statusTxt").textContent = loggedIn ? who || "Connecté" : "Non connecté";
-    ["#reloadBtn", "#siteLink", "#logoutBtn"].forEach((id) => $(id).classList.toggle("hidden", !loggedIn));
+    $("#app").classList.toggle("locked", !loggedIn);
+    $("#loginCard").classList.toggle("hidden", loggedIn);
+    $("#saveBar").classList.toggle("hidden", !loggedIn);
   }
 
   function markDirty() {
@@ -290,9 +382,27 @@
   function markSaved() {
     dirty = false;
     $("#saveStatus").classList.add("ok");
-    $("#saveStatus").innerHTML = "<b>✓</b> Publié ! Le site se met à jour dans 1–2 min.";
+    $("#saveStatus").innerHTML = "<b>Publié !</b> Le site se met à jour dans 1–2 min.";
   }
   window.addEventListener("beforeunload", (e) => { if (dirty) e.preventDefault(); });
+
+  /* ---------- NAVIGATION ---------- */
+  const TITLES = {
+    dashboard: "Dashboard", skills: "Compétences", hero: "Hero & Marquee",
+    projects: "Projets", site: "Site & Contact", media: "Bibliothèque de médias",
+    preview: "Aperçu du site", json: "JSON brut"
+  };
+  $$("#sideNav button").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      $$("#sideNav button").forEach((b) => b.classList.remove("active"));
+      $$(".view").forEach((v) => v.classList.add("hidden"));
+      btn.classList.add("active");
+      $("#view-" + btn.dataset.view).classList.remove("hidden");
+      $("#viewTitle").textContent = TITLES[btn.dataset.view] || "";
+      if (btn.dataset.view === "media") loadMedia();
+      if (btn.dataset.view === "preview") $("#previewFrame").src = "./?" + Date.now();
+    })
+  );
 
   /* ---------- LOGIN ---------- */
   async function tryLogin(tok) {
@@ -307,19 +417,15 @@
         throw new Error("Le token n'a pas le droit d'écrire (permission Contents manquante).");
       localStorage.setItem(TOK_KEY, tok);
       setStatus(true, "Admin ✓");
-      $("#loginView").classList.add("hidden");
-      $("#panelView").classList.remove("hidden");
-      $("#saveBar").classList.remove("hidden");
       await loadFile();
       loadLastCommit();
       return true;
     } catch (e) {
       TOKEN = saved;
-      setMsg($("#loginMsg"), "err", "❌ " + e.message);
+      setMsg($("#loginMsg"), "err", "Erreur : " + e.message);
       return false;
     }
   }
-
   $("#loginBtn").addEventListener("click", () => {
     const tok = $("#tokInput").value.trim();
     if (!tok) return setMsg($("#loginMsg"), "err", "Colle ton token d'abord.");
@@ -328,7 +434,6 @@
     tryLogin(tok).finally(() => { b.disabled = false; b.textContent = "Se connecter"; });
   });
   $("#tokInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#loginBtn").click(); });
-
   $("#logoutBtn").addEventListener("click", () => {
     localStorage.removeItem(TOK_KEY);
     location.reload();
@@ -343,11 +448,11 @@
     S = JSON.parse(b64dec(json.content));
     hydrateForms();
     syncJsonArea();
+    updateDashboard();
   }
-
   $("#reloadBtn").addEventListener("click", async () => {
     if (dirty && !confirm("Modifications non enregistrées — recharger et perdre les changements ?")) return;
-    try { await loadFile(); alert("Rechargé depuis GitHub ✓"); }
+    try { await loadFile(); alert("Rechargé depuis GitHub"); }
     catch (e) { alert("Erreur : " + e.message); }
   });
 
@@ -356,8 +461,11 @@
       const res = await gh("/commits?path=" + FILE_PATH + "&per_page=1");
       if (!res.ok) return;
       const [c] = await res.json();
-      if (c) $("#commitInfo").textContent =
-        "Dernière publication : " + new Date(c.commit.author.date).toLocaleString("fr-FR") + " — « " + c.commit.message + " »";
+      if (c) {
+        const line = "Dernière publication : " + new Date(c.commit.author.date).toLocaleString("fr-FR") + " — « " + c.commit.message + " »";
+        $("#commitInfo").textContent = line;
+        $("#commitInfo2").textContent = line;
+      }
     } catch {}
   }
 
@@ -387,24 +495,23 @@
     } catch (e) {
       let hint = e.message;
       if (/401/.test(hint)) hint += " → Token expiré ou révoqué, recrée-en un.";
-      else if (/403|422/.test(hint)) hint += " → Vérifie que le token a bien Contents: Read and write sur secret-gaming01/portfolio.";
-      alert("❌ Échec de l'enregistrement : " + hint);
+      else if (/403|422/.test(hint)) hint += " → Vérifie la permission Contents: Read and write.";
+      alert("Échec de l'enregistrement : " + hint);
       markDirty();
     } finally {
       btn.disabled = false;
-      btn.textContent = "💾 Enregistrer sur GitHub";
+      btn.textContent = "Enregistrer sur GitHub";
     }
   });
 
-  /* ---------- TABS ---------- */
-  $$(".tab-btn").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      $$(".tab-btn").forEach((b) => b.classList.remove("active"));
-      $$(".tab-pane").forEach((p) => p.classList.remove("active"));
-      btn.classList.add("active");
-      $("#tab-" + btn.dataset.tab).classList.add("active");
-    })
-  );
+  /* ---------- DASHBOARD ---------- */
+  function updateDashboard() {
+    if (!S) return;
+    $("#stSkills").textContent = (S.skills || []).length;
+    $("#stProjects").textContent = (S.projects || []).length;
+    $("#stServices").textContent = ((S.site || {}).services || []).length;
+    $("#stTyping").textContent = (S.typing || []).length;
+  }
 
   /* ---------- SKILLS ---------- */
   function skillRow(sk) {
@@ -426,7 +533,7 @@
     lvlI.addEventListener("input", () => { sk.level = Number(lvlI.value); pct.textContent = sk.level + "%"; markDirty(); });
     div.querySelector(".del").addEventListener("click", () => {
       S.skills.splice(S.skills.indexOf(sk), 1);
-      div.remove(); markDirty();
+      div.remove(); markDirty(); updateDashboard();
     });
     div.querySelector(".up").addEventListener("click", () => {
       const i = S.skills.indexOf(sk);
@@ -446,13 +553,13 @@
     const sk = { name: "Nouvelle compétence", level: 50 };
     S.skills.push(sk);
     $("#skillsList").appendChild(skillRow(sk));
-    markDirty();
+    markDirty(); updateDashboard();
   });
 
   /* ---------- HERO / MARQUEE ---------- */
   $("#typingArea").addEventListener("input", (e) => {
     S.typing = e.target.value.split("\n").map((l) => l.trim()).filter(Boolean);
-    markDirty();
+    markDirty(); updateDashboard();
   });
   $("#marqueeArea").addEventListener("input", (e) => {
     S.marquee = e.target.value.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -461,19 +568,14 @@
   function collectTextareas() {}
 
   /* ---------- PROJECTS ---------- */
-  const CATS = [
-    ["web", "Web"], ["3d", "3D"], ["bot", "Bot"], ["game", "Jeu"]
-  ];
+  const CATS = [["web", "Web"], ["3d", "3D"], ["bot", "Bot"], ["game", "Jeu"]];
   function projField(labelTxt, value, attr, onInput, isArea) {
     const wrap = document.createElement("div");
     const lab = document.createElement("label");
     lab.className = "fld"; lab.textContent = labelTxt;
     let inp;
-    if (isArea) {
-      inp = document.createElement("textarea"); inp.rows = attr.rows || 3;
-    } else {
-      inp = document.createElement("input"); inp.type = "text";
-    }
+    if (isArea) { inp = document.createElement("textarea"); inp.rows = attr.rows || 3; }
+    else { inp = document.createElement("input"); inp.type = "text"; }
     if (attr.placeholder) inp.placeholder = attr.placeholder;
     inp.value = value ?? "";
     inp.addEventListener("input", () => { onInput(inp.value); markDirty(); });
@@ -486,7 +588,6 @@
     const sum = document.createElement("summary");
     sum.innerHTML = "<span class='p-title'>" + escHtml(p.title || "(sans titre)") + "</span><span class='cat-tag'>" + escHtml(p.cat) + "</span>";
     det.appendChild(sum);
-
     const inner = document.createElement("div");
     inner.className = "inner";
 
@@ -510,13 +611,13 @@
     inner.appendChild(g1);
 
     const g2 = document.createElement("div"); g2.className = "grid2";
-    g2.appendChild(projField("Visuel (p1…p6)", p.thumb, { placeholder: "p1" }, (v) => (p.thumb = v)));
+    g2.appendChild(projField("Visuel (p1…p6 ou assets/…)", p.thumb, { placeholder: "p1" }, (v) => (p.thumb = v)));
     g2.appendChild(projField("Kicker (petit titre)", p.kicker, { placeholder: "Application web" }, (v) => (p.kicker = v)));
     inner.appendChild(g2);
 
     inner.appendChild(projField("Description courte (carte)", p.short, { rows: 2 }, (v) => (p.short = v), true));
     inner.appendChild(projField("Description longue (modale)", p.desc, { rows: 3 }, (v) => (p.desc = v), true));
-    inner.appendChild(projField("Tags de la carte (séparés par des virgules)", (p.tags || []).join(", "), {}, (v) => (p.tags = v.split(",").map((x) => x.trim()).filter(Boolean))));
+    inner.appendChild(projField("Tags de la carte (virgules)", (p.tags || []).join(", "), {}, (v) => (p.tags = v.split(",").map((x) => x.trim()).filter(Boolean))));
     inner.appendChild(projField("Stack de la modale (virgules)", (p.stack || []).join(", "), {}, (v) => (p.stack = v.split(",").map((x) => x.trim()).filter(Boolean))));
     inner.appendChild(projField("Fonctionnalités (une par ligne)", (p.feats || []).join("\n"), { rows: 4 }, (v) => (p.feats = v.split("\n").map((x) => x.trim()).filter(Boolean)), true));
 
@@ -528,7 +629,7 @@
     const tools = document.createElement("div");
     tools.className = "proj-tools";
     tools.style.marginTop = "14px";
-    ["↑ Monter", "↓ Descendre", "⧉ Dupliquer", "✕ Supprimer"].forEach((lbl, k) => {
+    ["↑ Monter", "↓ Descendre", "Dupliquer", "Supprimer"].forEach((lbl, k) => {
       const b = document.createElement("button");
       b.type = "button"; b.className = "btn" + (k === 3 ? " danger" : ""); b.textContent = lbl;
       b.addEventListener("click", () => {
@@ -543,12 +644,11 @@
           if (!confirm("Supprimer le projet « " + p.title + " » ?")) return;
           S.projects.splice(idx, 1);
         }
-        renderProjects(); markDirty();
+        renderProjects(); markDirty(); updateDashboard();
       });
       tools.appendChild(b);
     });
     inner.appendChild(tools);
-
     det.appendChild(inner);
     return det;
   }
@@ -562,16 +662,15 @@
       title: "Nouveau projet", cat: "web", thumb: "p1", kicker: "Projet",
       tags: [], short: "", desc: "", feats: [], stack: [], demoUrl: "", repoUrl: ""
     });
-    renderProjects(); markDirty();
+    renderProjects(); markDirty(); updateDashboard();
     const last = $("#projList").lastElementChild;
     if (last) last.open = true;
   });
 
   /* ---------- SITE & CONTACT ---------- */
-  function siteField(id, key, isArea) {
+  function siteField(id, key) {
     const el = $("#" + id);
-    const v = S.site ? S.site[key] : "";
-    el.value = v ?? "";
+    el.value = (S.site ? S.site[key] : "") ?? "";
     el.addEventListener("input", () => {
       if (!S.site) S.site = {};
       S.site[key] = el.value;
@@ -580,7 +679,7 @@
   }
   function hydrateSiteTab() {
     if (!S.site) S.site = {};
-    siteField("siteAbout", "aboutText", true);
+    siteField("siteAbout", "aboutText");
     siteField("siteQuote", "aboutQuote");
     siteField("siteRole", "factRole");
     siteField("siteBase", "factBase");
@@ -590,7 +689,7 @@
     siteField("siteDiscord", "discord");
     siteField("siteGithub", "githubUrl");
     siteField("siteTwitch", "twitchUrl");
-    siteField("siteTagline", "footerTagline", true);
+    siteField("siteTagline", "footerTagline");
     siteField("siteMusic", "musicSrc");
 
     const wrap = $("#siteServices");
@@ -611,6 +710,92 @@
     });
   }
 
+  /* ---------- MEDIAS ---------- */
+  const MEDIA_RE = /\.(png|jpe?g|webp|gif|svg|mp3|wav|ogg|ico)$/i;
+  async function loadMedia() {
+    const list = $("#mediaList");
+    list.innerHTML = '<p class="sub">Chargement…</p>';
+    try {
+      const res = await gh("/contents/assets");
+      if (!res.ok) throw new Error("API (" + res.status + ")");
+      const items = (await res.json()).filter((f) => f.type === "file" && MEDIA_RE.test(f.name));
+      list.innerHTML = "";
+      if (!items.length) { list.innerHTML = '<p class="sub">Aucun fichier média pour l\'instant.</p>'; return; }
+      items.forEach((f) => {
+        const row = document.createElement("div");
+        row.className = "m-row";
+        const ext = (f.name.match(/\.([a-z0-9]+)$/i) || [])[1] || "?";
+        row.innerHTML =
+          '<span class="badge-t">' + escHtml(ext) + "</span>" +
+          '<span class="m-name">' + escHtml(f.name) + "</span>" +
+          '<span class="m-size">' + Math.round((f.size || 0) / 1024) + " Ko</span>";
+        const copyB = document.createElement("button");
+        copyB.type = "button"; copyB.className = "btn"; copyB.textContent = "Copier le chemin";
+        copyB.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText("assets/" + f.name);
+            copyB.textContent = "Copié ✓";
+            setTimeout(() => (copyB.textContent = "Copier le chemin"), 1400);
+          } catch { alert("assets/" + f.name); }
+        });
+        const delB = document.createElement("button");
+        delB.type = "button"; delB.className = "btn danger"; delB.textContent = "Supprimer";
+        delB.addEventListener("click", async () => {
+          if (!confirm("Supprimer définitivement assets/" + f.name + " ?")) return;
+          delB.disabled = true;
+          try {
+            const r = await gh("/contents/assets/" + encodeURIComponent(f.name), {
+              method: "DELETE",
+              body: JSON.stringify({ message: "Suppression média via panneau admin", sha: f.sha })
+            });
+            if (!r.ok) throw new Error(r.status);
+            loadMedia();
+          } catch (e) { alert("Échec de la suppression : " + e.message); delB.disabled = false; }
+        });
+        row.appendChild(copyB); row.appendChild(delB);
+        list.appendChild(row);
+      });
+    } catch (e) {
+      list.innerHTML = "";
+      setMsg(list, "err", "Impossible de lister les médias : " + e.message);
+    }
+  }
+  async function uploadFiles(files) {
+    for (const file of files) {
+      try {
+        const content = await fileToB64(file);
+        const clean = file.name.replace(/[^\w.\-]+/g, "-");
+        const res = await gh("/contents/assets/" + encodeURIComponent(clean), {
+          method: "PUT",
+          body: JSON.stringify({ message: "Ajout média via panneau admin", content })
+        });
+        if (!res.ok && res.status !== 409) throw new Error(res.status);
+        if (res.status === 409) alert(clean + " existe déjà — renomme le fichier et réessaie.");
+      } catch (e) {
+        alert("Échec d'envoi de " + file.name + " : " + e.message);
+      }
+    }
+    loadMedia();
+  }
+  const dz = $("#dropzone");
+  dz.addEventListener("click", () => $("#mediaFile").click());
+  ["dragover", "dragenter"].forEach((ev) =>
+    dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("over"); })
+  );
+  ["dragleave", "drop"].forEach((ev) =>
+    dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("over"); })
+  );
+  dz.addEventListener("drop", (e) => uploadFiles(Array.from(e.dataTransfer.files)));
+  $("#mediaFile").addEventListener("change", (e) => {
+    uploadFiles(Array.from(e.target.files));
+    e.target.value = "";
+  });
+
+  /* ---------- PREVIEW ---------- */
+  $("#previewReload").addEventListener("click", () => {
+    $("#previewFrame").src = "./?" + Date.now();
+  });
+
   /* ---------- JSON BRUT ---------- */
   function syncJsonArea() {
     $("#jsonArea").value = JSON.stringify(S, null, 2);
@@ -620,17 +805,16 @@
     try {
       S = JSON.parse($("#jsonArea").value);
       hydrateForms();
-      setMsg($("#jsonMsg"), "ok", "✓ JSON valide — formulaires synchronisés.");
+      setMsg($("#jsonMsg"), "ok", "JSON valide — formulaires synchronisés.");
     } catch (e) {
-      setMsg($("#jsonMsg"), "err", "❌ JSON invalide : " + e.message);
+      setMsg($("#jsonMsg"), "err", "JSON invalide : " + e.message);
     }
   });
   $("#applyFromForm").addEventListener("click", () => {
     collectTextareas();
     syncJsonArea();
-    setMsg($("#jsonMsg"), "ok", "✓ JSON régénéré depuis les formulaires.");
+    setMsg($("#jsonMsg"), "ok", "JSON régénéré depuis les formulaires.");
   });
-
   $("#exportJson").addEventListener("click", () => {
     const blob = new Blob([JSON.stringify(S, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
@@ -639,7 +823,6 @@
     a.click();
     URL.revokeObjectURL(a.href);
   });
-
   $("#importJsonBtn").addEventListener("click", () => $("#importJsonFile").click());
   $("#importJsonFile").addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -648,18 +831,17 @@
     reader.onload = () => {
       try {
         S = JSON.parse(reader.result);
-        hydrateForms();
-        markDirty();
-        setMsg($("#jsonMsg"), "ok", "✓ Fichier importé — pense à enregistrer sur GitHub.");
+        hydrateForms(); markDirty(); updateDashboard();
+        setMsg($("#jsonMsg"), "ok", "Fichier importé — pense à enregistrer sur GitHub.");
       } catch (err) {
-        setMsg($("#jsonMsg"), "err", "❌ Fichier invalide : " + err.message);
+        setMsg($("#jsonMsg"), "err", "Fichier invalide : " + err.message);
       }
     };
     reader.readAsText(file);
     e.target.value = "";
   });
 
-  /* ---------- HYDRATE ---------- */
+  /* ---------- HYDRATE / BOOT ---------- */
   function hydrateForms() {
     if (!S.site) S.site = {};
     renderSkills();
@@ -668,9 +850,9 @@
     renderProjects();
     hydrateSiteTab();
     syncJsonArea();
+    updateDashboard();
   }
 
-  /* ---------- BOOT : auto-login si token mémorisé ---------- */
   (async () => {
     if (!TOKEN) return;
     const ok = await tryLogin(TOKEN);
