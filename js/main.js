@@ -338,6 +338,7 @@
     audible = on;
     if (on) {
       music.muted = false;
+      ensureAmp();
       if (music.paused) music.play().catch(() => {});
     }
     fadeTo(on ? musicVol : 0);
@@ -346,7 +347,29 @@
     audioBtn.setAttribute("aria-label", on ? "Couper la musique" : "Activer la musique");
   }
 
-  let musicVol = Math.min(1, Math.max(0, parseFloat(localStorage.getItem("sg_music_vol") || "0.45")) || 0.45);
+  let ampCtx = null;
+  let ampGain = null;
+  function ensureAmp() {
+    if (ampGain) {
+      if (ampCtx && ampCtx.state === "suspended") ampCtx.resume().catch(() => {});
+      return;
+    }
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ampCtx = new AC();
+      const src = ampCtx.createMediaElementSource(music);
+      ampGain = ampCtx.createGain();
+      ampGain.gain.value = 1.35;
+      src.connect(ampGain);
+      ampGain.connect(ampCtx.destination);
+      ampCtx.resume().catch(() => {});
+    } catch {
+      ampCtx = null;
+      ampGain = null;
+    }
+  }
+
+  let musicVol = Math.min(1, Math.max(0, parseFloat(localStorage.getItem("sg_music_vol") || "0.7")) || 0.7);
   const volSlider = $("#volumeSlider");
   if (volSlider) {
     volSlider.value = Math.round(musicVol * 100);
