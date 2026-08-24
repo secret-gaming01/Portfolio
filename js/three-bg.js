@@ -30,7 +30,7 @@
     c.width = c.height = 256;
     const g = c.getContext("2d");
     const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-    grd.addColorStop(0, "rgba(147,197,253,0.55)");
+    grd.addColorStop(0, "rgba(96,165,250,0.75)");
     grd.addColorStop(0.25, "rgba(147,197,253,0.22)");
     grd.addColorStop(0.6, "rgba(191,219,254,0.10)");
     grd.addColorStop(1, "rgba(255,255,255,0)");
@@ -109,11 +109,11 @@
   const points = new THREE.Points(
     pGeo,
     new THREE.PointsMaterial({
-      color: 0x9ca3af,
+      color: 0x93c5fd,
       size: 1,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.35,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     })
