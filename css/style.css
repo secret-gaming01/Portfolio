@@ -1,10 +1,10 @@
 :root {
-  --bg: #111827;
-  --bg2: #0b1220;
-  --card: rgba(31, 41, 55, 0.6);
-  --line: #374151;
+  --bg: #0a1120;
+  --bg2: #070d1a;
+  --card: rgba(13, 23, 46, 0.62);
+  --line: rgba(96, 165, 250, 0.16);
   --text: #f9fafb;
-  --muted: #9ca3af;
+  --muted: #94a3b8;
   --cyan: #3b82f6;
   --blue: #60a5fa;
   --violet: #1d4ed8;
@@ -1989,3 +1989,85 @@ html::after { opacity: 0.04; }
   border-color: rgba(147, 197, 253, 0.35);
   background: rgba(59, 130, 246, 0.12);
 }
+
+/* ============ DEEP NAVY — BLEU FONCÉ PROFOND ============ */
+
+body {
+  background:
+    radial-gradient(1100px 700px at 85% -10%, rgba(37, 99, 235, 0.18), transparent 60%),
+    radial-gradient(900px 600px at -10% 45%, rgba(13, 23, 46, 0.95), transparent 60%),
+    #0a1120;
+}
+html::before { background: radial-gradient(circle, rgba(37, 99, 235, 0.14), rgba(13, 23, 46, 0.6) 45%, transparent 68%); }
+body::before { background: radial-gradient(circle, rgba(37, 99, 235, 0.15), rgba(10, 17, 32, 0.7) 45%, transparent 66%); }
+body::after { background: radial-gradient(circle, rgba(29, 78, 216, 0.12), rgba(10, 17, 32, 0.8) 50%, transparent 68%); }
+::selection { background: rgba(59, 130, 246, 0.45); color: #ffffff; }
+::-webkit-scrollbar-track { background: #070d1a; }
+
+/* Cartes bleu nuit */
+.glass {
+  background: rgba(13, 23, 46, 0.62);
+  border-color: rgba(96, 165, 250, 0.16);
+  box-shadow: inset 0 1px 0 rgba(147, 197, 253, 0.06), 0 12px 34px rgba(2, 6, 18, 0.5);
+}
+.glass::after {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.16), transparent 45%);
+}
+
+/* Navbar */
+.navbar.scrolled {
+  background: rgba(8, 14, 30, 0.86);
+  border-bottom-color: rgba(96, 165, 250, 0.15);
+}
+.nav-links a.active {
+  background: rgba(37, 99, 235, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.3);
+}
+
+/* Marquee, chips, avatar */
+.marquee { background: rgba(8, 14, 30, 0.6); }
+.chip { background: rgba(96, 165, 250, 0.05); }
+.skills .bar { background: rgba(96, 165, 250, 0.1); }
+.avatar {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(29, 78, 216, 0.55), transparent 55%),
+    radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.45), transparent 55%),
+    linear-gradient(160deg, #0d1730, #060b18);
+  border-color: #3b82f6;
+}
+
+/* Vignettes navy + lueurs bleues */
+.p1 { background: radial-gradient(circle at 25% 20%, rgba(37, 99, 235, 0.38), transparent 55%), linear-gradient(140deg, #0e1a36, #070d1c 70%); }
+.p2 { background: radial-gradient(circle at 80% 30%, rgba(96, 165, 250, 0.26), transparent 55%), linear-gradient(140deg, #0c1834, #060c1e 70%); }
+.p3 { background: radial-gradient(circle at 60% 70%, rgba(29, 78, 216, 0.32), transparent 60%), linear-gradient(150deg, #0e1a36, #060b18 70%); }
+.p4 { background: radial-gradient(circle at 30% 80%, rgba(59, 130, 246, 0.24), transparent 50%), linear-gradient(160deg, #0c1730, #060c1c 70%); }
+.p5 { background: radial-gradient(circle at 70% 20%, rgba(96, 165, 250, 0.2), transparent 55%), linear-gradient(145deg, #0e1a36, #070d1e 70%); }
+.p6 { background: radial-gradient(circle at 45% 45%, rgba(29, 78, 216, 0.2), transparent 60%), linear-gradient(150deg, #0b1530, #060b18 70%); }
+.project-card:hover {
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 32px rgba(37, 99, 235, 0.14);
+}
+
+/* Formulaires & contact */
+.field input, .field textarea {
+  background: rgba(5, 10, 22, 0.7);
+  border-color: rgba(96, 165, 250, 0.16);
+}
+.field input:focus, .field textarea:focus { border-color: #3b82f6; }
+
+/* Footer, boutons, modale, toast, accueil */
+.footer { background: rgba(6, 11, 24, 0.78); border-top-color: rgba(96, 165, 250, 0.14); }
+.to-top { background: rgba(10, 17, 32, 0.92); }
+.modal-backdrop { background: rgba(3, 6, 15, 0.74); }
+.toast { background: #0e1a36; border-color: rgba(96, 165, 250, 0.35); }
+.welcome-overlay { background: rgba(5, 9, 20, 0.7); }
+.pre-ring { border-color: rgba(96, 165, 250, 0.15); }
+.filter-btn { background: rgba(96, 165, 250, 0.06); }
+.filter-btn.active { box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4); }
+.service-icon {
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(96, 165, 250, 0.28);
+}
+.copy-btn { background: rgba(96, 165, 250, 0.07); }
+.badge { border-color: rgba(96, 165, 250, 0.3); background: rgba(37, 99, 235, 0.14); color: #93c5fd; }
