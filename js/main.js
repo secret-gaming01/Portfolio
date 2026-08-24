@@ -386,19 +386,7 @@
       });
     }
   }
-  if (localStorage.getItem("sg_music")) {
-    dismissWelcome();
-    if (!userMuted) {
-      startMusic().then(() => {
-        const resume = () => setAudible(true);
-        ["pointerdown", "keydown", "touchstart"].forEach((ev) =>
-          document.addEventListener(ev, resume, { once: true, passive: true })
-        );
-      });
-    }
-  } else {
-    $("#enterBtn").addEventListener("click", () => enterSite(true));
-  }
+  $("#enterBtn").addEventListener("click", () => enterSite(true));
 
   audioBtn.addEventListener("click", () => {
     startMusic().then((ok) => {
