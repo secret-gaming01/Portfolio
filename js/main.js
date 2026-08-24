@@ -340,10 +340,21 @@
       music.muted = false;
       if (music.paused) music.play().catch(() => {});
     }
-    fadeTo(on ? 0.45 : 0);
+    fadeTo(on ? musicVol : 0);
     audioBtn.classList.toggle("on", on);
     audioBtn.setAttribute("aria-pressed", String(on));
     audioBtn.setAttribute("aria-label", on ? "Couper la musique" : "Activer la musique");
+  }
+
+  let musicVol = Math.min(1, Math.max(0, parseFloat(localStorage.getItem("sg_music_vol") || "0.45")) || 0.45);
+  const volSlider = $("#volumeSlider");
+  if (volSlider) {
+    volSlider.value = Math.round(musicVol * 100);
+    volSlider.addEventListener("input", () => {
+      musicVol = Number(volSlider.value) / 100;
+      localStorage.setItem("sg_music_vol", String(musicVol));
+      if (audible) music.volume = musicVol;
+    });
   }
 
   async function startMusic() {
@@ -483,6 +494,22 @@
       } catch {
         showToast("Impossible de copier l'email");
       }
+    });
+  }
+
+  const discordCopy = $("#discordText");
+  if (discordCopy) {
+    const copyDiscord = async () => {
+      try {
+        await navigator.clipboard.writeText((CONTENT.site && CONTENT.site.discord) || "secret_gaming01");
+        showToast("Pseudo Discord copié !");
+      } catch {
+        showToast("Impossible de copier le pseudo");
+      }
+    };
+    discordCopy.addEventListener("click", copyDiscord);
+    discordCopy.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); copyDiscord(); }
     });
   }
 
@@ -699,9 +726,12 @@
   const mClose = $("#modalClose");
   let lastFocus = null;
 
-  function openModal(data) {
+  let modalIdx = -1;
+
+  function openModal(data, idx) {
     if (!backdrop) return;
     lastFocus = document.activeElement;
+    modalIdx = typeof idx === "number" ? idx : CONTENT.projects.indexOf(data);
     mKicker.textContent = data.kicker || "";
     mTitle.textContent = data.title || "";
     $("#modalMeta").textContent = [data.year, data.status].filter(Boolean).join(" · ");
@@ -714,10 +744,21 @@
     if (data.repoUrl)
       actions.push(`<a class="btn btn-ghost" href="${esc(data.repoUrl)}" target="_blank" rel="noopener">Code source</a>`);
     $("#modalActions").innerHTML = actions.join("");
+    const total = CONTENT.projects.length;
+    $("#modalCount").textContent = `${modalIdx + 1} / ${total}`;
     backdrop.hidden = false;
     document.body.style.overflow = "hidden";
     mClose.focus();
   }
+
+  function stepModal(dir) {
+    const total = CONTENT.projects.length;
+    if (!total) return;
+    const next = (modalIdx + dir + total) % total;
+    openModal(CONTENT.projects[next], next);
+  }
+  $("#modalPrev").addEventListener("click", () => stepModal(-1));
+  $("#modalNext").addEventListener("click", () => stepModal(1));
 
   function closeModal() {
     if (!backdrop) return;
@@ -732,7 +773,18 @@
       if (e.target === backdrop) closeModal();
     });
   window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && backdrop && !backdrop.hidden) closeModal();
+    if (!backdrop || backdrop.hidden) return;
+    if (e.key === "Escape") closeModal();
+    else if (e.key === "ArrowLeft") stepModal(-1);
+    else if (e.key === "ArrowRight") stepModal(1);
+    else if (e.key === "Tab") {
+      const focusables = $$(".modal a, .modal button", backdrop).filter((el) => el.offsetParent !== null);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   function setupModals() {
@@ -744,13 +796,16 @@
       card.setAttribute("aria-label", `Voir les détails du projet ${p.title}`);
       card.addEventListener("click", (e) => {
         if (e.target.closest("a")) return;
-        openModal(p);
+        openModal(p, i);
       });
       card.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          openModal(p);
+          openModal(p, i);
         }
+      });
+    });
+  }
       });
     });
   }

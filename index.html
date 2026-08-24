@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=31" />
+  <link rel="stylesheet" href="css/style.css?v=32" />
 </head>
 <body>
   <noscript>
@@ -71,6 +71,10 @@
         <li><a href="#contact">Me contacter</a></li>
       </ul>
       <div class="nav-actions">
+        <div class="vol-wrap" title="Volume de la musique">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+          <input type="range" id="volumeSlider" min="0" max="100" value="45" aria-label="Volume de la musique" />
+        </div>
         <button id="audioToggle" class="audio-btn" aria-label="Activer le son ambiant" aria-pressed="false">
           <svg class="ic ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M11 5 6 9H3v6h3l5 4V5z"/><line x1="16" y1="9" x2="21" y2="14"/><line x1="21" y1="9" x2="16" y2="14"/>
@@ -242,7 +246,7 @@
           </div>
           <div class="info-card glass">
             <h4>Discord</h4>
-            <p id="discordText">secret_gaming01</p>
+            <p id="discordText" role="button" tabindex="0" title="Cliquer pour copier le pseudo">secret_gaming01</p>
           </div>
           <div class="info-card glass">
             <h4>GitHub</h4>
@@ -308,6 +312,15 @@
       <ul class="tags" id="modalStack"></ul>
       <ul class="modal-feats" id="modalFeats"></ul>
       <div class="modal-actions" id="modalActions"></div>
+      <div class="modal-nav">
+        <button type="button" class="modal-arrow" id="modalPrev" aria-label="Projet précédent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="modal-count" id="modalCount"></span>
+        <button type="button" class="modal-arrow" id="modalNext" aria-label="Projet suivant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -322,6 +335,6 @@
   <audio id="bgMusic" src="assets/music1.mp3" loop preload="auto"></audio>
 
   <script type="module" src="js/three-bg.js?v=7"></script>
-  <script src="js/main.js?v=27" defer></script>
+  <script src="js/main.js?v=28" defer></script>
 </body>
 </html>
