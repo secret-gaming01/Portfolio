@@ -618,6 +618,27 @@
     track.innerHTML = items + items;
   }
 
+  const CAT_LABELS = { web: "Web", "3d": "3D", bot: "Bots", game: "Jeux" };
+  const catLabel = (c) => CAT_LABELS[c] || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
+  const IMG_RE = /^(https?:\/\/|assets\/|images\/)/i;
+
+  function thumbInner(p) {
+    const t = String(p.thumb || "");
+    const img = IMG_RE.test(t) ? `<img src="${esc(t)}" alt="" loading="lazy" />` : "";
+    const star = p.featured ? '<span class="feat-star" title="Projet vedette">★</span>' : "";
+    return img + star;
+  }
+  function thumbClass(p) {
+    const t = String(p.thumb || "");
+    return /^p\d+$/i.test(t) ? `thumb has-bg ${t.toLowerCase()}` : "thumb";
+  }
+  function projMeta(p) {
+    const bits = [];
+    if (p.year) bits.push(`<span>${esc(p.year)}</span>`);
+    if (p.status) bits.push(`<em class="badge-status">${esc(p.status)}</em>`);
+    return bits.length ? `<div class="proj-meta">${bits.join("")}</div>` : "";
+  }
+
   function projectCard(p) {
     const demo = p.demoUrl
       ? `<a href="${esc(p.demoUrl)}" target="_blank" rel="noopener">Voir le projet</a>`
@@ -626,15 +647,25 @@
       ? `<a href="${esc(p.repoUrl)}" target="_blank" rel="noopener">Code source</a>`
       : `<a href="#" data-soon>Code source</a>`;
     return `
-    <article class="project-card glass tilt reveal" data-cat="${esc(p.cat)}">
-      <div class="thumb ${esc(p.thumb || "p1")}"></div>
+    <article class="project-card glass tilt reveal${p.featured ? " featured" : ""}" data-cat="${esc(p.cat)}">
+      <div class="${thumbClass(p)}">${thumbInner(p)}</div>
       <div class="card-body">
+        ${projMeta(p)}
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.short || "")}</p>
         <ul class="tags">${(p.tags || []).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
         <div class="card-links">${demo}${code}</div>
       </div>
     </article>`;
+  }
+
+  function renderFilters() {
+    const wrap = $("#filterRow");
+    if (!wrap) return;
+    const cats = [...new Set(CONTENT.projects.map((p) => p.cat).filter(Boolean))];
+    const btn = (f, label, active) =>
+      `<button type="button" class="filter-btn${active ? " active" : ""}" data-filter="${esc(f)}">${esc(label)}</button>`;
+    wrap.innerHTML = btn("all", "Tous", true) + cats.map((c) => btn(c, catLabel(c), false)).join("");
   }
 
   function renderProjects() {
@@ -653,9 +684,14 @@
         FILTERS.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         const f = btn.dataset.filter;
+        let visible = 0;
         $$("#projGrid .project-card").forEach((c) => {
-          c.style.display = f === "all" || c.dataset.cat === f ? "" : "none";
+          const show = f === "all" || c.dataset.cat === f;
+          c.style.display = show ? "" : "none";
+          if (show) visible++;
         });
+        const empty = $("#projEmpty");
+        if (empty) empty.hidden = visible > 0;
       })
     );
   }
@@ -674,6 +710,7 @@
     lastFocus = document.activeElement;
     mKicker.textContent = data.kicker || "";
     mTitle.textContent = data.title || "";
+    $("#modalMeta").textContent = [data.year, data.status].filter(Boolean).join(" · ");
     mDesc.textContent = data.desc || "";
     mStack.innerHTML = (data.stack || []).map((s) => `<li>${esc(s)}</li>`).join("");
     mFeats.innerHTML = (data.feats || []).map((f) => `<li>${esc(f)}</li>`).join("");
@@ -735,6 +772,7 @@
     renderSkills();
     setupSkillBars();
     renderMarquee();
+    renderFilters();
     renderProjects();
     setupFilters();
     setupModals();

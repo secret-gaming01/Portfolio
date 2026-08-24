@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=24" />
+  <link rel="stylesheet" href="css/style.css?v=25" />
 </head>
 <body>
   <noscript>
@@ -199,13 +199,8 @@
       <h2 class="section-title reveal"><span>03.</span> Mes projets</h2>
       <p class="section-sub reveal">Une sélection de mes réalisations — bientôt les vôtres ?</p>
 
-      <div class="filter-row reveal" role="group" aria-label="Filtrer les projets">
-        <button type="button" class="filter-btn active" data-filter="all">Tous</button>
-        <button type="button" class="filter-btn" data-filter="web">Web</button>
-        <button type="button" class="filter-btn" data-filter="3d">3D</button>
-        <button type="button" class="filter-btn" data-filter="bot">Bots</button>
-        <button type="button" class="filter-btn" data-filter="game">Jeux</button>
-      </div>
+      <div class="filter-row" id="filterRow" role="group" aria-label="Filtrer les projets"></div>
+      <p id="projEmpty" class="section-sub" hidden>Aucun projet dans cette catégorie pour le moment.</p>
 
       <div class="projects-grid" id="projGrid"></div>
     </section>
@@ -309,6 +304,7 @@
       </button>
       <span class="modal-kicker" id="modalKicker"></span>
       <h3 id="modalTitle"></h3>
+      <span class="modal-meta" id="modalMeta"></span>
       <p id="modalDesc"></p>
       <ul class="tags" id="modalStack"></ul>
       <ul class="modal-feats" id="modalFeats"></ul>
@@ -330,6 +326,6 @@
   <audio id="bgMusic" src="assets/music1.mp3" loop preload="auto"></audio>
 
   <script type="module" src="js/three-bg.js?v=7"></script>
-  <script src="js/main.js?v=25" defer></script>
+  <script src="js/main.js?v=26" defer></script>
 </body>
 </html>

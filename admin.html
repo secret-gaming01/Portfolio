@@ -611,9 +611,34 @@
     inner.appendChild(g1);
 
     const g2 = document.createElement("div"); g2.className = "grid2";
-    g2.appendChild(projField("Visuel (p1…p6 ou assets/…)", p.thumb, { placeholder: "p1" }, (v) => (p.thumb = v)));
+    g2.appendChild(projField("Visuel (p1…p6, ou chemin image ex: assets/mon-visuel.png)", p.thumb, { placeholder: "p1" }, (v) => (p.thumb = v)));
     g2.appendChild(projField("Kicker (petit titre)", p.kicker, { placeholder: "Application web" }, (v) => (p.kicker = v)));
     inner.appendChild(g2);
+
+    const gY = document.createElement("div"); gY.className = "grid2";
+    gY.appendChild(projField("Année", p.year, { placeholder: "2025" }, (v) => (p.year = v)));
+    const stWrap = document.createElement("div");
+    stWrap.innerHTML = "<label class='fld'>Statut</label>";
+    const st = document.createElement("select");
+    [["", "—"], ["En cours", "En cours"], ["Terminé", "Terminé"], ["Archivé", "Archivé"]].forEach(([v, l]) => {
+      const o = document.createElement("option");
+      o.value = v; o.textContent = l;
+      if ((p.status || "") === v) o.selected = true;
+      st.appendChild(o);
+    });
+    st.addEventListener("change", () => { p.status = st.value; markDirty(); });
+    stWrap.appendChild(st);
+    gY.appendChild(stWrap);
+    inner.appendChild(gY);
+
+    const fWrap = document.createElement("label");
+    fWrap.style.cssText = "display:flex;align-items:center;gap:9px;margin-top:16px;color:var(--muted);font-size:13.5px;cursor:pointer";
+    const fchk = document.createElement("input");
+    fchk.type = "checkbox"; fchk.checked = !!p.featured; fchk.style.accentColor = "#fbbf24";
+    fchk.addEventListener("change", () => { p.featured = fchk.checked; markDirty(); });
+    fWrap.appendChild(fchk);
+    fWrap.appendChild(document.createTextNode("Mettre en avant (étoile dorée + bordure sur la carte)"));
+    inner.appendChild(fWrap);
 
     inner.appendChild(projField("Description courte (carte)", p.short, { rows: 2 }, (v) => (p.short = v), true));
     inner.appendChild(projField("Description longue (modale)", p.desc, { rows: 3 }, (v) => (p.desc = v), true));
