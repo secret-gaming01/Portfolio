@@ -1684,3 +1684,107 @@ html::after { opacity: 0.03; }
 .modal-feats li::before { color: #2563eb; }
 .pre-logo span { text-shadow: none; }
 .marquee-track i { color: #60a5fa; }
+
+/* ============ PALETTE PRO — BLEU #3B82F6 & GRIS FONCÉ ============ */
+
+body {
+  background:
+    radial-gradient(1000px 600px at 85% -10%, rgba(59, 130, 246, 0.06), transparent 60%),
+    radial-gradient(800px 500px at -5% 35%, rgba(31, 41, 55, 0.035), transparent 60%),
+    #ffffff;
+}
+html::before { opacity: 0.7; background: radial-gradient(circle, rgba(59, 130, 246, 0.07), rgba(31, 41, 55, 0.04) 45%, transparent 68%); }
+body::before { background: radial-gradient(circle, rgba(59, 130, 246, 0.09), transparent 66%); }
+body::after { background: radial-gradient(circle, rgba(229, 231, 235, 0.6), rgba(59, 130, 246, 0.05) 50%, transparent 68%); }
+::selection { background: rgba(59, 130, 246, 0.18); color: #111827; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3b82f6, #475569); border-color: #f8fafc; }
+
+/* Nom du hero : dégradé bleu pro */
+.gradient-text {
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #60a5fa, #1d4ed8);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+.hero-title:hover .gradient-text { filter: drop-shadow(0 2px 12px rgba(37, 99, 235, 0.35)); }
+
+/* Boutons */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+.btn-primary:hover { box-shadow: 0 10px 24px rgba(37, 99, 235, 0.32); }
+.btn-ghost:hover { border-color: #3b82f6; color: #2563eb; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.14); }
+
+/* Navbar / logo / lien actif */
+.logo span { color: #2563eb; }
+.nav-links a.active { color: #1d4ed8; background: #eff6ff; box-shadow: inset 0 0 0 1px #dbeafe; }
+.navbar.scrolled { background: rgba(255, 255, 255, 0.9); box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08); }
+.audio-btn.on { color: #1d4ed8; border-color: #bfdbfe; box-shadow: none; animation: none; }
+
+/* Stats & titres */
+.hero-stats strong {
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+.caret { background: #3b82f6; }
+.section-title::after { background: linear-gradient(90deg, #3b82f6, #e5e7eb); }
+
+/* Marquee & chips sobres */
+.marquee { background: #f9fafb; }
+.marquee-track span { text-shadow: none; }
+.marquee-track i { color: #9ca3af; }
+.chip { background: #ffffff; }
+.chip:hover { color: #1f2937; border-color: #9ca3af; box-shadow: 0 4px 12px rgba(31, 41, 55, 0.08); }
+
+/* Avatar pro */
+.avatar-wrap::before {
+  background: conic-gradient(from 0deg, #3b82f6, #93c5fd, #e5e7eb, #3b82f6);
+  opacity: 0.4;
+}
+.avatar {
+  border-color: #e5e7eb;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.12);
+  background:
+    radial-gradient(circle at 30% 25%, #eff6ff, transparent 55%),
+    radial-gradient(circle at 75% 75%, #dbeafe, transparent 55%),
+    linear-gradient(160deg, #ffffff, #eef2f7);
+}
+
+/* Barres de compétences : plat et net */
+.bar i { background: #3b82f6; box-shadow: none; }
+.bar i::after { display: none; }
+.skill-head em { color: #2563eb; }
+
+/* Vignettes projets : gris / bleu discret */
+.p1 { background: linear-gradient(140deg, #e5e7eb, #cbd5e1 70%); }
+.p2 { background: radial-gradient(circle at 80% 25%, rgba(59,130,246,.18), transparent 55%), linear-gradient(140deg, #dbeafe, #bfdbfe 70%); }
+.p3 { background: linear-gradient(150deg, #f3f4f6, #e5e7eb 70%); }
+.p4 { background: radial-gradient(circle at 30% 75%, rgba(59,130,246,.14), transparent 50%), linear-gradient(160deg, #eff6ff, #dbeafe 70%); }
+.p5 { background: linear-gradient(145deg, #e5e7eb, #f3f4f6 70%); }
+.p6 { background: radial-gradient(circle at 45% 40%, rgba(59,130,246,.12), transparent 60%), linear-gradient(150deg, #cbd5e1, #e5e7eb 70%); }
+.project-card:hover { border-color: #9ca3af; box-shadow: 0 16px 38px rgba(31, 41, 55, 0.1); }
+.project-card::before { background: linear-gradient(90deg, transparent, #3b82f6, transparent); }
+
+/* Divers */
+.service-icon { color: #2563eb; background: #eff6ff; border-color: #dbeafe; box-shadow: none; }
+.info-card:hover { border-color: #3b82f6; box-shadow: -4px 0 16px -6px rgba(59, 130, 246, 0.35); }
+.to-top:hover { box-shadow: 0 8px 20px rgba(59, 130, 246, 0.28); }
+.scroll-progress {
+  background: linear-gradient(90deg, #3b82f6, #334155);
+  box-shadow: none;
+}
+.filter-btn.active { box-shadow: 0 4px 14px rgba(37, 99, 235, 0.24); }
+.toast { border-color: #e5e7eb; box-shadow: 0 12px 34px rgba(15, 23, 42, 0.12); }
+
+/* Écran d'accueil pro */
+.welcome-logo { color: #111827; text-shadow: none; }
+.welcome-logo span { color: #3b82f6; }
+.welcome-btn { animation-name: welcomePulsePro; }
+@keyframes welcomePulsePro {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.35); }
+  50% { box-shadow: 0 0 0 16px rgba(59, 130, 246, 0); }
+}

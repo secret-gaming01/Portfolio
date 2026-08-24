@@ -65,7 +65,7 @@
 
   const ringDefs = [
     { r: 11.2, tube: 0.09, color: 0x93c5fd, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.24 },
-    { r: 14, tube: 0.07, color: 0x60a5fa, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.19 },
+    { r: 14, tube: 0.07, color: 0x3b82f6, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.19 },
     { r: 16.8, tube: 0.055, color: 0xbfdbfe, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.15 }
   ];
   const rings = ringDefs.map((d) => {
@@ -79,7 +79,7 @@
   });
 
   const electronDefs = [
-    { d: 9.2, s: 0.42, c: 0x60a5fa, rx: 1.1, rz: 0.3, sp: 0.018 },
+    { d: 9.2, s: 0.42, c: 0x3b82f6, rx: 1.1, rz: 0.3, sp: 0.018 },
     { d: 10.4, s: 0.34, c: 0x93c5fd, rx: 2.05, rz: -0.5, sp: -0.014 },
     { d: 11.6, s: 0.28, c: 0xbfdbfe, rx: 1.55, rz: 0.95, sp: 0.01 }
   ];
