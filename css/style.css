@@ -704,12 +704,12 @@ img { max-width: 100%; display: block; }
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-.project-card:hover::before { opacity: 0.6; }
+.project-card:hover::before { opacity: 0; }
 .project-card:hover {
-  border-color: rgba(79, 142, 255, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(79, 142, 255, 0.05);
+  border-color: rgba(79, 142, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
-.project-card:hover { transform: translateY(-3px); }
+.project-card:hover { transform: translateY(-2px); }
 .thumb {
   aspect-ratio: 16 / 9;
   position: relative;
@@ -722,7 +722,7 @@ img { max-width: 100%; display: block; }
   inset: 0;
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.06), transparent 42%);
 }
-.project-card:hover .thumb { transform: scale(1.02); filter: saturate(1.08) brightness(1.03); }
+.project-card:hover .thumb { transform: scale(1.01); filter: none; }
 .thumb::after {
   content: "";
   position: absolute;
@@ -1009,9 +1009,9 @@ img { max-width: 100%; display: block; }
 }
 .service-card { padding: 28px; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease; will-change: transform; }
 .service-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(79, 142, 255, 0.3);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3), 0 0 14px rgba(79, 142, 255, 0.04);
+  transform: translateY(-2px);
+  border-color: rgba(79, 142, 255, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 .service-icon {
   width: 46px;
