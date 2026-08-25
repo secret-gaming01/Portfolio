@@ -139,7 +139,7 @@
       btn.setAttribute("aria-pressed", String(on));
     };
     const pref = localStorage.getItem("sg_music");
-    if (pref !== "off") {
+    if (pref === "on") {
       music.play().then(() => {
         const resume = () => {
           music.muted = false;
