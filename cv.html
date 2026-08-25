@@ -6,13 +6,13 @@
   <title>CV — Secret_gaming01 | Développeur Web &amp; C#</title>
   <meta name="description" content="CV de Secret_gaming01, développeur Web & C# basé au Québec." />
   <style>
-    :root { --cyan:#60a5fa; --blue:#3b82f6; --violet:#3b82f6; --text:#f9fafb; --muted:#94a3b8; --line:rgba(96,165,250,.18); --bg:#0a1120; }
+    :root { --cyan:#4f8eff; --blue:#6ea8fe; --violet:#3366dd; --text:#eef2f8; --muted:#7e8da6; --line:rgba(80,140,250,.12); --bg:#060b18; }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family:"Segoe UI", system-ui, -apple-system, sans-serif;
       background:
-        radial-gradient(900px 500px at 90% -10%, rgba(59,130,246,.16), transparent 60%),
-        radial-gradient(700px 500px at -10% 100%, rgba(37,99,235,.12), transparent 60%),
+        radial-gradient(900px 500px at 90% -10%, rgba(79,142,255,.10), transparent 60%),
+        radial-gradient(700px 500px at -10% 100%, rgba(51,102,221,.06), transparent 60%),
         var(--bg);
       color:var(--text);
       line-height:1.55;
@@ -23,7 +23,7 @@
     header.top { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; padding-bottom:24px; border-bottom:2px solid var(--line); }
     h1 { font-size:clamp(1.7rem,4vw,2.4rem); letter-spacing:.5px; }
     h1 span { color:var(--cyan); }
-    .role { font-size:1.05rem; color:var(--blue); font-weight:600; margin-top:4px; }
+    .role { font-size:1.05rem; color:var(--cyan); font-weight:600; margin-top:4px; }
     .contact-list { list-style:none; font-size:.92rem; color:var(--muted); text-align:right; }
     .contact-list li { margin-bottom:4px; word-break:break-all; }
     h2 { font-size:1rem; text-transform:uppercase; letter-spacing:2px; color:var(--cyan); margin:34px 0 14px; display:flex; align-items:center; gap:12px; }
@@ -36,20 +36,23 @@
     ul.clean li::before { content:"▸"; position:absolute; left:2px; color:var(--violet); }
     ul.clean strong { color:var(--text); }
     .badge-row { display:flex; flex-wrap:wrap; gap:8px; }
-    .chip { border:1px solid var(--line); border-radius:999px; padding:5px 14px; font-size:.83rem; color:var(--muted); }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:5px 14px; font-size:.83rem; color:var(--muted); transition:all .3s ease; }
+    .chip:hover { color:var(--cyan); border-color:var(--cyan); }
     .actions { position:fixed; bottom:22px; right:22px; display:flex; gap:10px; }
-    .btn { padding:11px 20px; border-radius:999px; border:1px solid var(--blue); background:linear-gradient(135deg,var(--cyan),var(--blue)); color:#ffffff; font-weight:700; cursor:pointer; font-size:.9rem; }
-    .btn.ghost { background:transparent; color:var(--cyan); }
-    .music-btn { position:fixed; bottom:22px; left:22px; width:46px; height:46px; border-radius:50%; border:1px solid var(--blue); background:rgba(10,17,32,.92); color:var(--cyan); display:grid; place-items:center; cursor:pointer; z-index:50; transition:box-shadow .25s ease; }
+    .btn { padding:11px 20px; border-radius:999px; border:1px solid var(--violet); background:linear-gradient(135deg,var(--cyan),var(--violet)); color:#ffffff; font-weight:700; cursor:pointer; font-size:.9rem; transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease; }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,142,255,.35); }
+    .btn.ghost { background:transparent; color:var(--cyan); border-color:var(--line); }
+    .btn.ghost:hover { border-color:var(--cyan); }
+    .music-btn { position:fixed; bottom:22px; left:22px; width:46px; height:46px; border-radius:50%; border:1px solid var(--violet); background:rgba(6,11,24,.95); color:var(--cyan); display:grid; place-items:center; cursor:pointer; z-index:50; transition:box-shadow .3s ease; }
     .music-btn svg { width:20px; height:20px; }
     .music-btn .ic-on { display:none; }
     .music-btn.on .ic-on { display:block; }
     .music-btn.on .ic-off { display:none; }
-    .music-btn.on { box-shadow:0 0 16px rgba(59,130,246,.5); }
+    .music-btn.on { box-shadow:0 0 16px rgba(79,142,255,.5); }
     @media print {
       body { background:#fff; color:#16213a; padding:0; }
       .actions, .music-btn { display:none; }
-      h1 span, .role, h2, em, a { color:#0b63c5; }
+      h1 span, .role, h2, em, a { color:#3366dd; }
       ul.clean li, .contact-list li, .chip { color:#33415c; }
       h2::after { background:#c9d6ef; }
       header.top { border-color:#c9d6ef; }

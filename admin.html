@@ -8,16 +8,16 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f2937'/%3E%3Ctext x='32' y='42' font-size='26' font-family='monospace' font-weight='bold' fill='%2360a5fa' text-anchor='middle'%3ESG%3C/text%3E%3C/svg%3E" />
   <style>
     :root {
-      --bg: #0a1120; --panel: #101a30; --line: rgba(96,165,250,.16);
-      --text: #f3f4f6; --muted: #9ca3af; --cyan: #60a5fa; --blue: #3b82f6;
+      --bg: #060b18; --panel: #0c142a; --line: rgba(80,140,250,.12);
+      --text: #eef2f8; --muted: #7e8da6; --cyan: #4f8eff; --blue: #6ea8fe;
       --green: #34d399; --red: #f87171; --amber: #fbbf24;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: "Segoe UI", system-ui, sans-serif;
       background:
-        radial-gradient(1000px 500px at 80% -10%, rgba(59,130,246,.12), transparent),
-        radial-gradient(800px 400px at 10% 110%, rgba(236,72,153,.08), transparent),
+        radial-gradient(1000px 500px at 80% -10%, rgba(79,142,255,.10), transparent),
+        radial-gradient(800px 400px at 10% 110%, rgba(51,102,221,.06), transparent),
         var(--bg);
       color: var(--text); min-height: 100vh;
     }
@@ -27,7 +27,7 @@
     .sidebar {
       position: fixed; inset: 0 auto 0 0; width: 252px; z-index: 40;
       display: flex; flex-direction: column; gap: 6px;
-      padding: 20px 14px; background: rgba(4,8,18,.96); border-right: 1px solid var(--line);
+      padding: 20px 14px;       background: rgba(4,8,14,.96); border-right: 1px solid var(--line);
     }
     .brand { font-family: Consolas, monospace; font-weight: 700; font-size: 19px; color: var(--text); text-decoration: none; padding: 4px 10px 14px; display: block; }
     .brand span { color: var(--cyan); }
@@ -43,7 +43,7 @@
     .nav button:hover { color: var(--text); background: rgba(96,165,250,.06); }
     .nav button.active {
       background: linear-gradient(135deg, var(--cyan), var(--blue));
-      color: #04121f; font-weight: 700;
+      color: #ffffff; font-weight: 700;
     }
     .side-foot { margin-top: auto; display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
     .main { flex: 1; margin-left: 252px; padding: 24px 28px 120px; max-width: 1280px; }
@@ -135,22 +135,22 @@
     /* ---------- THÈME SOMBRE PRO ---------- */
     body {
       background:
-        radial-gradient(1000px 500px at 80% -10%, rgba(59,130,246,.14), transparent),
-        #0a1120;
+        radial-gradient(1000px 500px at 80% -10%, rgba(79,142,255,.10), transparent),
+        #060b18;
     }
-    .card, header.bar, .sidebar { background: #101a30; border-color: var(--line); box-shadow: 0 1px 2px rgba(0,0,0,.3); }
-    input[type=text], input[type=password], input[type=url], select, textarea { background: rgba(6,11,24,.7); }
-    details.help code { background: rgba(59,130,246,.15); color: #93c5fd; }
+    .card, header.bar, .sidebar { background: #0c142a; border-color: var(--line); box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+    input[type=text], input[type=password], input[type=url], select, textarea { background: rgba(6,12,28,.7); }
+    details.help code { background: rgba(79,142,255,.12); color: var(--accent2); }
     details.proj, .m-row, .stat { background: rgba(8,14,30,.6); }
-    .save-bar { background: rgba(17,24,39,.92); border-top-color: var(--line); }
-    .nav button:hover:not(.active) { background: rgba(96,165,250,.09); color: #ffffff; }
+    .save-bar { background: rgba(12,18,34,.92); border-top-color: var(--line); }
+    .nav button:hover:not(.active) { background: rgba(79,142,255,.08); color: #ffffff; }
     .nav button.active { color: #ffffff; }
-    .btn { background: rgba(96,165,250,.06); }
-    .btn.primary { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; font-weight: 700; }
+    .btn { background: rgba(79,142,255,.06); }
+    .btn.primary { background: linear-gradient(135deg, #4f8eff, #3366dd); color: #ffffff; font-weight: 700; }
     .btn.primary:hover { color: #ffffff; }
-    .icon-btn { background: rgba(96,165,250,.06); }
+    .icon-btn { background: rgba(79,142,255,.06); }
     .badge-t { color: #fbbf24; border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.08); }
-    .dropzone.over { background: rgba(59,130,246,.08); }
+    .dropzone.over { background: rgba(79,142,255,.06); }
     .preview-frame { border-color: var(--line); }
     @media (max-width: 900px) {
       .sidebar { position: static; width: auto; flex-direction: row; align-items: center; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 10px 12px; gap: 10px; }

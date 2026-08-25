@@ -11,22 +11,24 @@
       min-height:100svh; display:flex; align-items:center; justify-content:center;
       font-family:"Segoe UI", system-ui, sans-serif; text-align:center; padding:24px;
       background:
-        radial-gradient(800px 500px at 80% 0%, rgba(59,130,246,.16), transparent 60%),
-        radial-gradient(700px 500px at 10% 100%, rgba(124,58,237,.14), transparent 60%),
-        #030610;
-      color:#e8f1ff;
+        radial-gradient(800px 500px at 80% 0%, rgba(79,142,255,.10), transparent 60%),
+        radial-gradient(700px 500px at 10% 100%, rgba(51,102,221,.08), transparent 60%),
+        #060b18;
+      color:#eef2f8;
     }
     h1 {
       font-size:clamp(4rem,18vw,9rem); line-height:1;
-      background:linear-gradient(90deg,#00e5ff,#3b82f6,#7c3aed,#ec4899);
+      background:linear-gradient(90deg,#4f8eff,#6ea8fe,#e0ecff,#4f8eff);
       -webkit-background-clip:text; background-clip:text; color:transparent;
-      filter:drop-shadow(0 0 24px rgba(0,200,255,.35));
+      filter:drop-shadow(0 0 24px rgba(79,142,255,.30));
     }
-    p { color:#8fa3c8; margin:14px 0 30px; }
+    p { color:#7e8da6; margin:14px 0 30px; }
     a {
       display:inline-block; padding:13px 30px; border-radius:999px; font-weight:600;
-      background:linear-gradient(135deg,#00e5ff,#3b82f6); color:#04121f; text-decoration:none;
+      background:linear-gradient(135deg,#4f8eff,#3366dd); color:#ffffff; text-decoration:none;
+      transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
     }
+    a:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,142,255,.35); }
   </style>
 </head>
 <body>
