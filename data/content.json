@@ -49,8 +49,8 @@
         "CSS",
         "JS"
       ],
-      "short": "Première version de mon portfolio, celui que vous visitez actuellement",
-      "desc": "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et le developpement d'un portfolio professionel.",
+      "short": "Première version de mon portfolio, celui que vous visitez actuellement. Un projet simple mais essentiel, qui m’a permis de poser les bases de mon identité numérique.",
+      "desc": "Portfolio v1 représente ma toute première approche d’un portfolio professionnel.\nC’est un projet qui m’a servi de terrain d’expérimentation : j’y ai appris à rendre une interface responsive, à créer des animations au scroll et à déployer mon travail en continu.\nCe site est le point de départ de mon parcours front-end : une version imparfaite, mais profondément authentique, qui reflète mes débuts, mes essais, mes progrès et ma volonté de construire quelque chose qui me ressemble.",
       "feats": [
         "Première intégration responsive",
         "Animations au scroll",
@@ -62,7 +62,9 @@
         "JavaScript"
       ],
       "demoUrl": "https://secret-gaming01.github.io/Portfolio/",
-      "repoUrl": "https://github.com/secret-gaming01/Portfolio"
+      "repoUrl": "https://github.com/secret-gaming01/Portfolio",
+      "year": "2026",
+      "status": "Terminé"
     }
   ],
   "site": {
