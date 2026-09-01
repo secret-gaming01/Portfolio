@@ -1,6 +1,6 @@
 {
   "typing": [
-    "Développeur polyvalent multi‑langages — C#, HTML/CSS/JS, Python, Rust.",
+    "Développeur polyvalent multi‑langages — C#, HTML/CSS/JS/TS, Python, Rust.",
     "Créateur d’expériences web modernes — interfaces fluides et interactives.",
     "Passionné par la technologie et la création de contenu autour du développement.",
     "Créateur de systèmes performants — Rust & Python pour la vitesse et la stabilité."
@@ -37,6 +37,7 @@
     "HTML5",
     "CSS3",
     "JavaScript",
+    "Typescript",
     "Python",
     "Rust",
     "Git"
@@ -182,7 +183,7 @@
     "githubUrl": "https://github.com/Secret-gaming01",
     "twitchUrl": "https://www.twitch.tv/secret_gaming01",
     "location": "Québec, Canada — disponible à distance",
-    "footerTagline": "Développeur Web & C# basé au Québec. Je construis des sites rapides, des outils solides et des interfaces qui claquent.",
+    "footerTagline": "Développeur full-stack basé au Québec! ",
     "musicSrc": "assets/music1.mp3"
   }
 }
