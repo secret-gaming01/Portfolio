@@ -98,6 +98,22 @@
       "repoUrl": "https://github.com/secret-gaming01/Secure-login",
       "status": "En cours",
       "year": "2026"
+    },
+    {
+      "title": "Nouveau projet",
+      "cat": "web",
+      "thumb": "p3",
+      "kicker": "Tournoi",
+      "tags": [],
+      "short": "Organisez des tournois d'échecs rapidement et efficacement — du club scolaire au grand événement.",
+      "desc": "",
+      "feats": [],
+      "stack": [],
+      "demoUrl": "",
+      "repoUrl": "",
+      "year": "2026",
+      "status": "Terminé",
+      "featured": false
     }
   ],
   "site": {
