@@ -8,10 +8,14 @@
   "skills": [
     {
       "name": "HTML / CSS",
-      "level": 100
+      "level": 98
     },
     {
       "name": "Javascript",
+      "level": 82
+    },
+    {
+      "name": "Typescript",
       "level": 82
     },
     {
@@ -19,8 +23,8 @@
       "level": 60
     },
     {
-      "name": "Python (bases)",
-      "level": 35
+      "name": "Python ",
+      "level": 40
     },
     {
       "name": "Rust (en apprentissage)",
