@@ -70,6 +70,36 @@
       "status": "En ligne"
     },
     {
+      "title": "Tournechec",
+      "cat": "web",
+      "thumb": "p3",
+      "kicker": "Tournoi",
+      "tags": [
+        "Programmer seul"
+      ],
+      "short": "Organisez des tournois d'échecs rapidement et efficacement — du club scolaire au grand événement.",
+      "desc": "Comptes sécurisés — inscription, connexion, rôles joueur / arbitre / admin (Supabase Auth)\nTournois publics ou privés — création guidée, règlements intégrés, consentement obligatoire\nAppariements automatiques — système suisse (par Elo, sans revanches, byes gérés) ou élimination directe\nClassement en direct — points, V/N/D et départage Buchholz, rafraîchi automatiquement\nProjecteur salle — affichage plein écran des tables, actualisé toutes les 15 secondes\nPanels dédiés — joueur, arbitre (présences, pointages, export CSV) et admin (modération, notifications, statistiques)\nNotifications internes — invitations, publication des tables, fin de tournoi\nConforme RGPD — mentions légales, politique de confidentialité, suppression de compte en 1 clic",
+      "feats": [
+        "Appariement intelligent",
+        "Un espace pour chaque rôle",
+        "Sans papier, sans courriel à écrire",
+        "Classement qui départage",
+        "Mode projecteur",
+        "Un espace pour chaque rôle"
+      ],
+      "stack": [
+        "HTML",
+        "CSS",
+        "Javascript",
+        "SQL"
+      ],
+      "demoUrl": "https://secret-gaming01.github.io/Tournechec",
+      "repoUrl": "https://github.com/secret-gaming01/Tournechec",
+      "year": "2026",
+      "status": "Bêta",
+      "featured": false
+    },
+    {
       "title": "Secure-Login",
       "cat": "tool",
       "thumb": "p2",
@@ -101,36 +131,6 @@
       "repoUrl": "https://github.com/secret-gaming01/Secure-login",
       "status": "En cours",
       "year": "2026"
-    },
-    {
-      "title": "Tournechec",
-      "cat": "web",
-      "thumb": "p3",
-      "kicker": "Tournoi",
-      "tags": [
-        "Programmer seul"
-      ],
-      "short": "Organisez des tournois d'échecs rapidement et efficacement — du club scolaire au grand événement.",
-      "desc": "Comptes sécurisés — inscription, connexion, rôles joueur / arbitre / admin (Supabase Auth)\nTournois publics ou privés — création guidée, règlements intégrés, consentement obligatoire\nAppariements automatiques — système suisse (par Elo, sans revanches, byes gérés) ou élimination directe\nClassement en direct — points, V/N/D et départage Buchholz, rafraîchi automatiquement\nProjecteur salle — affichage plein écran des tables, actualisé toutes les 15 secondes\nPanels dédiés — joueur, arbitre (présences, pointages, export CSV) et admin (modération, notifications, statistiques)\nNotifications internes — invitations, publication des tables, fin de tournoi\nConforme RGPD — mentions légales, politique de confidentialité, suppression de compte en 1 clic",
-      "feats": [
-        "Appariement intelligent",
-        "Un espace pour chaque rôle",
-        "Sans papier, sans courriel à écrire",
-        "Classement qui départage",
-        "Mode projecteur",
-        "Un espace pour chaque rôle"
-      ],
-      "stack": [
-        "HTML",
-        "CSS",
-        "Javascript",
-        "SQL"
-      ],
-      "demoUrl": "https://secret-gaming01.github.io/Tournechec",
-      "repoUrl": "https://github.com/secret-gaming01/Tournechec",
-      "year": "2026",
-      "status": "Bêta",
-      "featured": false
     },
     {
       "title": "File Manager",
