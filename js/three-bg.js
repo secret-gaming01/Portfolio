@@ -48,8 +48,8 @@
     const g = c.getContext("2d");
     const half = size / 2;
     const grd = g.createRadialGradient(half, half, 0, half, half, half);
-    grd.addColorStop(0, "rgba(79,142,255,0.70)");
-    grd.addColorStop(0.25, "rgba(110,168,254,0.20)");
+    grd.addColorStop(0, "rgba(107,147,214,0.70)");
+    grd.addColorStop(0.25, "rgba(132,168,224,0.20)");
     grd.addColorStop(0.6, "rgba(180,210,254,0.08)");
     grd.addColorStop(1, "rgba(255,255,255,0)");
     g.fillStyle = grd;

@@ -731,12 +731,12 @@ img { max-width: 100%; display: block; }
     repeating-linear-gradient(0deg, transparent 0 22px, rgba(255, 255, 255, 0.025) 22px 23px),
     repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, 0.025) 22px 23px);
 }
-.p1 { background: radial-gradient(circle at 25% 20%, rgba(79,142,255,.35), transparent 55%), linear-gradient(140deg, #0e1a36, #070d1c 70%); }
-.p2 { background: radial-gradient(circle at 80% 30%, rgba(110,168,254,.28), transparent 55%), linear-gradient(140deg, #0c1834, #060c1e 70%); }
-.p3 { background: radial-gradient(circle at 60% 70%, rgba(51,102,221,.32), transparent 60%), linear-gradient(150deg, #0e1a36, #060b18 70%); }
-.p4 { background: radial-gradient(circle at 30% 80%, rgba(79,142,255,.22), transparent 50%), linear-gradient(160deg, #0c1730, #060c1c 70%); }
-.p5 { background: radial-gradient(circle at 70% 20%, rgba(110,168,254,.2), transparent 55%), linear-gradient(145deg, #0e1a36, #070d1e 70%); }
-.p6 { background: radial-gradient(circle at 45% 45%, rgba(51,102,221,.18), transparent 60%), linear-gradient(150deg, #0b1530, #060b18 70%); }
+.p1 { background: radial-gradient(circle at 25% 20%, rgba(107,147,214,.26), transparent 55%), linear-gradient(140deg, #111a30, #0a0f1c 70%); }
+.p2 { background: radial-gradient(circle at 80% 30%, rgba(132,168,224,.22), transparent 55%), linear-gradient(140deg, #0f1a32, #0a0f1e 70%); }
+.p3 { background: radial-gradient(circle at 60% 70%, rgba(79,118,189,.24), transparent 60%), linear-gradient(150deg, #111a30, #0a0f1a 70%); }
+.p4 { background: radial-gradient(circle at 30% 80%, rgba(107,147,214,.18), transparent 50%), linear-gradient(160deg, #0f1830, #0a0f1c 70%); }
+.p5 { background: radial-gradient(circle at 70% 20%, rgba(132,168,224,.16), transparent 55%), linear-gradient(145deg, #111a30, #0a0f1e 70%); }
+.p6 { background: radial-gradient(circle at 45% 45%, rgba(79,118,189,.16), transparent 60%), linear-gradient(150deg, #0e1830, #0a0f1a 70%); }
 
 .card-body { padding: 22px 24px 24px; }
 .card-body h3 {
@@ -1211,7 +1211,7 @@ img { max-width: 100%; display: block; }
   left: 50%;
   bottom: 30px;
   transform: translate(-50%, 20px);
-  background: #0e1a36;
+  background: #111a30;
   border: 1px solid rgba(107, 147, 214, 0.35);
   color: var(--text);
   padding: 13px 24px;

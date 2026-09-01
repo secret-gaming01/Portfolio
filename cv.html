@@ -11,8 +11,8 @@
     body {
       font-family:"Segoe UI", system-ui, -apple-system, sans-serif;
       background:
-        radial-gradient(900px 500px at 90% -10%, rgba(79,142,255,.10), transparent 60%),
-        radial-gradient(700px 500px at -10% 100%, rgba(51,102,221,.06), transparent 60%),
+        radial-gradient(900px 500px at 90% -10%, rgba(107,147,214,.10), transparent 60%),
+        radial-gradient(700px 500px at -10% 100%, rgba(79,118,189,.06), transparent 60%),
         var(--bg);
       color:var(--text);
       line-height:1.55;
@@ -40,13 +40,13 @@
     .chip:hover { color:var(--cyan); border-color:var(--cyan); }
     .actions { position:fixed; bottom:22px; right:22px; display:flex; gap:10px; }
     .btn { padding:11px 20px; border-radius:999px; border:1px solid var(--violet); background:linear-gradient(135deg,var(--cyan),var(--violet)); color:#ffffff; font-weight:700; cursor:pointer; font-size:.9rem; transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease; }
-    .btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,142,255,.35); }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(107,147,214,.35); }
     .btn.ghost { background:transparent; color:var(--cyan); border-color:var(--line); }
     .btn.ghost:hover { border-color:var(--cyan); }
       @media print {
       body { background:#fff; color:#16213a; padding:0; }
       .actions { display:none; }
-      h1 span, .role, h2, em, a { color:#3366dd; }
+      h1 span, .role, h2, em, a { color:#4f76bd; }
       ul.clean li, .contact-list li, .chip { color:#33415c; }
       h2::after { background:#c9d6ef; }
       header.top { border-color:#c9d6ef; }
@@ -60,26 +60,26 @@
     <header class="top">
       <div>
         <h1>Secret<span>_gaming01</span></h1>
-        <p class="role">Développeur full-stack polyvalent — Québec, Canada</p>
+        <p class="role" id="cvRole">Développeur full-stack polyvalent — Québec, Canada</p>
       </div>
       <ul class="contact-list">
-        <li><a href="mailto:pro.secretgaming01@gmail.com">pro.secretgaming01@gmail.com</a></li>
-        <li><a href="https://github.com/Secret-gaming01" target="_blank" rel="noopener">github.com/Secret-gaming01</a></li>
-        <li><a href="https://www.twitch.tv/secret_gaming01" target="_blank" rel="noopener">twitch.tv/secret_gaming01</a></li>
-        <li>Discord : secret_gaming01</li>
+        <li><a id="cvMailLink" href="mailto:pro.secretgaming01@gmail.com"><span id="cvMail">pro.secretgaming01@gmail.com</span></a></li>
+        <li><a id="cvGitHubLink" href="https://github.com/Secret-gaming01" target="_blank" rel="noopener"><span id="cvGitHub">github.com/Secret-gaming01</span></a></li>
+        <li><a id="cvTwitchLink" href="https://www.twitch.tv/secret_gaming01" target="_blank" rel="noopener"><span id="cvTwitch">twitch.tv/secret_gaming01</span></a></li>
+        <li>Discord : <span id="cvDiscord">secret_gaming01</span></li>
         <li>Portfolio : <a href="https://secret-gaming01.github.io/Portfolio/" target="_blank" rel="noopener">secret-gaming01.github.io/Portfolio</a></li>
       </ul>
     </header>
 
     <h2>Profil</h2>
-    <p style="color:var(--muted)">
+    <p style="color:var(--muted)" id="cvProfile">
       Développeur du Québec, passionné par le code, la tech et le gaming. Je crée des sites web modernes
       et des applications full-stack, avec un faible pour les interfaces rapides et immersives.
       Multi-langages : C#, HTML/CSS/JS/TS, Python et Rust. Ouvert aux opportunités, à distance ou sur place.
     </p>
 
     <h2>Compétences techniques</h2>
-    <div class="cols">
+    <div class="cols" id="cvSkills">
       <div class="skill-line"><span>HTML5 / CSS3</span><em>Excellent (98%)</em></div>
       <div class="skill-line"><span>JavaScript</span><em>Confirmé (82%)</em></div>
       <div class="skill-line"><span>TypeScript</span><em>Confirmé (82%)</em></div>
@@ -90,7 +90,7 @@
     </div>
 
     <h2>Ce que je fais</h2>
-    <ul class="clean">
+    <ul class="clean" id="cvServices">
       <li><strong>Sites &amp; applications web</strong> — sites vitrines, landing pages et applis web modernes, responsives et rapides.</li>
       <li><strong>Applications C# / .NET</strong> — outils, logiciels de bureau et utilitaires robustes et performants.</li>
       <li><strong>Bots &amp; automatisation</strong> — bots Discord et scripts qui éliminent les tâches répétitives.</li>
@@ -98,7 +98,7 @@
     </ul>
 
     <h2>Projets sélectionnés</h2>
-    <ul class="clean">
+    <ul class="clean" id="cvProjects">
       <li><strong>Portfolio v1</strong> — mon portfolio interactif actuel (le site que vous visitez) : scène 3D temps réel (Three.js), déploiement continu et stats de visite. <a href="https://secret-gaming01.github.io/Portfolio/" target="_blank" rel="noopener">Voir en ligne</a></li>
       <li><strong>Secure-Login</strong> — système d'authentification universel et ultra-sécurisé intégrable à n'importe quel projet (Argon2id, 2FA, passkeys WebAuthn, anti-bruteforce, dashboard admin). <a href="https://github.com/secret-gaming01/Secure-login" target="_blank" rel="noopener">Voir sur GitHub</a></li>
       <li><strong>Tournechec</strong> — organisez des tournois d'échecs du club scolaire au grand événement : appariements suisses automatiques, classement en direct, mode projecteur, conformité RGPD. <a href="https://secret-gaming01.github.io/Tournechec" target="_blank" rel="noopener">Voir en ligne</a></li>
@@ -107,7 +107,7 @@
     </ul>
 
     <h2>En bref</h2>
-    <div class="badge-row">
+    <div class="badge-row" id="cvChips">
       <span class="chip">C#</span><span class="chip">.NET</span><span class="chip">HTML5</span><span class="chip">CSS3</span>
       <span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Python</span><span class="chip">Rust (en cours)</span><span class="chip">Git</span>
     </div>
@@ -118,6 +118,70 @@
     <button class="btn" onclick="window.print()">Imprimer / PDF</button>
   </div>
 
-  
+  <script>
+  (async () => {
+    try {
+      const res = await fetch("data/content.json?v=" + Date.now());
+      if (!res.ok) return;
+      const D = await res.json();
+      const site = D.site || {};
+      const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+      const role = document.getElementById("cvRole");
+      if (role && (site.factRole || site.factBase))
+        role.textContent = (site.factRole || "Développeur") + " — " + (site.factBase || "Québec, Canada");
+
+      const prof = document.getElementById("cvProfile");
+      if (prof && site.aboutText) prof.textContent = site.aboutText.replace(/\s+/g, " ").trim();
+
+      const skills = document.getElementById("cvSkills");
+      if (skills && D.skills && D.skills.length) {
+        skills.innerHTML = D.skills.map((s) =>
+          '<div class="skill-line"><span>' + esc(s.name.trim()) + '</span><em>' + esc(s.level) + '%</em></div>'
+        ).join("") + '<div class="skill-line"><span>Git / GitHub</span><em>Courant</em></div>';
+      }
+
+      const serv = document.getElementById("cvServices");
+      if (serv && site.services) {
+        serv.innerHTML = site.services.map((sv) =>
+          "<li><strong>" + esc(sv.title) + "</strong> — " + esc(sv.desc) + "</li>"
+        ).join("");
+      }
+
+      const proj = document.getElementById("cvProjects");
+      if (proj && D.projects && D.projects.length) {
+        proj.innerHTML = D.projects.map((p) => {
+          const st = p.status ? " <em>(" + esc(p.status) + ")</em>" : "";
+          const links =
+            (p.demoUrl ? ' <a href="' + esc(p.demoUrl) + '" target="_blank" rel="noopener">Voir en ligne</a>' : "") +
+            (p.repoUrl ? ' <a href="' + esc(p.repoUrl) + '" target="_blank" rel="noopener">GitHub</a>' : "");
+          return "<li><strong>" + esc(p.title) + "</strong>" + st + " — " + esc(p.short) + links + "</li>";
+        }).join("");
+      }
+
+      const chips = document.getElementById("cvChips");
+      if (chips && D.marquee && D.marquee.length)
+        chips.innerHTML = D.marquee.map((m) => '<span class="chip">' + esc(m) + "</span>").join("");
+
+      if (site.email) {
+        setText("cvMail", site.email);
+        const m = document.getElementById("cvMailLink");
+        if (m) m.href = "mailto:" + site.email;
+      }
+      if (site.githubUrl) {
+        setText("cvGitHub", site.githubUrl.replace(/^https?:\/\/(www\.)?/, ""));
+        const g = document.getElementById("cvGitHubLink");
+        if (g) g.href = site.githubUrl;
+      }
+      if (site.twitchUrl) {
+        setText("cvTwitch", site.twitchUrl.replace(/^https?:\/\/(www\.)?/, ""));
+        const t = document.getElementById("cvTwitchLink");
+        if (t) t.href = site.twitchUrl;
+      }
+      if (site.discord) setText("cvDiscord", site.discord);
+    } catch (e) {}
+    function setText(id, v) { const el = document.getElementById(id); if (el && v) el.textContent = v; }
+  })();
+  </script>
 </body>
 </html>
