@@ -48,11 +48,7 @@
       "cat": "web",
       "thumb": "P1",
       "kicker": "Site vitrine",
-      "tags": [
-        "HTML",
-        "CSS",
-        "JS"
-      ],
+      "tags": [],
       "short": "Première version de mon portfolio, celui que vous visitez actuellement. Un projet simple mais essentiel, qui m’a permis de poser les bases de mon identité numérique.",
       "desc": "Portfolio v1 représente ma toute première approche d’un portfolio professionnel.\nC’est un projet qui m’a servi de terrain d’expérimentation : j’y ai appris à rendre une interface responsive, à créer des animations au scroll et à déployer mon travail en continu.\nCe site est le point de départ de mon parcours front-end : une version imparfaite, mais profondément authentique, qui reflète mes débuts, mes essais, mes progrès et ma volonté de construire quelque chose qui me ressemble.",
       "feats": [
@@ -86,7 +82,14 @@
         "Renseignement réseau",
         "Défenses web standard"
       ],
-      "stack": [],
+      "stack": [
+        "Rust",
+        "Javascript",
+        "Python",
+        "C#",
+        "Typescript",
+        "HTML"
+      ],
       "demoUrl": "https://github.com/secret-gaming01/Secure-login/blob/main/README.md",
       "repoUrl": "https://github.com/secret-gaming01/Secure-login",
       "status": "En cours",
