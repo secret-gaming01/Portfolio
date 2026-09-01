@@ -69,6 +69,28 @@
       "repoUrl": "https://github.com/secret-gaming01/Portfolio",
       "year": "2026",
       "status": "Terminé"
+    },
+    {
+      "title": "Secure-Login",
+      "cat": "web",
+      "thumb": "p2",
+      "kicker": "Authentification",
+      "tags": [],
+      "short": "Système d'authentification universel, ultra-sécurisé et intégrable dans n'importe quel projet.\n\nBackend Rust / Axum / SQLx, base PostgreSQL ou SQLite, MFA TOTP avec QR code, Passkeys WebAuthn, JWT HS512 avec rotation de refresh tokens, anti-bruteforce, détection d'IP suspectes, emails SMTP réels, mode multi-instances Redis, dashboard admin complet et SDKs JavaScript/TypeScript, Python, C# et Rust.",
+      "desc": "Secure-Login s'installe une seule fois et prend en charge toute la partie « comptes utilisateurs » de n'importe quel projet (site vitrine, boutique, app web, API, jeu…). Concrètement, vous n'avez plus jamais besoin de coder un écran de connexion vous-même :\n\n📝 Inscription + email de vérification\n🔑 Connexion par mot de passe (stocké de façon inviolable : Argon2id)\n📲 Double authentification optionnelle (code à 6 chiffres type Google Authenticator, QR code fourni)\n👆 Connexion par empreinte digitale / Face ID (Passkeys WebAuthn)\n🛡️ Blocage automatique des attaques par force brute et des IP malveillantes\n✉️ Emails transactionnels réels (SMTP) : vérification, reset, alertes\n👮 Dashboard admin : utilisateurs, sessions actives, IP suspectes, logs, configuration",
+      "feats": [
+        "Mots de passe",
+        "Chiffrement au repos",
+        "Tokens à épreuve de rejeu",
+        "Anti-bruteforce en profondeur",
+        "Renseignement réseau",
+        "Défenses web standard"
+      ],
+      "stack": [],
+      "demoUrl": "https://github.com/secret-gaming01/Secure-login/blob/main/README.md",
+      "repoUrl": "https://github.com/secret-gaming01/Secure-login",
+      "status": "En cours",
+      "year": "2026"
     }
   ],
   "site": {
