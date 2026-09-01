@@ -72,21 +72,21 @@
   const coreSegments = isLowEnd ? 24 : 48;
   const core = new THREE.Mesh(
     new THREE.SphereGeometry(4.4, coreSegments, coreSegments),
-    new THREE.MeshBasicMaterial({ color: 0xb0d0ff })
+    new THREE.MeshBasicMaterial({ color: 0xa7c3e6 })
   );
   group.add(core);
 
   const shell = new THREE.Mesh(
     new THREE.IcosahedronGeometry(7.4, isLowEnd ? 0 : 1),
-    new THREE.MeshBasicMaterial({ color: 0x6ea8fe, wireframe: true, transparent: true, opacity: 0.14 })
+    new THREE.MeshBasicMaterial({ color: 0x84a8e0, wireframe: true, transparent: true, opacity: 0.14 })
   );
   group.add(shell);
 
   const ringsToUse = isLowEnd ? 2 : 3;
   const ringDefs = [
-    { r: 11.2, tube: 0.09, color: 0x6ea8fe, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.20 },
-    { r: 14, tube: 0.07, color: 0x4f8eff, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.16 },
-    { r: 16.8, tube: 0.055, color: 0xb0d0ff, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.12 }
+    { r: 11.2, tube: 0.09, color: 0x84a8e0, tilt: [Math.PI / 2.15, 0, 0], opacity: 0.20 },
+    { r: 14, tube: 0.07, color: 0x6b93d6, tilt: [Math.PI / 2.6, 0.5, 0.4], opacity: 0.16 },
+    { r: 16.8, tube: 0.055, color: 0xa7c3e6, tilt: [Math.PI / 1.9, -0.4, 0.7], opacity: 0.12 }
   ].slice(0, ringsToUse);
   const torusSegs = isLowEnd ? 8 : 10;
   const torusRadSegs = isLowEnd ? 60 : 150;
@@ -102,9 +102,9 @@
 
   const electronsToUse = isLowEnd ? 2 : 3;
   const electronDefs = [
-    { d: 9.2, s: 0.42, c: 0x4f8eff, rx: 1.1, rz: 0.3, sp: 0.018 },
-    { d: 10.4, s: 0.34, c: 0x6ea8fe, rx: 2.05, rz: -0.5, sp: -0.014 },
-    { d: 11.6, s: 0.28, c: 0xb0d0ff, rx: 1.55, rz: 0.95, sp: 0.01 }
+    { d: 9.2, s: 0.42, c: 0x6b93d6, rx: 1.1, rz: 0.3, sp: 0.018 },
+    { d: 10.4, s: 0.34, c: 0x84a8e0, rx: 2.05, rz: -0.5, sp: -0.014 },
+    { d: 11.6, s: 0.28, c: 0xa7c3e6, rx: 1.55, rz: 0.95, sp: 0.01 }
   ].slice(0, electronsToUse);
   const eSegs = isLowEnd ? 8 : 16;
   const electrons = electronDefs.map((def) => {
@@ -132,7 +132,7 @@
   const points = new THREE.Points(
     pGeo,
     new THREE.PointsMaterial({
-      color: 0x6ea8fe,
+      color: 0x84a8e0,
       size: isMobile ? 0.8 : 1,
       sizeAttenuation: true,
       transparent: true,

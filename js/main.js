@@ -878,7 +878,7 @@
 
   console.log(
     "%c SG_01 %c Portfolio — version 2. Curieux ? Jette un oeil au code source ",
-    "background:#4f8eff;color:#ffffff;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
-    "color:#4f8eff;padding:4px 8px"
+    "background:#6b93d6;color:#ffffff;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
+    "color:#6b93d6;padding:4px 8px"
   );
 })();
