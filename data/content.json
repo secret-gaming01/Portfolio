@@ -111,7 +111,10 @@
       ],
       "short": "Organisez des tournois d'échecs rapidement et efficacement — du club scolaire au grand événement.",
       "desc": "Comptes sécurisés — inscription, connexion, rôles joueur / arbitre / admin (Supabase Auth)\nTournois publics ou privés — création guidée, règlements intégrés, consentement obligatoire\nAppariements automatiques — système suisse (par Elo, sans revanches, byes gérés) ou élimination directe\nClassement en direct — points, V/N/D et départage Buchholz, rafraîchi automatiquement\nProjecteur salle — affichage plein écran des tables, actualisé toutes les 15 secondes\nPanels dédiés — joueur, arbitre (présences, pointages, export CSV) et admin (modération, notifications, statistiques)\nNotifications internes — invitations, publication des tables, fin de tournoi\nConforme RGPD — mentions légales, politique de confidentialité, suppression de compte en 1 clic",
-      "feats": [],
+      "feats": [
+        "Tournois avec appariement intelligent",
+        "Comptes utilisateurs sécurisés"
+      ],
       "stack": [
         "HTML",
         "CSS",
@@ -123,6 +126,26 @@
       "year": "2026",
       "status": "Bêta",
       "featured": false
+    },
+    {
+      "title": "File Manager",
+      "cat": "tool",
+      "thumb": "p4",
+      "kicker": "Tri",
+      "tags": [
+        "Programmer seul"
+      ],
+      "short": "Tri automatique de dossiers sur ton ordinateur",
+      "desc": "Un petit script Python qui range automatiquement un dossier (par exemple Téléchargements) en classant chaque fichier dans le bon sous-dossier. Plus besoin de trier à la main : lance le script, et ton dossier devient propre.",
+      "feats": [
+        "Tri automatique"
+      ],
+      "stack": [
+        "Python"
+      ],
+      "demoUrl": "https://github.com/secret-gaming01/File-Manager/blob/main/README.md",
+      "repoUrl": "https://github.com/secret-gaming01/File-Manager",
+      "status": "Terminé"
     }
   ],
   "site": {
