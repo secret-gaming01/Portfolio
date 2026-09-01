@@ -758,7 +758,8 @@
     ["mobile", "Mobile"],
     ["api", "Backend"],
     ["tool", "Outils"],
-    ["discord", "Discord"]
+    ["discord", "Discord"],
+    ["autre", "Autre"]
   ];
   function projField(labelTxt, value, attr, onInput, isArea) {
     const wrap = document.createElement("div");
@@ -811,7 +812,7 @@
     const stWrap = document.createElement("div");
     stWrap.innerHTML = "<label class='fld'>Statut</label>";
     const st = document.createElement("select");
-    [["", "—"], ["En cours", "En cours"], ["Terminé", "Terminé"], ["Archivé", "Archivé"]].forEach(([v, l]) => {
+    [["", "—"], ["En cours", "En cours"], ["Terminé", "Terminé"], ["Archivé", "Archivé"], ["En ligne", "En ligne"], ["Bêta", "Bêta"], ["Idée", "Idée"], ["En pause", "En pause"], ["Abandonné", "Abandonné"]].forEach(([v, l]) => {
       const o = document.createElement("option");
       o.value = v; o.textContent = l;
       if ((p.status || "") === v) o.selected = true;

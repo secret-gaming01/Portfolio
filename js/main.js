@@ -688,7 +688,8 @@
     mobile: "Mobile",
     api: "Backend",
     tool: "Outils",
-    discord: "Discord"
+    discord: "Discord",
+    autre: "Autre"
   };
   const catLabel = (c) => CAT_LABELS[c] || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
   const IMG_RE = /^(https?:\/\/|assets\/|images\/)/i;
