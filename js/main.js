@@ -671,7 +671,17 @@
     track.innerHTML = items + items;
   }
 
-  const CAT_LABELS = { web: "Web", "3d": "3D", bot: "Bots", game: "Jeux" };
+  const CAT_LABELS = {
+    web: "Web",
+    "3d": "3D",
+    bot: "Bots",
+    game: "Jeux",
+    desktop: "Bureau",
+    mobile: "Mobile",
+    api: "Backend",
+    tool: "Outils",
+    discord: "Discord"
+  };
   const catLabel = (c) => CAT_LABELS[c] || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
   const IMG_RE = /^(https?:\/\/|assets\/|images\/)/i;
 

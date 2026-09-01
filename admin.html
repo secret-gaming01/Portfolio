@@ -749,7 +749,17 @@
   function collectTextareas() {}
 
   /* ---------- PROJECTS ---------- */
-  const CATS = [["web", "Web"], ["3d", "3D"], ["bot", "Bot"], ["game", "Jeu"]];
+  const CATS = [
+    ["web", "Web"],
+    ["3d", "3D"],
+    ["bot", "Bots"],
+    ["game", "Jeux"],
+    ["desktop", "Bureau"],
+    ["mobile", "Mobile"],
+    ["api", "Backend"],
+    ["tool", "Outils"],
+    ["discord", "Discord"]
+  ];
   function projField(labelTxt, value, attr, onInput, isArea) {
     const wrap = document.createElement("div");
     const lab = document.createElement("label");
