@@ -8,10 +8,14 @@
   "skills": [
     {
       "name": "HTML / CSS",
-      "level": 100
+      "level": 98
     },
     {
       "name": "Javascript",
+      "level": 82
+    },
+    {
+      "name": "Typescript",
       "level": 82
     },
     {
@@ -19,8 +23,8 @@
       "level": 60
     },
     {
-      "name": "Python (bases)",
-      "level": 35
+      "name": "Python ",
+      "level": 40
     },
     {
       "name": "Rust (en apprentissage)",
@@ -45,12 +49,10 @@
       "thumb": "P1",
       "kicker": "Site vitrine",
       "tags": [
-        "HTML",
-        "CSS",
-        "JS"
+        "Programmer seul"
       ],
-      "short": "Première version de mon portfolio, celui que vous visitez actuellement",
-      "desc": "La première version de mon portfolio : le laboratoire qui m'a servi à apprendre les animations CSS, le scroll fluide et le developpement d'un portfolio professionel.",
+      "short": "Première version de mon portfolio, celui que vous visitez actuellement. Un projet simple mais essentiel, qui m’a permis de poser les bases de mon identité numérique.",
+      "desc": "Portfolio v1 représente ma toute première approche d’un portfolio professionnel.\nC’est un projet qui m’a servi de terrain d’expérimentation : j’y ai appris à rendre une interface responsive, à créer des animations au scroll et à déployer mon travail en continu.\nCe site est le point de départ de mon parcours front-end : une version imparfaite, mais profondément authentique, qui reflète mes débuts, mes essais, mes progrès et ma volonté de construire quelque chose qui me ressemble.",
       "feats": [
         "Première intégration responsive",
         "Animations au scroll",
@@ -62,7 +64,40 @@
         "JavaScript"
       ],
       "demoUrl": "https://secret-gaming01.github.io/Portfolio/",
-      "repoUrl": "https://github.com/secret-gaming01/Portfolio"
+      "repoUrl": "https://github.com/secret-gaming01/Portfolio",
+      "year": "2026",
+      "status": "Terminé"
+    },
+    {
+      "title": "Secure-Login",
+      "cat": "web",
+      "thumb": "p2",
+      "kicker": "Authentification",
+      "tags": [
+        "Programmer seul"
+      ],
+      "short": "Système d'authentification universel, ultra-sécurisé et intégrable dans n'importe quel projet.",
+      "desc": "Secure-Login s'installe une seule fois et prend en charge toute la partie « comptes utilisateurs » de n'importe quel projet (site vitrine, boutique, app web, API, jeu…). Concrètement, vous n'avez plus jamais besoin de coder un écran de connexion vous-même :\n\n📝 Inscription + email de vérification\n🔑 Connexion par mot de passe (stocké de façon inviolable : Argon2id)\n📲 Double authentification optionnelle (code à 6 chiffres type Google Authenticator, QR code fourni)\n👆 Connexion par empreinte digitale / Face ID (Passkeys WebAuthn)\n🛡️ Blocage automatique des attaques par force brute et des IP malveillantes\n✉️ Emails transactionnels réels (SMTP) : vérification, reset, alertes\n👮 Dashboard admin : utilisateurs, sessions actives, IP suspectes, logs, configuration",
+      "feats": [
+        "Mots de passe",
+        "Chiffrement au repos",
+        "Tokens à épreuve de rejeu",
+        "Anti-bruteforce en profondeur",
+        "Renseignement réseau",
+        "Défenses web standard"
+      ],
+      "stack": [
+        "Rust",
+        "Javascript",
+        "Python",
+        "C#",
+        "Typescript",
+        "HTML"
+      ],
+      "demoUrl": "https://github.com/secret-gaming01/Secure-login/blob/main/README.md",
+      "repoUrl": "https://github.com/secret-gaming01/Secure-login",
+      "status": "En cours",
+      "year": "2026"
     }
   ],
   "site": {

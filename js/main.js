@@ -321,14 +321,22 @@
   let userMuted = localStorage.getItem("sg_music") === "off";
   let fadeTimer = null;
 
-  function fadeTo(target) {
+  function fadeTo(target, duration) {
     clearInterval(fadeTimer);
+    const start = music.volume;
+    const dist = Math.abs(target - start);
+    if (dist < 0.001) { music.volume = target; if (target === 0) music.pause(); return; }
+    const ms = duration || 600;
+    const steps = Math.max(1, Math.round(ms / 30));
+    const step = (target - start) / steps;
+    let i = 0;
     fadeTimer = setInterval(() => {
-      const v = music.volume;
-      const nv = target > v ? Math.min(target, v + 0.09) : Math.max(target, v - 0.11);
-      music.volume = nv;
-      if (nv === target) {
+      i++;
+      const nv = i >= steps ? target : start + step * i;
+      music.volume = Math.max(0, Math.min(1, nv));
+      if (i >= steps) {
         clearInterval(fadeTimer);
+        music.volume = target;
         if (target === 0) music.pause();
       }
     }, 30);
@@ -341,7 +349,7 @@
       ensureAmp();
       if (music.paused) music.play().catch(() => {});
     }
-    fadeTo(on ? musicVol : 0);
+    fadeTo(on ? musicVol : 0, on ? 6000 : 400);
     audioBtn.classList.toggle("on", on);
     audioBtn.setAttribute("aria-pressed", String(on));
     audioBtn.setAttribute("aria-label", on ? "Couper la musique" : "Activer la musique");
@@ -868,8 +876,8 @@
   })();
 
   console.log(
-    "%c SG_01 %c Portfolio — version finale. Curieux ? Jette un œil au code source ",
-    "background:#00e5ff;color:#04121f;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
-    "color:#00e5ff;padding:4px 8px"
+    "%c SG_01 %c Portfolio — version 2. Curieux ? Jette un oeil au code source ",
+    "background:#4f8eff;color:#ffffff;font-weight:bold;padding:4px 8px;border-radius:4px 0 0 4px",
+    "color:#4f8eff;padding:4px 8px"
   );
 })();

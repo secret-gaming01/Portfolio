@@ -61,6 +61,7 @@ HTML5 · CSS3 · JavaScript vanilla · Three.js · GitHub Pages
 ## Crédits
 
 - Musique de fond : fichier fourni par le propriétaire du site (`assets/music1.mp3`)
+- Voir `CHANGELOG.md` pour l'historique complet des changements
 
 ## Déploiement
 
