@@ -156,9 +156,9 @@
     }
   ],
   "site": {
-    "aboutText": "Développeur du Québec, passionné par le code, la tech et le gaming. Je crée des sites web modernes et des applications C#, avec un faible pour les interfaces rapides et immersives.",
+    "aboutText": "Développeur du Québec, passionné par le code, la tech et le gaming.",
     "aboutQuote": "« Le silence parle pour ceux qui savent... »",
-    "factRole": "Développeur Web & C#",
+    "factRole": "Développeur Full-Stack",
     "factBase": "Québec, Canada",
     "factStatus": "Ouvert aux opportunités",
     "services": [
